@@ -70,12 +70,6 @@ def FlappingForces(t, u, w, theta, q, **kinematics):
     chord_direction_right, chord_right, line_left,up_direction_left, chord_direction_left, chord_left,nmid,x_ep)
     
 
-#    line_c = (line[:,0:-1] + line[:,1:])/2
-#    line_c2 = (line2[:,0:-1] + line2[:,1:])/2
-#    updir = (updir[:,0:-1]+updir[:,1:])/2
-#    chordir = (chordir[:,0:-1]+chordir[:,1:])/2
-#    chord = (chord[0:-1]+chord[1:])/2
-    #velocity_q_induced = np.cross(angular_velocity, (line[2,:] + 0.1))
 
     line_c = line[:,1:-1:2] # "Center" points: at the center of each interval --> every other point, starting from the second until the one before the last one
     line_c2 = line2[:,1:-1:2] # Center points at t-dt
@@ -144,7 +138,6 @@ def FlappingForces(t, u, w, theta, q, **kinematics):
     gamma_filament = np.c_[gamma[:,0], gamma[:,1:] - gamma[0:,:-1], -gamma[0,-1]]
     gamma = np.reshape(gamma, np.size(gamma))
     gamma_filament = np.reshape(gamma_filament, np.size(gamma_filament))
-#    gamma[0:15] = np.flip(gamma[15::])
     local_velocity = velocity + v_downwash
     lever_arm = np.zeros_like(line_c)
     BS_radius = np.zeros_like(line_c)   
@@ -170,23 +163,13 @@ def FlappingForces(t, u, w, theta, q, **kinematics):
     U_tail = U + V_ind
     M = np.zeros_like(gamma)
     alpha_tail = np.arctan2(U_tail[1],U_tail[2])
-#    chord_tail = settings.tail_chord
-##    span_tail = settings.tail_span
-#    alpha_zero_t = np.deg2rad(5)
-#    alpha_tail = (np.arctan2(w+V_induced_tail[1], u+V_induced_tail[2])-alpha_zero_t)
-#    U_tail = np.linalg.norm(U + V_induced_tail)
-#    Tail_Force = (0.5*rho*(U_tail**2)*chord_tail*cl_alpha*(alpha_tail))/3 #Aspect ratio correction
+    
     for j in range(np.size(gamma)):
         F = rho*gamma[j]*np.cross(local_velocity[:,j] , line_direction[:,j])
         lever_arm[:, j] = line_c[:, j] + wingframe_position
-#        F_tail = np.array([0, Tail_Lift*(Tail_ds[1]-Tail_ds[0]), 0.])   #Lift tail
-#        Drag_tail = np.array([0, 0., Tail_Drag*(Tail_ds[1]-Tail_ds[0])])    # Drag tail
         F_moment = np.array([F[0]*ds[j], F[1]*ds[j], F[2]*ds[j]])
         Drag_moment = np.array([0., 0., F[2]*ds[j]])
         Lift_moment = np.array([0., F[1]*ds[j], 0.])
-#        F_moment = np.array([F[0]*ds[j], F[1]*ds[j], F[2]*ds[j] + 0.5*((F[2]*ds[j]))])
-#        F_moment_tail = np.array([0., 0.15*F[1]*ds[j], 0.])
-
 
         Fx  =   Fx + F[0]*ds[j]         # Component along wing span
         Fy  =   Fy + F[1]*ds[j]         # Component of Lift (perpendicular to the free stream)
@@ -200,7 +183,7 @@ def FlappingForces(t, u, w, theta, q, **kinematics):
         M_lift = M_lift + M_lift_j[0]
         My = My + M[0]
     
-    F_tail_tot = np.zeros(3)#TailModel.delta_tail(U_tail, tail_span)
+    F_tail_tot = TailModel.delta_tail(U_tail, tail_span)
     
     M_tail = np.cross(NP_tail, F_tail_tot)
     My = M_wing + M_tail[0]
