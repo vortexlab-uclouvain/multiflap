@@ -205,7 +205,7 @@ if __name__ == "__main__":
     
     u = 15.      # Component of free stream velocity
     v = None    # Component of lateral velocity
-    w = -1.12   # Component of vertical velocity
+    w = -0.   # Component of vertical velocity
     
     # -------------------------------------------------------------------------
     # Define here the time array. Forces will be looped over each value
@@ -235,11 +235,7 @@ if __name__ == "__main__":
         
         [Fx, Fy, Fz, My, F_tail_tot, M_wing, M_tail, M_drag, M_lift] = FlappingForces(time_array[i], u, w, 
                                                                                         0,
-                                                                                        0,
-                                                                                        tail_opening=np.deg2rad(0),
-                                                                                        off_shoulder_y=-0.01 -np.pi/12,
-                                                                                        amp_shoulder_y = np.deg2rad(20),
-                                                                                        amp_shoulder_z = np.deg2rad(40))
+                                                                                        0)
         lift_c.append(Fy)
         drag.append(Fz)
         moment.append(My)
@@ -284,8 +280,8 @@ if __name__ == "__main__":
     fig1.suptitle('Moments', fontsize=18)
     plt.xlabel('1/T', fontsize=14)
     plt.ylabel('$M_i(t)$', fontsize=14)
-#    ax1.plot(time_array, Moment_lift, '-', label = "Moment lift")
-#    ax1.plot(time_array, Moment_drag, '-', label = "Moment drag")
+    ax1.plot(time_array, Moment, '-', label = "Moment total")
+    ax1.plot(time_array, Moment_tail, '-', label = "Moment tail")
     ax1.plot(time_array, Moment_wing, '-', label = "Moment wing")
 
     ax1.legend()
