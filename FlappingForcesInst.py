@@ -4,6 +4,7 @@ from MergeLines import MergeLines
 from Circulation import Circulation
 import settings as settings
 
+# this is a comment
 def FlappingForces(t, u, w, theta, q):
     cl_alpha = 2*np.pi
     rho = 1.225 # Air density
