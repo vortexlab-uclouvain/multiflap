@@ -46,13 +46,6 @@ def BirdLine(t, **kwargs):
     amp_wrist_z = kwargs.get('amp_wrist_z',np.pi/12)
     phase_wrist_z = kwargs.get('phase_wrist_z',0.)
     
-    """
-    Wing Kinematics uses the class "WingKinematics"
-    """   
-#    print("Offset, ", np.rad2deg(off_shoulder_y))
-#    print("Amplitude sweep, ", np.rad2deg(amp_shoulder_y))
-#    f = settings.frequency
-#    amp_z_shoulder = settings.amplitude
     shoulder_x = WingKinematics(off_shoulder_x, amp_shoulder_x, t, phase_shoulder_x)        # 0.014
     shoulder_y = WingKinematics(off_shoulder_y , amp_shoulder_y, t, phase_shoulder_y)              # -0.2 -np.pi/12, np.pi/12, t, np.pi/2
     shoulder_z = WingKinematics(off_shoulder_z, amp_shoulder_z, t, phase_shoulder_z)           # np.pi/4
