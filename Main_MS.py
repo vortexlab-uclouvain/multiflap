@@ -47,8 +47,8 @@ states_stack[0,0:] =[20.0 ,  0.1, -0.1,  0.1]
 # Note this is not always the best way to guess points
 amplitude_shoulder = np.deg2rad(40)
 sweep = np.deg2rad(20)
-off_shouder = -0.2-np.pi/12
-tail_op = np.deg2rad(50)
+off_shouder = -np.deg2rad(15)
+tail_op = np.deg2rad(0)
 
 for i in range (1,M):
     [states_stack[i,0:], _] = func.Flow(states_stack[i-1,:], i*tau, tau, 50, amp_shoulder_y=sweep,

@@ -6,7 +6,7 @@ from SmoothQuarterLine import SmoothQuarterLine
 from QuartChordNaive import QuartChordNaive
 from ImproveLineIteration import ImproveLineIteration
 import settings as settings
-from WingKinematics import WingKinematics
+from KinematicsFunction import WingKinematics
 
 def BirdLine(t, **kwargs):
 # =============================================================================
@@ -46,22 +46,15 @@ def BirdLine(t, **kwargs):
     amp_wrist_z = kwargs.get('amp_wrist_z',np.pi/12)
     phase_wrist_z = kwargs.get('phase_wrist_z',0.)
     
-    """
-    Wing Kinematics uses the class "WingKinematics"
-    """   
-#    print("Offset, ", np.rad2deg(off_shoulder_y))
-#    print("Amplitude sweep, ", np.rad2deg(amp_shoulder_y))
-#    f = settings.frequency
-#    amp_z_shoulder = settings.amplitude
-    shoulder_x = WingKinematics('shoulder', 'x', off_shoulder_x, amp_shoulder_x, t, phase_shoulder_x).motion        # 0.014
-    shoulder_y = WingKinematics('shoulder', 'y', off_shoulder_y , amp_shoulder_y, t, phase_shoulder_y).motion              # -0.2 -np.pi/12, np.pi/12, t, np.pi/2
-    shoulder_z = WingKinematics('shoulder', 'z', off_shoulder_z, amp_shoulder_z, t, phase_shoulder_z).motion           # np.pi/4
+    shoulder_x = WingKinematics(off_shoulder_x, amp_shoulder_x, t, phase_shoulder_x)        # 0.014
+    shoulder_y = WingKinematics(off_shoulder_y , amp_shoulder_y, t, phase_shoulder_y)              # -0.2 -np.pi/12, np.pi/12, t, np.pi/2
+    shoulder_z = WingKinematics(off_shoulder_z, amp_shoulder_z, t, phase_shoulder_z)           # np.pi/4
 
-    elbow_y = WingKinematics('elbow', 'y', off_elbow_y, amp_elbow_y, t, phase_elbow_y).motion
-    elbow_x = WingKinematics('elbow', 'x', off_elbow_x, amp_elbow_x, t, phase_elbow_x).motion
+    elbow_y = WingKinematics(off_elbow_y, amp_elbow_y, t, phase_elbow_y)
+    elbow_x = WingKinematics(off_elbow_x, amp_elbow_x, t, phase_elbow_x)
     
-    wrist_y = WingKinematics('wrist', 'y', off_wrist_y, amp_wrist_y, t, phase_wrist_y).motion
-    wrist_z = WingKinematics('wrist', 'x', off_wrist_z, amp_wrist_z, t, phase_wrist_z).motion
+    wrist_y = WingKinematics(off_wrist_y, amp_wrist_y, t, phase_wrist_y)
+    wrist_z = WingKinematics(off_wrist_z, amp_wrist_z, t, phase_wrist_z)
    
 #    shoulder_x = WingKinematics('shoulder', 'x', 0., 0., t,0.).motion       # 0,0,0
 #    shoulder_y = WingKinematics('shoulder', 'y', -np.deg2rad(40), np.deg2rad(30), t, np.pi/2).motion    # -40 , 30, pi/2
@@ -203,7 +196,7 @@ if __name__ == "__main__":
     smiddle = np.ma.masked_where((-0.04+tip_line[:,2] < switch_value) | (-0.04+tip_line[:,2] > switch_value), -0.04+tip_line[:,2])
     ax1.plot(supper, +0.+tip_line[:,1], slower, +0.+tip_line[:,1], smiddle, +0.+tip_line[:,1])
     plt.show()
-    plt.savefig(image_path+'/Tip_trajectory_0.eps', format = 'eps')
+#    plt.savefig(image_path+'/Tip_trajectory_0.eps', format = 'eps')
     
     function = off_sweep + amp_sweep*np.sin(((2*np.pi*f*tArray) + np.pi/2))
     fig2 = plt.figure()
@@ -214,7 +207,7 @@ if __name__ == "__main__":
     ax2.set_xlim(0,0.25)
     ax2.plot(tArray, [np.mean(np.rad2deg(function))]*len(tArray), "--", color = "red", label = "Sweep offset")
     plt.legend()
-    plt.savefig(image_path+'/Sweep_Function_0.eps', format = 'eps')
+#    plt.savefig(image_path+'/Sweep_Function_0.eps', format = 'eps')
 
     fig3 = plt.figure()
     ax3 = fig3.gca()
