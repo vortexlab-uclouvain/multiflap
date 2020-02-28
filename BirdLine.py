@@ -167,14 +167,21 @@ if __name__ == "__main__":
     f = settings.frequency 
     tArray = np.linspace(0, 1/f, 200) 
     tip_line =[]
-    off_sweep = -np.deg2rad(20)
-    amp_sweep = np.deg2rad(40)
-    amplitude_shoulder = np.deg2rad(46)
+    off_sweep = -np.deg2rad(14)
+    amp_sweep = np.deg2rad(10)
+    amplitude_shoulder = np.deg2rad(50)
+    amp_shoulder_x = 0.
     for i in range(len(tArray)):
 
-        [lifting_line, updir, chord_direction, chord, line_left, up_direction_left, chord_direction_left, chord_left, dx] = BirdLine(tArray[i],  amp_shoulder_z=amplitude_shoulder, 
-                                                                                                                off_shoulder_y=off_sweep,
-                                                                                                                amp_shoulder_y=amp_sweep)
+        [lifting_line, updir, chord_direction, 
+         chord, line_left, up_direction_left, 
+         chord_direction_left, chord_left, dx] = BirdLine(   tArray[i],  
+                                                             amp_shoulder_x = 0.,
+                                                             phase_shoulder_x=-np.pi/2,
+                                                             off_shoulder_x = 0.2,
+                                                             amp_shoulder_z=amplitude_shoulder, 
+                                                             off_shoulder_y=off_sweep,
+                                                             amp_shoulder_y=amp_sweep)
         tip_line.append(lifting_line[:,-1])
            
     image_path = "/Users/gducci/UCL/MyPresentations/MeetingRenaud_1902_20"
@@ -208,21 +215,3 @@ if __name__ == "__main__":
     ax2.plot(tArray, [np.mean(np.rad2deg(function))]*len(tArray), "--", color = "red", label = "Sweep offset")
     plt.legend()
 #    plt.savefig(image_path+'/Sweep_Function_0.eps', format = 'eps')
-
-    fig3 = plt.figure()
-    ax3 = fig3.gca()
-    plt.xlabel('$t$', fontsize=14)
-    plt.ylabel('$z(t)$', fontsize=14)
-    ax3.plot(tArray, -0.04+tip_line[:,1])
-    ax3.set_xlim(0,0.25)
-    plt.legend()
-
-#    for i in range(len(tip_line)):
-#        if (-0.04+tip_line[i,2] < 0):
-#            ax1.plot(-0.04+tip_line[i,2], +0.+tip_line[i,1], '-', color = "red")
-#        if (-0.04+tip_line[i,2] > 0):
-#            ax1.plot(-0.04+tip_line[i,2], +0.+tip_line[i,1], '-', color = "blue")
-#    ax1.grid(True)
-
-
-

@@ -41,13 +41,13 @@ tau = (period)/(M-1)
 
 # Type here the first guessed point, that will be used to calculate the other (M-1) points
 
-states_stack[0,0:] =[20.0 ,  0.1, -0.1,  0.1]
+states_stack[0,0:] =[16.0 ,  1., -0.4,  0.05]
 
 # Automatic routine to extract the remaining M-1 points for the flow. 
 # Note this is not always the best way to guess points
-amplitude_shoulder = np.deg2rad(40)
-sweep = np.deg2rad(20)
-off_shouder = -np.deg2rad(15)
+amplitude_shoulder = np.deg2rad(55)
+sweep = np.deg2rad(30)
+off_shouder = -np.deg2rad(10)
 tail_op = np.deg2rad(0)
 
 for i in range (1,M):

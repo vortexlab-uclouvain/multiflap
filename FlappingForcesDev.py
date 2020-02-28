@@ -235,7 +235,13 @@ if __name__ == "__main__":
         
         [Fx, Fy, Fz, My, F_tail_tot, M_wing, M_tail, M_drag, M_lift] = FlappingForces(time_array[i], u, w, 
                                                                                         0,
-                                                                                        0)
+                                                                                        0,
+                                                                                        amp_shoulder_x = 0.,
+                                                                                        phase_shoulder_x=-np.pi/2,
+                                                                                        off_shoulder_x = 0.3,
+                                                                                        amp_shoulder_z=np.deg2rad(45), 
+                                                                                        off_shoulder_y=-np.deg2rad(15),
+                                                                                        amp_shoulder_y=np.deg2rad(20))
         lift_c.append(Fy)
         drag.append(Fz)
         moment.append(My)
