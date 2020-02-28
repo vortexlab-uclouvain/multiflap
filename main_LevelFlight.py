@@ -26,8 +26,8 @@ tolerance_RootFinding = 5e-4 # Tolerance value for finding the mean vertical vel
 initial_guessed_value=[]
 initial_guessed_value.append(np.array([16.0, 0.5, 0.1, 0.01]))
 
-def vertical_velocity(amplitude_shoulder, sweep_amplitude, sweep_offset):
-    print("Starting Newton scheme with amplitude: ", np.rad2deg(amplitude_shoulder))
+def vertical_velocity(offset_shoulder_x, sweep_amplitude, sweep_offset):
+    print("Starting Newton scheme with offset shoulder x: ", np.rad2deg(offset_shoulder_x))
 #    global COUNT
 #    COUNT += 1
  
@@ -44,7 +44,7 @@ def vertical_velocity(amplitude_shoulder, sweep_amplitude, sweep_offset):
     for i in range (1,M):
         [states_stack[i,0:], _] = func.Flow(states_stack[i-1,:], i*tau, tau, 50, 
                                             amp_shoulder_y=sweep_amplitude,
-                                            amp_shoulder_z=amplitude_shoulder,
+                                            off_shoulder_x=offset_shoulder_x,
                                             off_shoulder_y=sweep_offset,
                                             tail_opening=np.deg2rad(0))
     
@@ -56,7 +56,7 @@ def vertical_velocity(amplitude_shoulder, sweep_amplitude, sweep_offset):
                                                                                             tolerance_MultiShooting, 
                                                                                             simulation_directory,
                                                                                             amp_shoulder_y=sweep_amplitude,
-                                                                                            amp_shoulder_z=amplitude_shoulder,
+                                                                                            off_shoulder_x=offset_shoulder_x,
                                                                                             off_shoulder_y=sweep_offset,
                                                                                             tail_opening=np.deg2rad(0))
     
@@ -81,7 +81,7 @@ def vertical_velocity(amplitude_shoulder, sweep_amplitude, sweep_offset):
         print ("Successfully created the directory %s " % opening_folder)
 
     LevelFlight = []
-    LevelFlight.append(['Amplitude shoulder z', amplitude_shoulder])
+    LevelFlight.append(['Offset shoulder x', offset_shoulder_x])
     LevelFlight.append(['Amplitude sweep angle', sweep_amplitude])
     LevelFlight.append(['Offset sweep angle', sweep_offset])
     LevelFlight.append(['Mean Forward Flight velocity', np.mean(u_hor)])
@@ -104,7 +104,7 @@ def vertical_velocity(amplitude_shoulder, sweep_amplitude, sweep_offset):
     [Fx, Fy, Fz, Moment_total, F_tail, Moment_wing, 
      Moment_tail, Moment_drag, Moment_lift] = ForceRetrieving(complete_solution, 
                                                              amp_shoulder_y=sweep_amplitude,
-                                                             amp_shoulder_z=amplitude_shoulder,
+                                                             off_shoulder_x=offset_shoulder_x,
                                                              off_shoulder_y=sweep_offset,
                                                              tail_opening=np.deg2rad(0))
     
@@ -116,7 +116,7 @@ def vertical_velocity(amplitude_shoulder, sweep_amplitude, sweep_offset):
     np.save(opening_folder+'/Moment_lift', Moment_lift)
     np.save(opening_folder+'/Moment_drag', Moment_drag)
     np.save(opening_folder+'/Moment_tail', Moment_tail)
-    np.save(opening_folder+'/Amplitude_shoulder_z', amplitude_shoulder)
+    np.save(opening_folder+'/Offset_shoulder_x', offset_shoulder_x)
     print('Saving results completed')
 # =============================================================================
 #       Writing DataFile.txt
@@ -138,7 +138,7 @@ def vertical_velocity(amplitude_shoulder, sweep_amplitude, sweep_offset):
     simulation_info.write('|$Lambda_4$|: '+str(np.linalg.norm(eigenValues[3]))+'\n')
     simulation_info.write('Average vertical velocity: '+str(mean_vertical_velocity)+'\n')
     simulation_info.write('Average forward flight velocity: '+str(np.mean(u_hor))+'\n')
-    simulation_info.write('Shoulder z amplitude: '+str(amplitude_shoulder)+'\n')
+    simulation_info.write('Shoulder x off: '+str(offset_shoulder_x)+'\n')
 
     simulation_info.close()
     print('DataFile correctly written')
@@ -160,13 +160,13 @@ def vertical_velocity(amplitude_shoulder, sweep_amplitude, sweep_offset):
 # =============================================================================
 # Define the range of tail opening over which iterate
 # =============================================================================
-sweep_offset_min = 14
-sweep_offset_max = 16
+sweep_offset_min = 15
+sweep_offset_max = 15
 points = (sweep_offset_max-sweep_offset_min)//1
 sweep_offset_range = np.linspace(sweep_offset_min, sweep_offset_max, (points+1), endpoint=True)
 
-sweep_min = 35
-sweep_max = 35
+sweep_min = 20
+sweep_max = 20
 points = (sweep_max-sweep_min)//5
 sweep_amplitude_range = np.linspace(sweep_min, sweep_max, points+1, endpoint=True)
 points = (50-sweep_min)//5
@@ -185,7 +185,7 @@ for i in range(len(sweep_amplitude_range)):
     COUNT =0
     for j in range(len(sweep_offset_range)):       
 #        amplitude_shoulder = float(amplitude_interpolator(sweep_range[i],tail_range[j]))
-        root = optimize.newton(vertical_velocity, np.deg2rad(40), 
+        root = optimize.newton(vertical_velocity, 0.1, 
                                args=(np.deg2rad(sweep_amplitude_range[i]),np.deg2rad(-sweep_offset_range[j]),),
                                tol=tolerance_RootFinding)
 #w=[]

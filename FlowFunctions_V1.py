@@ -288,8 +288,8 @@ if __name__ == "__main__":
 
     else:
         u_0 =  20.   # U-velocity initial condition
-        w_0 = .5          # W-velocity initial condition
-        q_0 = 1. # Q-velocity initial condition
+        w_0 = .0          # W-velocity initial condition
+        q_0 = 0. # Q-velocity initial condition
         theta_0 = 0.  # Theta-angle initial condition
         ssp0 = np.array([u_0, w_0, q_0, theta_0], float) # Vector of initial conditions
         
@@ -305,10 +305,11 @@ if __name__ == "__main__":
     
     sspSolution_V0 = rk.RK4(Velocity, ssp0,
                             tArray,
-                            off_shoulder_y=-0.2)
+                            off_shoulder_y=-0.2, off_shoulder_x=0.5)
     
     import matplotlib.pyplot as plt
     plt.plot(tArray,  sspSolution_V0[:,1], '.', color = 'red', label = 'RK2')
+
 ###    plt.plot(tArray,  sspSolution_RK4[:,0], color = 'blue', label = 'RK4')
 #    plt.plot(tArray,  sspSolution[:,1], color = 'green', label = 'RK4')
 ##
