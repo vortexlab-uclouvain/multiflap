@@ -163,7 +163,6 @@ def FlappingForces(t, u, w, theta, q, **kinematics):
     U_tail = U + V_ind
     M = np.zeros_like(gamma)
     alpha_tail = np.arctan2(U_tail[1],U_tail[2])
-    
     for j in range(np.size(gamma)):
         F = rho*gamma[j]*np.cross(local_velocity[:,j] , line_direction[:,j])
         lever_arm[:, j] = line_c[:, j] + wingframe_position
@@ -236,10 +235,7 @@ if __name__ == "__main__":
         [Fx, Fy, Fz, My, F_tail_tot, M_wing, M_tail, M_drag, M_lift] = FlappingForces(time_array[i], u, w, 
                                                                                         0,
                                                                                         0,
-                                                                                        amp_shoulder_x = 0.,
-                                                                                        phase_shoulder_x=-np.pi/2,
-                                                                                        off_shoulder_x = 0.3,
-                                                                                        amp_shoulder_z=np.deg2rad(45), 
+                                                                                        amp_shoulder_z=np.deg2rad(42), 
                                                                                         off_shoulder_y=-np.deg2rad(15),
                                                                                         amp_shoulder_y=np.deg2rad(20))
         lift_c.append(Fy)

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 def ForceRetrieving_CaseName(case_name, **kinematics):
-    results_directory = '/Users/gducci/UCL/PROJECT/Simulations/TestFindingNoTail/'+ case_name+'/Results'
+    results_directory = '/Users/gducci/UCL/PROJECT/Simulations/NoIteration/'+ case_name+'/Results'
     periodic_orbit_filename = results_directory+'/complete_solution.npy'
     periodic_orbit = np.load(periodic_orbit_filename)
     periodic_orbit = periodic_orbit.reshape(-1, periodic_orbit.shape[2])
@@ -58,9 +58,9 @@ def ForceRetrieving(periodic_orbit, **kinematics):
 
 
 if __name__ == "__main__":
-    case_name = 'SimulationRenaud'
+    case_name = 'Sim_00_v1'
     
-    [Fx, Fy, Fz, Moment_total, F_tail, Moment_wing, Moment_tail, Moment_drag, Moment_lift, timeArray] = ForceRetrieving_CaseName(case_name, amp_shoulder_z = np.deg2rad(45), amp_shoulder_y = np.deg2rad(20), off_shoulder_y = -0.01-np.pi/12, tail_opening=0)
+    [Fx, Fy, Fz, Moment_total, F_tail, Moment_wing, Moment_tail, Moment_drag, Moment_lift, timeArray] = ForceRetrieving_CaseName(case_name, amp_shoulder_z = np.deg2rad(42), amp_shoulder_y = np.deg2rad(20), off_shoulder_y = -np.deg2rad(15), tail_opening=0)
     fig1 = plt.figure()
     ax1 = fig1.gca() 
     fig1.suptitle('Moments', fontsize=18)
