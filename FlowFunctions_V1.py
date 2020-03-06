@@ -77,11 +77,11 @@ def StabilityMatrix(t, ssp, **kinematics):
     # Derivatives of My with respect to the state space variables        
     dMy_du = (Myu - My)/(u*perturbation)
     dMy_dw = (Myw - My)/(w*perturbation)
-    dMy_dw = (Myq - My)/(q*perturbation)
+    dMy_dq = (Myq - My)/(q*perturbation)
 
     A = np.array([[-dFzu_dU/m, -q - dFzw_dW/m, -w - dFzq_dq/m, -g*cos(theta)],
                   [q - dFyu_dU/m - dFytail_du/m, -dFyw_dW/m - dFytail_dw/m, u - dFyq_dq/m - dFytail_dq/m, -g*sin(theta)],
-                  [dMy_du/0.1, dMy_dw/0.1, dMy_dw/0.1, 0],
+                  [dMy_du/0.1, dMy_dw/0.1, dMy_dq/0.1, 0],
                   [0, 0, 1, 0]], float) 
     return A
 
