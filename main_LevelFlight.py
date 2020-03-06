@@ -90,6 +90,7 @@ def vertical_velocity(amplitude_shoulder, sweep_amplitude, sweep_offset):
 #         Saving results
 # =============================================================================
     np.save(opening_folder+'/LevelFlight_Result', LevelFlight)    
+    np.save(opening_folder+'/Error_History', np.asanyarray(error))    
     np.save(opening_folder+'/outfile_ptlist', ptlist)
     np.save(opening_folder+'/complete_solution', complete_solution)
     np.save(opening_folder+'/final_points', complete_solution)
@@ -160,8 +161,8 @@ def vertical_velocity(amplitude_shoulder, sweep_amplitude, sweep_offset):
 # =============================================================================
 # Define the range of tail opening over which iterate
 # =============================================================================
-sweep_offset_min = 15
-sweep_offset_max = 15
+sweep_offset_min = 16
+sweep_offset_max = 16
 points = (sweep_offset_max-sweep_offset_min)//1
 sweep_offset_range = np.linspace(sweep_offset_min, sweep_offset_max, (points+1), endpoint=True)
 

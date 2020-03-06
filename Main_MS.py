@@ -45,9 +45,9 @@ states_stack[0,0:] =[20.9, -2.8, -0.09, -0.17]
 
 # Automatic routine to extract the remaining M-1 points for the flow. 
 # Note this is not always the best way to guess points
-amplitude_shoulder = np.deg2rad(50)
+amplitude_shoulder = np.deg2rad(43)
 sweep = np.deg2rad(25)
-offset_shoulder_y = -np.deg2rad(29)
+offset_shoulder_y = -np.deg2rad(15)
 tail_op = np.deg2rad(0)
 
 for i in range (1,M):

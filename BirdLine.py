@@ -42,8 +42,8 @@ def BirdLine(t, **kwargs):
     amp_wrist_y = kwargs.get('amp_wrist_y',np.pi/6)
     phase_wrist_y = kwargs.get('phase_wrist_y',np.pi/2)
 
-    off_wrist_z = kwargs.get('off_wrist_z',np.pi/12)
-    amp_wrist_z = kwargs.get('amp_wrist_z',np.pi/12)
+    off_wrist_z = kwargs.get('off_wrist_z',0*np.pi/12)
+    amp_wrist_z = kwargs.get('amp_wrist_z',0*np.pi/12)
     phase_wrist_z = kwargs.get('phase_wrist_z',0.)
     
     shoulder_x = WingKinematics(off_shoulder_x, amp_shoulder_x, t, phase_shoulder_x)        # 0.014

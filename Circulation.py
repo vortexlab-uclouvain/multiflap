@@ -1,10 +1,11 @@
 import numpy as np
+import polar as polar
 
 def Circulation(y,z,yc,zc,chord,angle_of_attack,cl_alpha,velocity_module,gamma):
     
     gamma_new = np.zeros_like(gamma)
     vs = np.zeros([3,np.size(gamma)])
-    relfac = .1
+    relfac = 0.1
 
     gamma_filament = np.c_[gamma[:,0], gamma[:,1:] - gamma[0:,:-1], -gamma[0,-1]]
     
@@ -36,6 +37,41 @@ def Circulation(y,z,yc,zc,chord,angle_of_attack,cl_alpha,velocity_module,gamma):
     
     return gamma_new, vs
 
+def CirculationPolar(y,z,yc,zc,chord,angle_of_attack,cl_alpha,velocity_module,gamma):
+    
+    gamma_new = np.zeros_like(gamma)
+    vs = np.zeros([3,np.size(gamma)])
+    relfac = .1
+
+    gamma_filament = np.c_[gamma[:,0], gamma[:,1:] - gamma[0:,:-1], -gamma[0,-1]]
+    
+    dz = z[1:] - z[0:-1]
+    dy = y[1:] - y[0:-1]
+    ds = np.sqrt((dy**2)+(dz**2))
+    dz = dz/ds
+    dy = dy/ds
+    down = np.array([dz,-dy,np.zeros_like(dy)])
+    
+    n = np.size(yc)
+    
+    for i in range(n):
+        v = np.array([[0],[0],[0]])
+        
+        for j in range(n+1):
+            
+            dy_1 = yc[i] - y[j]
+            dz_1 = zc[i] - z[j]
+            
+            v = v + gamma_filament[0,j]*np.array([[dz_1],[-dy_1],[0]])/(dy_1**2 + dz_1**2)
+        
+        v = (v/(4*np.pi))
+        vdown = np.sum(v[:,0]*down[:,i])
+        gamma_new[0,i] = 0.5*velocity_module[i]*chord[i]*polar.lift_coefficient(np.rad2deg(angle_of_attack[i] - vdown/velocity_module[i]))
+        vs[:,i] = v[:,0]
+    
+    gamma_new = relfac*gamma_new + (1-relfac)*gamma
+    
+    return gamma_new, vs
 
 def InducedVel_Filament(X1,Xleg,legdir, vstrength):
 ### returns the induced velocity on X1 of a seminfinite circulation 

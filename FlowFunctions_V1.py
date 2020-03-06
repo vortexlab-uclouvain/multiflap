@@ -4,6 +4,7 @@ from FlappingForcesDev import FlappingForces
 import settings as settings
 import scipy.integrate as ode
 import time
+from math import sin, cos
 dim = 4
 
 f = settings.frequency
@@ -31,8 +32,8 @@ def birdEqn_py(t, ssp, **kinematics):
         theta = ssp[3]
         # Longitudinal equation of motion:
         [Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift] = FlappingForces(t, u, w, q, theta, **kinematics)
-        dudt = -q*w - g*np.sin(theta) - Fz/mass 
-        dwdt = q*u + g*np.cos(theta) - Fy/mass - F_tail/mass
+        dudt = -q*w - g*sin(theta) - Fz/mass 
+        dwdt = q*u + g*cos(theta) - Fy/mass - F_tail/mass
         dqdt =  My/0.1
         dthetadt = q                # Collect Equations of motion in a single NumPy array:
     
@@ -53,23 +54,34 @@ def StabilityMatrix(t, ssp, **kinematics):
     m = 1.2
     perturbation = 1e-3
     u, w, q, theta = ssp
-    
     [Fx, Fy, Fz, My, F_tail, _, _, _, _] = FlappingForces(t, u, w, q, theta, **kinematics)
     [Fxu, Fyu, Fzu, Myu, F_tailu, _, _, _, _] = FlappingForces(t, u + u*perturbation, w, q, theta, **kinematics)
     [Fxw, Fyw, Fzw, Myw, F_tailw, _, _, _, _] = FlappingForces(t, u ,w + w*perturbation, q, theta, **kinematics)
+    [Fxq, Fyq, Fzq, Myq, F_tailq, _, _, _, _] = FlappingForces(t, u ,w , q + q*perturbation, theta, **kinematics)
 
-    dFyu_dU = (Fyu - Fy)/(u*perturbation)
+    # Derivatives of Fz with respect to the state space variables
     dFzu_dU = (Fzu - Fz)/(u*perturbation)
-    dFyw_dW = (Fyw - Fy)/(w*perturbation)
     dFzw_dW = (Fzw - Fz)/(w*perturbation)
+    dFzq_dq = (Fzq - Fz)/(q*perturbation)
+    
+    # Derivatives of Fy with respect to the state space variables
+    dFyu_dU = (Fyu - Fy)/(u*perturbation)
+    dFyw_dW = (Fyw - Fy)/(w*perturbation)
+    dFyq_dq = (Fyq - Fy)/(q*perturbation)
+    
+    # Derivatives of F_tail with respect to the state space variables    
     dFytail_du = (F_tailu - F_tail)/(u*perturbation)
     dFytail_dw = (F_tailw - F_tail)/(w*perturbation)
+    dFytail_dq = (F_tailq - F_tail)/(q*perturbation)
+    
+    # Derivatives of My with respect to the state space variables        
     dMy_du = (Myu - My)/(u*perturbation)
     dMy_dw = (Myw - My)/(w*perturbation)
+    dMy_dw = (Myq - My)/(q*perturbation)
 
-    A = np.array([[-dFzu_dU/m, -q - dFzw_dW/m, -w, -g*np.cos(theta)],
-                  [q - dFyu_dU/m - dFytail_du/m, -dFyw_dW/m - dFytail_dw/m, u, -g*np.sin(theta)],
-                  [dMy_du/0.1, dMy_dw/0.1, 0, 0],
+    A = np.array([[-dFzu_dU/m, -q - dFzw_dW/m, -w - dFzq_dq/m, -g*cos(theta)],
+                  [q - dFyu_dU/m - dFytail_du/m, -dFyw_dW/m - dFytail_dw/m, u - dFyq_dq/m - dFytail_dq/m, -g*sin(theta)],
+                  [dMy_du/0.1, dMy_dw/0.1, dMy_dw/0.1, 0],
                   [0, 0, 1, 0]], float) 
     return A
 
@@ -142,7 +154,7 @@ def Jacobian(ssp, t_initial, integration_time, **kinematics):
     tArray = np.linspace(t_initial, t_Final, Nt)  # Time array for solution
     start_jac = time.time()
 #    sspJacobianSolution = ode.solve_ivp(JacobianVelocity,[t_initial, t_Final], sspJacobian0, 'RK45')
-    sspJacobianSolution = rk.RK2(JacobianVelocity, sspJacobian0, tArray, **kinematics)
+    sspJacobianSolution = rk.RK4(JacobianVelocity, sspJacobian0, tArray, **kinematics)
     end_jac = time.time()
     print("Jacobian time ", (end_jac-start_jac))
 
@@ -205,7 +217,7 @@ def Flow(ssp0, initial_time, deltat, time_steps, **kinematics):
 
     tArray = np.linspace(tInitial, tFinal, Nt)  # Time array for solution
 
-    sspSolution = rk.RK2(Velocity, ssp0, tArray, **kinematics) # RK 
+    sspSolution = rk.RK4(Velocity, ssp0, tArray, **kinematics) # RK 
 #    sspSolution = ode.solve_ivp(birdEqn_py, [tInitial, tFinal], ssp0,'RK23', max_step = deltat/Nt)
 #    sspSolution = (sspSolution.y).T
     sspdeltat = sspSolution[-1, :]  # Read the final point to sspdeltat
