@@ -5,13 +5,12 @@ import Circulation
 import settings as settings
 import TailModels as TailModel
 
-def FlappingForces(t, u, w, theta, q, **kinematics):
+def FlappingForces(t, u, w, q, theta, **kinematics):
     cl_alpha = 2*np.pi
     rho = 1.225 # Air density
     
     U = np.array([0, w, u])
-    
-    #angular_velocity = np.array([q, 0, 0])
+    ang_velocity = np.array([q, 0, 0])
     
     dt = 1e-6
     t2 = t - dt
@@ -69,8 +68,6 @@ def FlappingForces(t, u, w, theta, q, **kinematics):
     [line2, _, _, _] = MergeLines(line_right, up_direction_right,
     chord_direction_right, chord_right, line_left,up_direction_left, chord_direction_left, chord_left,nmid,x_ep)
     
-
-
     line_c = line[:,1:-1:2] # "Center" points: at the center of each interval --> every other point, starting from the second until the one before the last one
     line_c2 = line2[:,1:-1:2] # Center points at t-dt
     updir = updir[:,1:-1:2] # updir, chordir and chord at the center points
@@ -84,7 +81,16 @@ def FlappingForces(t, u, w, theta, q, **kinematics):
 
     u_inf = np.array([U for j in range(np.size(line_c[0]))]).T
     #tangential_wing = (line_c - line_c2)/dt 
-    velocity = u_inf - (line_c - line_c2)/dt 
+    line_velocity = np.zeros_like(line_c)
+    for j in range(np.size(line_c[0])):
+        line_velocity[:,j] = np.cross(ang_velocity,wingframe_position+line_c[:,j])
+    
+    line_velocity = line_velocity + (line_c - line_c2)/dt
+
+#    velocity = u_inf - (line_c - line_c2)/dt 
+
+    velocity = u_inf - line_velocity
+    
     velocity_profile = np.zeros_like(velocity)
     line_direction = np.zeros_like(updir)        
     norm_velocity = np.zeros_like(chord)        
@@ -97,7 +103,7 @@ def FlappingForces(t, u, w, theta, q, **kinematics):
         norm_velocity[j] = np.sqrt(np.sum(velocity_profile[:,j]*velocity_profile[:,j]))
         direction_velocity[:,j] = velocity_profile[:,j]/norm_velocity[j] 
         angle_of_attack[j] = np.arctan2(np.sum(direction_velocity[:,j]*updir[:,j]), np.sum(direction_velocity[:,j]*chordir[:,j]))
-    tol = 0.01
+    tol = 0.001
     max_iterations = 50
     ds = np.zeros(len(chord))
     s = np.zeros((np.size(line[0])))
@@ -163,7 +169,6 @@ def FlappingForces(t, u, w, theta, q, **kinematics):
     U_tail = U + V_ind
     M = np.zeros_like(gamma)
     alpha_tail = np.arctan2(U_tail[1],U_tail[2])
-    
     for j in range(np.size(gamma)):
         F = rho*gamma[j]*np.cross(local_velocity[:,j] , line_direction[:,j])
         lever_arm[:, j] = line_c[:, j] + wingframe_position
@@ -203,9 +208,9 @@ if __name__ == "__main__":
     # Wind tunnel approach
     # -------------------------------------------------------------------------
     
-    u = 15.      # Component of free stream velocity
+    u = 16.      # Component of free stream velocity
     v = None    # Component of lateral velocity
-    w = -0.   # Component of vertical velocity
+    w = .0   # Component of vertical velocity
     
     # -------------------------------------------------------------------------
     # Define here the time array. Forces will be looped over each value
@@ -234,8 +239,11 @@ if __name__ == "__main__":
     for i in range (len(time_array)):
         
         [Fx, Fy, Fz, My, F_tail_tot, M_wing, M_tail, M_drag, M_lift] = FlappingForces(time_array[i], u, w, 
+                                                                                        0.,
                                                                                         0,
-                                                                                        0)
+                                                                                        amp_shoulder_z=np.deg2rad(45), 
+                                                                                        off_shoulder_y=-np.deg2rad(17),
+                                                                                        amp_shoulder_y=np.pi/12)
         lift_c.append(Fy)
         drag.append(Fz)
         moment.append(My)
