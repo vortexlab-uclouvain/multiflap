@@ -5,7 +5,8 @@ from RungeKutta import RK4
 import settings as settings
 from LimitCycleForces import ForceRetrieving
 import os
-
+import DataFile_writing as data_writing
+import SaveFile as saving
 # -------------------------------------------------------------------------
 # Creation of the Folder where simulation data will be stored
 # It is simply asked to type from terminal the name the folder you wish to create
@@ -45,34 +46,15 @@ states_stack[0,0:] =[18.2, -1.9, -0.1, -0.115 ]
 
 # Automatic routine to extract the remaining M-1 points for the flow. 
 # Note this is not always the best way to guess points
-amplitude_shoulder = np.deg2rad(42)
-sweep = np.deg2rad(20)
-offset_shoulder_y = -np.deg2rad(19)
 tail_op = np.deg2rad(0)
-
+settings.amplitude_shoulder_y = np.deg2rad(20)
 for i in range (1,M):
-    [states_stack[i,0:], _] = func.Flow(states_stack[i-1,:], i*tau, tau, 50,
-                                        amp_shoulder_y=sweep,
-                                        amp_shoulder_z=amplitude_shoulder,
-                                        tail_opening=tail_op)
- 
-# Keep the guessed points in memory
+    [states_stack[i,0:], _] = func.Flow(states_stack[i-1,:], i*tau, tau, 50)
 
 guessed_points = np.copy(states_stack)
 
-# =============================================================================
-# Writing txt info simulation
-# =============================================================================
-simulation_info = open(simulation_directory+'/DataFile.txt', 'w+')
-simulation_info.write('Period: '+str(period)+'\n')
-simulation_info.write('FRAMES COORDINATES (with respect to the aerodynamic reference system)'+'\n')
-simulation_info.write('Wing frame position: '+str(settings.wingframe_position)+'\n')
-simulation_info.write('Tail frame position: '+str(settings.wingframe_position_tail)+'\n')
-simulation_info.write('Tail opening: '+str(np.rad2deg(tail_op))+'\n')
-simulation_info.write('Tail chord: '+str(settings.tail_length)+'\n')
-simulation_info.write('... Multiple shooting settings ...'+'\n')
-simulation_info.write('Number of points in shooting: '+str(M)+'\n')
-simulation_info.write('Initial Guess: '+str(states_stack[0,0:])+'\n')
+
+data_writing.DataFileParameters(simulation_directory)
 
 """
 MultiShootingScheme
@@ -101,21 +83,11 @@ xfin, ptlist, error, complete_solution, Jacobian_semigroup = multi2.MultiShootin
                                                                                         tau, 
                                                                                         100, 
                                                                                         tolerance, 
-                                                                                        simulation_directory,
-                                                                                        amp_shoulder_y=sweep,
-                                                                                        amp_shoulder_z=amplitude_shoulder,
-                                                                                        tail_opening=tail_op)
-
-
+                                                                                        simulation_directory)
 results_directory = simulation_directory+"/Results"
 os.mkdir(results_directory) # Create target Directory
 
 ptlist=np.asarray(ptlist)
-np.save(results_directory+'/outfile_ptlist', ptlist)
-np.save(results_directory+'/complete_solution', complete_solution)
-np.save(results_directory+'/final_points', complete_solution)
-np.save(results_directory+'/initial_points', states_stack)
-np.save(results_directory+'/Error', error)
 
 
 tArray = np.linspace(0, period, len(complete_solution))
@@ -125,39 +97,27 @@ Printing floquet multipliers
 """
 
 eigenValues_SG, eigenVectors_SG = np.linalg.eig(Jacobian_semigroup)
-np.save(results_directory+'/outfile_JacobianEigenvalues_SG', eigenValues_SG)
-np.save(results_directory+'/outfile_JacobianEigenvector_SG', eigenVectors_SG)
+data_writing.DataFileResults(simulation_directory, error, eigenValues_SG)
 
-#Jacobian = func.JacobianNumerical(xfin[0, :], 0, period)
+print('Calculating Jacobian Numerical')
+Jacobian_numerical = func.JacobianNumerical(xfin[0, :], 0, period)
 
-eigenValues, eigenVectors = np.linalg.eig(Jacobian_semigroup)
-np.save(results_directory+'/outfile_JacobianEigenvalues', eigenValues)
-np.save(results_directory+'/outfile_JacobianEigenvector', eigenVectors)
+eigenValues, eigenVectors = np.linalg.eig(Jacobian_numerical)
 print("...Retrieving Aerodynamic forces and moments")
-[Fx, Fy, Fz, Moment_total, F_tail, Moment_wing, Moment_tail, Moment_drag, Moment_lift] = ForceRetrieving(complete_solution,
-                                                                                        amp_shoulder_y=sweep,
-                                                                                        amp_shoulder_z=amplitude_shoulder,
-                                                                                        tail_opening=tail_op)
-np.save(results_directory+'/Lift_coupled_v2', Fy)
-np.save(results_directory+'/Drag_coupled_v2', Fz)
-np.save(results_directory+'/Force_tail', F_tail)
-np.save(results_directory+'/Moment_total', Moment_total)
-np.save(results_directory+'/Moment_wing', Moment_wing)
-np.save(results_directory+'/Moment_lift', Moment_lift)
-np.save(results_directory+'/Moment_drag', Moment_drag)
-np.save(results_directory+'/Moment_tail', Moment_tail)
+[Fx, Fy, Fz, Moment_total, F_tail, Moment_wing, Moment_tail, Moment_drag, Moment_lift] = ForceRetrieving(complete_solution)
 
-simulation_info.write('Number of Iterations: '+str(np.size(error))+'\n')
-simulation_info.write('Error: '+str((error[-1]))+'\n')
-simulation_info.write('Floquet Multipliers: '+str(eigenValues)+'\n')
-simulation_info.write('|$Lambda_1$|: '+str(np.linalg.norm(eigenValues[0]))+'\n')
-simulation_info.write('|$Lambda_2$|: '+str(np.linalg.norm(eigenValues[1]))+'\n')
-simulation_info.write('|$Lambda_3$|: '+str(np.linalg.norm(eigenValues[2]))+'\n')
-simulation_info.write('|$Lambda_4$|: '+str(np.linalg.norm(eigenValues[3]))+'\n')
-simulation_info.write('Shoulder z amplitude: '+str(np.rad2deg(amplitude_shoulder))+'\n')
-simulation_info.close() 
+saving.SaveData(results_directory,ptlist, complete_solution,
+             states_stack,
+             error,
+             eigenValues_SG,
+             eigenVectors_SG,
+             eigenValues,
+             eigenVectors,
+             Fx, Fy, Fz, Moment_total, F_tail, Moment_wing, Moment_tail, Moment_drag, Moment_lift)
 
 print("Eigenvalues are, ", eigenValues)
+
+
 """
 Plotting the final solution
 """

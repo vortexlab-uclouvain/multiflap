@@ -7,49 +7,50 @@ from QuartChordNaive import QuartChordNaive
 from ImproveLineIteration import ImproveLineIteration
 import settings as settings
 from KinematicsFunction import WingKinematics
+#import KinematicsParameters as kin
 
 def BirdLine(t, **kwargs):
 # =============================================================================
 #     Wrist joint default kinematics
 # =============================================================================
-    amp_shoulder_x=kwargs.get('amp_shoulder_x', 0.014)
-    off_shoulder_x=kwargs.get('off_shoulder_x',0.2)
-    phase_shoulder_x=kwargs.get('phase_shoulder_x',-np.pi/2)
+    amp_shoulder_x=kwargs.get('amp_shoulder_x', settings.amplitude_shoulder_x)
+    off_shoulder_x=kwargs.get('off_shoulder_x',settings.offset_shoulder_x)
+    phase_shoulder_x=kwargs.get('phase_shoulder_x',settings.phaseangle_shoulder_x)
 
-    amp_shoulder_y=kwargs.get('amp_shoulder_y', np.pi/12)
+    amp_shoulder_y=kwargs.get('amp_shoulder_y', settings.amplitude_shoulder_y)
 #    amp_shoulder_y=kwargs.get('amp_shoulder_y', np.deg2rad(20))
 
 #    off_shoulder_y=kwargs.get('off_shoulder_y', -0.2 -np.pi/12)
-    off_shoulder_y=kwargs.get('off_shoulder_y', -np.deg2rad(19))
+    off_shoulder_y=kwargs.get('off_shoulder_y', settings.offset_shoulder_y)
 
-    phase_shoulder_y=kwargs.get('phase_shoulder_y', np.pi/2)
+    phase_shoulder_y=kwargs.get('phase_shoulder_y', settings.phaseangle_shoulder_y)
 
-    amp_shoulder_z=kwargs.get('amp_shoulder_z', np.deg2rad(42))
-    off_shoulder_z=kwargs.get('off_shoulder_z',0.)
-    phase_shoulder_z=kwargs.get('phase_shoulder_z', np.pi)
+    amp_shoulder_z=kwargs.get('amp_shoulder_z', settings.amplitude_shoulder_z)
+    off_shoulder_z=kwargs.get('off_shoulder_z', settings.offset_shoulder_z)
+    phase_shoulder_z=kwargs.get('phase_shoulder_z', settings.phaseangle_shoulder_z)
     
 # =============================================================================
 #     Elbow joint default kinematics
 # =============================================================================
-    off_elbow_y=kwargs.get('off_elbow_y', np.pi/6)
-    amp_elbow_y=kwargs.get('amp_elbow_y', np.pi/6)
-    phase_elbow_y=kwargs.get('phase_elbow_y', -np.pi/2)
+    off_elbow_y=kwargs.get('off_elbow_y', settings.offset_elbow_y)
+    amp_elbow_y=kwargs.get('amp_elbow_y', settings.amplitude_elbow_y)
+    phase_elbow_y=kwargs.get('phase_elbow_y', settings.phaseangle_elbow_y)
     
-    off_elbow_x=kwargs.get('off_elbow_x', 0.)
-    amp_elbow_x=kwargs.get('amp_elbow_x', np.pi/6)
-    phase_elbow_x=kwargs.get('phase_elbow_x', -np.pi/2)
+    off_elbow_x=kwargs.get('off_elbow_x', settings.offset_elbow_x)
+    amp_elbow_x=kwargs.get('amp_elbow_x', settings.amplitude_elbow_x)
+    phase_elbow_x=kwargs.get('phase_elbow_x', settings.phaseangle_elbow_x)
     
 # =============================================================================
 #   Wrist default kinematics
 # =============================================================================
-    off_wrist_y = kwargs.get('off_wrist_y',-np.pi/6)
-    amp_wrist_y = kwargs.get('amp_wrist_y',np.pi/6)
-    phase_wrist_y = kwargs.get('phase_wrist_y',np.pi/2)
+    off_wrist_y = kwargs.get('off_wrist_y', settings.offset_wrist_y)
+    amp_wrist_y = kwargs.get('amp_wrist_y', settings.amplitude_wrist_y)
+    phase_wrist_y = kwargs.get('phase_wrist_y', settings.phaseangle_wrist_y)
 
-    off_wrist_z = kwargs.get('off_wrist_z',0*np.pi/12)
-    amp_wrist_z = kwargs.get('amp_wrist_z',0*np.pi/12)
-    phase_wrist_z = kwargs.get('phase_wrist_z',0.)
-    
+    off_wrist_z = kwargs.get('off_wrist_z', settings.offset_wrist_z)
+    amp_wrist_z = kwargs.get('amp_wrist_z', settings.amplitude_wrist_z)
+    phase_wrist_z = kwargs.get('phase_wrist_z', settings.phaseangle_wrist_z)
+#    print(np.rad2deg(amp_shoulder_y))
     shoulder_x = WingKinematics(off_shoulder_x, amp_shoulder_x, t, phase_shoulder_x)        # 0.014
     shoulder_y = WingKinematics(off_shoulder_y , amp_shoulder_y, t, phase_shoulder_y)              # -0.2 -np.pi/12, np.pi/12, t, np.pi/2
     shoulder_z = WingKinematics(off_shoulder_z, amp_shoulder_z, t, phase_shoulder_z)           # np.pi/4
@@ -59,18 +60,7 @@ def BirdLine(t, **kwargs):
     
     wrist_y = WingKinematics(off_wrist_y, amp_wrist_y, t, phase_wrist_y)
     wrist_z = WingKinematics(off_wrist_z, amp_wrist_z, t, phase_wrist_z)
-   
-#    shoulder_x = WingKinematics('shoulder', 'x', 0., 0., t,0.).motion       # 0,0,0
-#    shoulder_y = WingKinematics('shoulder', 'y', -np.deg2rad(40), np.deg2rad(30), t, np.pi/2).motion    # -40 , 30, pi/2
-#    shoulder_z = WingKinematics('shoulder', 'z', -np.deg2rad(0), np.deg2rad(60), t, np.pi).motion    # 0, 60
-#
-#    elbow_y = WingKinematics('elbow', 'y', np.deg2rad(45), np.deg2rad(45), t, -np.pi/2).motion  # 45, 45, -pi/2
-#    elbow_x = WingKinematics('elbow', 'x', 0.,np.deg2rad(5), t, -np.pi/2).motion
-#    
-#    wrist_y = WingKinematics('wrist', 'y', -np.deg2rad(45), np.deg2rad(45), t, np.pi/2).motion # -45, 45, pi/2
-#    wrist_z = WingKinematics('wrist', 'x', 0., 0., t, 0.).motion
-
-    
+       
     """
     === Call of WingEnvelope function. Given the kinematics, the wing shape is found ===
     """   
@@ -172,18 +162,20 @@ if __name__ == "__main__":
     tArray = np.linspace(0, 1/f, 400) 
     tip_line =[]
     root_line=[]
-    off_sweep = -np.deg2rad(26)
-    amp_sweep = np.deg2rad(20)
-    amplitude_shoulder = np.deg2rad(42)
-    amp_shoulder_x = 0.
+#    off_sweep = -np.deg2rad(26)
+#    amp_sweep = np.deg2rad(20)
+#    amplitude_shoulder = np.deg2rad(42)
+#    amp_shoulder_x = 0.
+    kin.amplitude_shoulder_y = np.deg2rad(20)
     for i in range(len(tArray)):
 
         [lifting_line, updir, chord_direction, 
          chord, line_left, up_direction_left, 
-         chord_direction_left, chord_left, dx] = BirdLine(   tArray[i],
-                                                             amp_shoulder_z=amplitude_shoulder, 
-                                                             off_shoulder_y=off_sweep,
-                                                             amp_shoulder_y=amp_sweep)
+         chord_direction_left, chord_left, dx] = BirdLine(tArray[i])
+        
+#                                                             amp_shoulder_z=amplitude_shoulder, 
+#                                                             off_shoulder_y=off_sweep,
+#                                                             amp_shoulder_y=amp_sweep)
         tip_line.append(lifting_line[:,-1])
         root_line.append(lifting_line[:,4])
     image_path = "/Users/gducci/Desktop"
@@ -218,7 +210,7 @@ if __name__ == "__main__":
 #    ax1.plot(wingframe_position+root_line[:,2],  root_line[:,1])
     plt.show()
     ax1.grid()
-    plt.savefig(image_path+'/Tip_trajectory_0.png', format = 'png', dpi=700)
+#    plt.savefig(image_path+'/Tip_trajectory_0.png', format = 'png', dpi=700)
     
     function = off_sweep + amp_sweep*np.sin(((2*np.pi*f*tArray) + np.pi/2))
     fig2 = plt.figure()
