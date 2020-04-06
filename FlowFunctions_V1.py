@@ -154,7 +154,7 @@ def Jacobian(ssp, t_initial, integration_time, **kinematics):
     tArray = np.linspace(t_initial, t_Final, Nt)  # Time array for solution
     start_jac = time.time()
 #    sspJacobianSolution = ode.solve_ivp(JacobianVelocity,[t_initial, t_Final], sspJacobian0, 'RK45')
-    sspJacobianSolution = rk.RK4(JacobianVelocity, sspJacobian0, tArray, **kinematics)
+    sspJacobianSolution = rk.RK2(JacobianVelocity, sspJacobian0, tArray, **kinematics)
     end_jac = time.time()
     print("Jacobian time ", (end_jac-start_jac))
 
@@ -217,7 +217,7 @@ def Flow(ssp0, initial_time, deltat, time_steps, **kinematics):
 
     tArray = np.linspace(tInitial, tFinal, Nt)  # Time array for solution
 
-    sspSolution = rk.RK4(Velocity, ssp0, tArray, **kinematics) # RK 
+    sspSolution = rk.RK2(Velocity, ssp0, tArray, **kinematics) # RK 
 #    sspSolution = ode.solve_ivp(birdEqn_py, [tInitial, tFinal], ssp0,'RK23', max_step = deltat/Nt)
 #    sspSolution = (sspSolution.y).T
     sspdeltat = sspSolution[-1, :]  # Read the final point to sspdeltat
@@ -237,7 +237,7 @@ def JacobianNumerical(ssp, initial_time, integration_time, **kinematics):
     
     epsilon = value of the perturbation   
     """
-    time_steps = 50
+    time_steps = 70
     # -------------------------------------------------------------------------
     #  Initialization of the Jacobian Matrix
     # -------------------------------------------------------------------------
@@ -283,19 +283,20 @@ code, it's just coupled numerical integration over a certain time.
 """    
 if __name__ == "__main__":
     
-    force_retrieving =  False
+    force_retrieving =  True
 #    case_name = 'TestCase12b'
 
     if force_retrieving ==  True:    
         case_name = 'TestOffset'
-        results_directory = '/Users/gducci/UCL/PROJECT/Simulations/LevelFlight/Storing_Results/Sweep_25/Opening_45'
+        results_directory = '/Users/gducci/UCL/PROJECT/Simulations/ResultsPaper/LevelSimulations/M5_Sim0/SweepAmplitude_20/SweepOff_Neg-19'
+
         periodic_orbit_filename = results_directory+'/complete_solution.npy'
         periodic_orbit = np.load(periodic_orbit_filename)
         u_0 =  periodic_orbit[0,0][0]    # U-velocity initial condition
         w_0 =  periodic_orbit[0,0][1]         # W-velocity initial condition
         q_0 =  periodic_orbit[0,0][2]    # Q-velocity initial condition
         theta_0 = periodic_orbit[0,0][3]     # Theta-angle initial condition
-        ssp0 = np.array([u_0+(0.1*u_0), w_0+(0.1*w_0), q_0, theta_0+(0.1*theta_0)], float) # Vector of initial conditions
+        ssp0 = np.array([u_0, w_0, q_0, theta_0], float) # Vector of initial conditions
         periodic_orbit = periodic_orbit.reshape(-1, periodic_orbit.shape[2])
 
     else:
@@ -314,13 +315,21 @@ if __name__ == "__main__":
     tFinal = period_number*(1/f)      # Final time (This is one period)
     Nt = 30*period_number                   # Discretisation of time array
     tArray = np.linspace(tInitial, tFinal, Nt)  # Time array
-    
-    sspSolution_V0 = rk.RK4(Velocity, ssp0,
-                            tArray,
-                            off_shoulder_y=-0.2, off_shoulder_x=0.5)
+    states_stack =[18.5009, -2.10883, -0.118833, -0.116133]
+    amplitude_shoulder = np.deg2rad(43.47376941564374)
+    sweep = np.deg2rad(20)
+    offset_shoulder_y = -np.deg2rad(19)
+    tail_op = np.deg2rad(0)
+
+    sspSolution_V0 = ode.solve_ivp(birdEqn_py, [tInitial, tFinal], states_stack,'BDF')
     
     import matplotlib.pyplot as plt
-    plt.plot(tArray,  sspSolution_V0[:,1], '.', color = 'red', label = 'RK2')
+
+    plt.plot(sspSolution_V0.t, sspSolution_V0.y[0])
+    plt.grid(True)
+    plt.show()
+
+#    plt.plot(tArray,  sspSolution_V0[:,0], '.', color = 'red', label = 'RK2')
 
 ###    plt.plot(tArray,  sspSolution_RK4[:,0], color = 'blue', label = 'RK4')
 #    plt.plot(tArray,  sspSolution[:,1], color = 'green', label = 'RK4')
@@ -329,7 +338,13 @@ if __name__ == "__main__":
 ###    plt.plot(tArray,  USolution_RK3)
 #    plt.show()
 #    start_Jac = time.time()
-#    Jacobian = JacobianNumerical(ssp0, tFinal)
+#    Jac = Jacobian(ssp0, tInitial, tFinal,amp_shoulder_y=sweep,
+#                                        amp_shoulder_z=amplitude_shoulder,
+#                                        off_shoulder_y=offset_shoulder_y,
+#                                        tail_opening=tail_op)
+#    
+#    eignevalues_numerical, eigenvector_numerical = np.linalg.eig(Jac)
+#    np.save(results_directory+'/eigenvalues_jacobian_num', eignevalues_numerical)
 #    end_Jac = time.time()
 #    time_Jac = end_Jac - start_Jac
 #    print(Jacobian)

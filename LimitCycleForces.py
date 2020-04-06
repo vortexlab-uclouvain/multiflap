@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 def ForceRetrieving_CaseName(case_name, **kinematics):
-    results_directory = '/Users/gducci/UCL/PROJECT/Simulations/NoIteration/'+ case_name+'/Results'
+    results_directory = '/Users/gducci/UCL/PROJECT/Simulations/LevelFlight_NoTail/ResultsPaper2/SweepAmplitude_20/'+ case_name
     periodic_orbit_filename = results_directory+'/complete_solution.npy'
     periodic_orbit = np.load(periodic_orbit_filename)
     periodic_orbit = periodic_orbit.reshape(-1, periodic_orbit.shape[2])
@@ -58,9 +58,9 @@ def ForceRetrieving(periodic_orbit, **kinematics):
 
 
 if __name__ == "__main__":
-    case_name = 'Sim_00_v1'
+    case_name = 'SweepOff_Neg-19'
     
-    [Fx, Fy, Fz, Moment_total, F_tail, Moment_wing, Moment_tail, Moment_drag, Moment_lift, timeArray] = ForceRetrieving_CaseName(case_name, amp_shoulder_z = np.deg2rad(42), amp_shoulder_y = np.deg2rad(20), off_shoulder_y = -np.deg2rad(15), tail_opening=0)
+    [Fx, Fy, Fz, Moment_total, F_tail, Moment_wing, Moment_tail, Moment_drag, Moment_lift, timeArray] = ForceRetrieving_CaseName(case_name, amp_shoulder_z = np.deg2rad(43.45545102410469), amp_shoulder_y = np.deg2rad(20), off_shoulder_y = -np.deg2rad(19), tail_opening=0)
     fig1 = plt.figure()
     ax1 = fig1.gca() 
     fig1.suptitle('Moments', fontsize=18)
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     plt.ylabel('$M_i(t)$', fontsize=14)
     ax1.plot(timeArray, Moment_drag, '-', label = "Moment drag")
     ax1.plot(timeArray, Moment_lift, '-', label = "Moment lift")
-    ax1.plot(timeArray, Moment_tail, '-', label = "Moment tail")
+    ax1.plot(timeArray, Moment_total, '-', label = "Moment total")
     
     ax1.legend()
     ax1.set_xlim(0, timeArray[-1])

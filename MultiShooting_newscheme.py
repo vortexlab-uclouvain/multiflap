@@ -24,7 +24,7 @@ M = 2
 N = dim
 
 
-time_steps = 70 
+time_steps = 100 
 """
 MultiShootingScheme function
 

@@ -1,17 +1,18 @@
 import numpy as np  # Import NumPy
 from BirdLine import BirdLine
 from MergeLines import MergeLines
-import Circulation 
+import Circulation
 import settings as settings
 import TailModels as TailModel
 
 def FlappingForces(t, u, w, q, theta, **kinematics):
+    
     cl_alpha = 2*np.pi
     rho = 1.225 # Air density
-    
+
     U = np.array([0, w, u])
     ang_velocity = np.array([q, 0, 0])
-    
+
     dt = 1e-6
     t2 = t - dt
     wingframe_position = settings.wingframe_position
@@ -22,7 +23,7 @@ def FlappingForces(t, u, w, q, theta, **kinematics):
     Fy = 0
     Fz = 0
     My = 0
-    M_wing = 0 
+    M_wing = 0
     M_drag = 0
     M_lift = 0
     M_tail = 0
@@ -31,43 +32,42 @@ def FlappingForces(t, u, w, q, theta, **kinematics):
     # For each time step t, the bird line is calculated, and therefore gamma and forces
     # -------------------------------------------------------------------------
     x_ep = 0.05
-    
+
     """
     Evaluation of the geometry at time t
     """
-    
+
     # -------------------------------------------------------------------------
     # Call bird line function, to extract the Lifting line of right and left wing
     # -------------------------------------------------------------------------
-    
-    [line_right, up_direction_right, chord_direction_right, chord_right, 
+
+    [line_right, up_direction_right, chord_direction_right, chord_right,
      line_left, up_direction_left, chord_direction_left, chord_left, dx] = BirdLine(t, **kinematics)
-    
-    nmid = np.ceil(2*x_ep/dx)
+
+    nmid = int(np.ceil(2*x_ep/dx))                                              # Corrected for New update
     # -------------------------------------------------------------------------
     # Geometry at time t
     # -------------------------------------------------------------------------
-    [line, chordir, updir, chord] = MergeLines(line_right, up_direction_right, 
-    chord_direction_right, chord_right, line_left,up_direction_left, chord_direction_left, chord_left,nmid,x_ep)
-    
-    
+    [line, chordir, updir, chord] = MergeLines(line_right, up_direction_right, chord_direction_right, chord_right, line_left,up_direction_left, chord_direction_left, chord_left,nmid,x_ep)
+
+
     """
     Evaluation of the geometry at time t2 = t - dt
     """
     # -------------------------------------------------------------------------
     # Call bird line function, to extract the Lifting line of right and left wing
     # -------------------------------------------------------------------------
-    
-    [line_right, up_direction_right, chord_direction_right, chord_right, 
+
+    [line_right, up_direction_right, chord_direction_right, chord_right,
      line_left, up_direction_left, chord_direction_left, chord_left, dx] = BirdLine(t2, **kinematics)
-    
+
     # -------------------------------------------------------------------------
     #  Geometry at time t2 = t-dt
     # -------------------------------------------------------------------------
-    
+
     [line2, _, _, _] = MergeLines(line_right, up_direction_right,
     chord_direction_right, chord_right, line_left,up_direction_left, chord_direction_left, chord_left,nmid,x_ep)
-    
+
     line_c = line[:,1:-1:2] # "Center" points: at the center of each interval --> every other point, starting from the second until the one before the last one
     line_c2 = line2[:,1:-1:2] # Center points at t-dt
     updir = updir[:,1:-1:2] # updir, chordir and chord at the center points
@@ -80,73 +80,73 @@ def FlappingForces(t, u, w, q, theta, **kinematics):
     # -------------------------------------------------------------------------
 
     u_inf = np.array([U for j in range(np.size(line_c[0]))]).T
-    #tangential_wing = (line_c - line_c2)/dt 
+    #tangential_wing = (line_c - line_c2)/dt
     line_velocity = np.zeros_like(line_c)
     for j in range(np.size(line_c[0])):
         line_velocity[:,j] = np.cross(ang_velocity,wingframe_position+line_c[:,j])
-    
+
     line_velocity = line_velocity + (line_c - line_c2)/dt
 
-#    velocity = u_inf - (line_c - line_c2)/dt 
+#    velocity = u_inf - (line_c - line_c2)/dt
 
     velocity = u_inf - line_velocity
-    
+
     velocity_profile = np.zeros_like(velocity)
-    line_direction = np.zeros_like(updir)        
-    norm_velocity = np.zeros_like(chord)        
-    direction_velocity = np.zeros_like(velocity)        
+    line_direction = np.zeros_like(updir)
+    norm_velocity = np.zeros_like(chord)
+    direction_velocity = np.zeros_like(velocity)
     angle_of_attack = np.zeros_like(chord)
-    
+
     for j in range(np.size(line_c[0])):
         line_direction[:,j] = np.cross(updir[:,j], chordir[:,j])
         velocity_profile[:,j] = velocity[:,j] - line_direction[:,j]*np.sum(line_direction[:,j]*velocity[:,j])
         norm_velocity[j] = np.sqrt(np.sum(velocity_profile[:,j]*velocity_profile[:,j]))
-        direction_velocity[:,j] = velocity_profile[:,j]/norm_velocity[j] 
+        direction_velocity[:,j] = velocity_profile[:,j]/norm_velocity[j]
         angle_of_attack[j] = np.arctan2(np.sum(direction_velocity[:,j]*updir[:,j]), np.sum(direction_velocity[:,j]*chordir[:,j]))
-    tol = 0.001
+    tol = 0.01
     max_iterations = 50
     ds = np.zeros(len(chord))
     s = np.zeros((np.size(line[0])))
 #    print(np.mean(np.rad2deg(angle_of_attack)))
-    # ------------------------------------------------------------------------- 
-    # Evaluation of ds length by distance point to point 
-    # ds is the distance between two consecutives discretised points 
+    # -------------------------------------------------------------------------
+    # Evaluation of ds length by distance point to point
+    # ds is the distance between two consecutives discretised points
     # that belong to the lifting line
     # -------------------------------------------------------------------------
 
     for j in range(np.size(line[0])-1):
         ds[j] = np.sqrt(np.sum((line[:,j+1] - line[:,j])**2))
-    
+
     for j in range(1,np.size(line[0])):
         s[j] = s[j-1] + ds[j-1]
-        
+
     gamma = np.zeros((1,np.size(ds)))
     error = tol + 1
     error_p = np.inf
     count = 0
-    
+
     while (error > tol) and (count < max_iterations):
-        
+
         count = count + 1
-        
+
         [gamma_new, v_downwash] = Circulation.Circulation(line[0,:], line[1,:], line_c[0,:], line_c[1,:],chord, angle_of_attack, cl_alpha, norm_velocity, gamma)
-        
+
         error = np.mean(np.abs(gamma - gamma_new))/np.mean(np.abs(gamma_new))
-        
+
         if error > error_p and count > 0:
             print("Error increasing after iteration ",count)
             break
-        
+
         error_p = error
-        
-        gamma = gamma_new           
-    
+
+        gamma = gamma_new
+
     gamma_filament = np.c_[gamma[:,0], gamma[:,1:] - gamma[0:,:-1], -gamma[0,-1]]
     gamma = np.reshape(gamma, np.size(gamma))
     gamma_filament = np.reshape(gamma_filament, np.size(gamma_filament))
     local_velocity = velocity + v_downwash
     lever_arm = np.zeros_like(line_c)
-    BS_radius = np.zeros_like(line_c)   
+    BS_radius = np.zeros_like(line_c)
 # =============================================================================
 #     Induced velocity on the tail
 # =============================================================================
@@ -154,7 +154,7 @@ def FlappingForces(t, u, w, q, theta, **kinematics):
     V_ind = 0
     dl_induced = line[:,1:] - line[:,:-1]
     for i in range (np.size(gamma)):
-        lever_arm[:, i] = line_c[:, i] + wingframe_position         
+        lever_arm[:, i] = line_c[:, i] + wingframe_position
         BS_radius[:,i] = (NP_tail - lever_arm[:, i])
         cross_prod = (np.cross(dl_induced[:,i],BS_radius[:,i]))
         V_ind = V_ind + ((gamma[i]/(4*np.pi))*cross_prod)/(np.linalg.norm(BS_radius[:,i])**3)
@@ -182,14 +182,14 @@ def FlappingForces(t, u, w, q, theta, **kinematics):
         M_drag_j = np.cross(lever_arm[:,j], Drag_moment)
         M_lift_j = np.cross(lever_arm[:,j], Lift_moment)
         M_wing_j = np.cross(lever_arm[:,j], F_moment)
-        
+
         M_wing = M_wing + M_wing_j[0]
         M_drag = M_drag + M_drag_j[0]
         M_lift = M_lift + M_lift_j[0]
         My = My + M[0]
-    
+
     F_tail_tot = TailModel.delta_tail(U_tail, tail_span)
-    
+
     M_tail = np.cross(NP_tail, F_tail_tot)
     My = M_wing + M_tail[0]
     return Fx, Fy, Fz, My, F_tail_tot[1], M_wing, M_tail[0], M_drag, M_lift
@@ -197,37 +197,37 @@ def FlappingForces(t, u, w, q, theta, **kinematics):
 
 
 """
-The following allows to run the lifting line model without coupling it with the 
+The following allows to run the lifting line model without coupling it with the
 dynamics equations. This could be done by simply running this file as "main".
 """
 
 if __name__ == "__main__":
-     
-    # -------------------------------------------------------------------------    
-    # Define here the velocity vector. This is constant over time 
+
+    # -------------------------------------------------------------------------
+    # Define here the velocity vector. This is constant over time
     # Wind tunnel approach
     # -------------------------------------------------------------------------
-    
-    u = 16.      # Component of free stream velocity
+
+    u = 18.      # Component of free stream velocity
     v = None    # Component of lateral velocity
-    w = .0   # Component of vertical velocity
-    
+    w = 0.   # Component of vertical velocity
+
     # -------------------------------------------------------------------------
     # Define here the time array. Forces will be looped over each value
     # of time array.
     # -------------------------------------------------------------------------
-    
+
     number_period = 1 # integer
     initial_time = 0
     final_time = number_period*(1/settings.frequency)
     time_steps = (50)*number_period
     time_array = np.linspace(initial_time, final_time, time_steps)
-    
+
     # -------------------------------------------------------------------------
-    # Call the FlappingForces function to run the Lifting Line code at 
+    # Call the FlappingForces function to run the Lifting Line code at
     # This function is called for each time step
     # -------------------------------------------------------------------------
-   
+
     lift_c = []
     drag = []
     moment = []
@@ -237,13 +237,10 @@ if __name__ == "__main__":
     moment_drag = []
     moment_lift = []
     for i in range (len(time_array)):
-        
-        [Fx, Fy, Fz, My, F_tail_tot, M_wing, M_tail, M_drag, M_lift] = FlappingForces(time_array[i], u, w, 
+
+        [Fx, Fy, Fz, My, F_tail_tot, M_wing, M_tail, M_drag, M_lift] = FlappingForces(time_array[i], u, w,
                                                                                         0.,
-                                                                                        0,
-                                                                                        amp_shoulder_z=np.deg2rad(45), 
-                                                                                        off_shoulder_y=-np.deg2rad(17),
-                                                                                        amp_shoulder_y=np.pi/12)
+                                                                                        0, off_shoulder_y=-np.deg2rad(19))
         lift_c.append(Fy)
         drag.append(Fz)
         moment.append(My)
@@ -253,7 +250,7 @@ if __name__ == "__main__":
         moment_drag.append(M_drag)
         moment_lift.append(M_lift)
         print("Forces at time "+str(round(time_array[i], 3))+" ... done")
-        
+
     Lift = np.asanyarray(lift_c)
     Drag = np.asanyarray(drag)
     Moment = np.asanyarray(moment)
@@ -262,16 +259,14 @@ if __name__ == "__main__":
     Moment_tail = np.asanyarray(moment_tail)
     Moment_drag = np.asanyarray(moment_drag)
     Moment_lift = np.asanyarray(moment_lift)
-    
+#
 #    np.save('../utilities/forces_folder/lift_LL.npy', Lift)
-#    np.save('../utilities/forces_folder/drag_LL.npy', Drag)
+#    np.save('../utilities/forces_folder/moment_LL.npy', Moment)
 
-#    np.save('postprocessing/outfile_lift_u15', lift_c)
 
     import matplotlib.pyplot as plt
-#
     fig = plt.figure()
-    ax = fig.gca() 
+    ax = fig.gca()
     fig.suptitle('Lift comparison', fontsize=18)
     plt.xlabel('1/T', fontsize=14)
     plt.ylabel('L(t)', fontsize=14)
@@ -282,9 +277,9 @@ if __name__ == "__main__":
     ax.legend()
     ax.set_xlim(0, final_time)
     ax.grid(True)
-#    
+#
     fig1 = plt.figure()
-    ax1 = fig1.gca() 
+    ax1 = fig1.gca()
     fig1.suptitle('Moments', fontsize=18)
     plt.xlabel('1/T', fontsize=14)
     plt.ylabel('$M_i(t)$', fontsize=14)
@@ -297,7 +292,7 @@ if __name__ == "__main__":
     ax1.grid(True)
 
     fig3 = plt.figure()
-    ax3 = fig3.gca() 
+    ax3 = fig3.gca()
     fig3.suptitle('Lift', fontsize=18)
     plt.xlabel('1/T', fontsize=14)
     plt.ylabel('$L(t)$', fontsize=14)
@@ -307,5 +302,3 @@ if __name__ == "__main__":
     ax3.legend()
     ax3.set_xlim(0, final_time)
     ax3.grid(True)
-
-  
