@@ -1,7 +1,7 @@
 import numpy as np
 import FlowFunctions_V1 as func
 import MultiShooting_newscheme as multi2
-from RungeKutta import RK4
+from RungeKutta import RK4, RK2
 import settings as settings
 from LimitCycleForces import ForceRetrieving
 import os
@@ -42,14 +42,14 @@ tau = (period)/(M-1)
 
 # Type here the first guessed point, that will be used to calculate the other (M-1) points
 
-states_stack[0,0:] =[18.2, -1.9, -0.1, -0.115 ]
+states_stack[0,0:] =[16., 0.5, 0.1, 0.01 ]
 
 # Automatic routine to extract the remaining M-1 points for the flow. 
 # Note this is not always the best way to guess points
 tail_op = np.deg2rad(0)
 settings.amplitude_shoulder_y = np.deg2rad(20)
 for i in range (1,M):
-    [states_stack[i,0:], _] = func.Flow(states_stack[i-1,:], i*tau, tau, 50)
+    [states_stack[i,0:], _] = func.Flow(states_stack[i-1,:], (i-1)*tau, tau, 10)
 
 guessed_points = np.copy(states_stack)
 
@@ -84,7 +84,7 @@ xfin, ptlist, error, complete_solution, Jacobian_semigroup = multi2.MultiShootin
                                                                                         100, 
                                                                                         tolerance, 
                                                                                         simulation_directory)
-results_directory = simulation_directory+"/Results"
+results_directory = simulation_directory+"/Results_2"
 os.mkdir(results_directory) # Create target Directory
 
 ptlist=np.asarray(ptlist)
@@ -98,6 +98,8 @@ Printing floquet multipliers
 
 eigenValues_SG, eigenVectors_SG = np.linalg.eig(Jacobian_semigroup)
 data_writing.DataFileResults(simulation_directory, error, eigenValues_SG)
+
+[_,trajectory_recomputed] = func.Flow(xfin[0], 0, 0.25, multi2.time_steps*(multi2.M - 1))
 
 print('Calculating Jacobian Numerical')
 Jacobian_numerical = func.JacobianNumerical(xfin[0, :], 0, period)
@@ -113,6 +115,7 @@ saving.SaveData(results_directory,ptlist, complete_solution,
              eigenVectors_SG,
              eigenValues,
              eigenVectors,
+             trajectory_recomputed,
              Fx, Fy, Fz, Moment_total, F_tail, Moment_wing, Moment_tail, Moment_drag, Moment_lift)
 
 print("Eigenvalues are, ", eigenValues)
@@ -121,6 +124,7 @@ print("Eigenvalues are, ", eigenValues)
 """
 Plotting the final solution
 """
+
 trajectory = complete_solution.reshape(-1, complete_solution.shape[2])
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -151,7 +155,7 @@ ax.scatter(states_stack[:,0],
            states_stack[:,1], 
            states_stack[:,2], color = 'green', label='Guessed points')
 plt.legend(loc='upper left', numpoints = 1 )
-
+M
 fig2 = plt.figure(2)
 ax2 = fig2.gca()
 ax2.set_aspect('equal')

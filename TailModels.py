@@ -25,5 +25,5 @@ def tail_geometry(length, **opening):
 
 
 if __name__ == "__main__":
-    [b, _, _] = tail_geometry(.25, tail_opening=np.deg2rad(25))
+    [b, _, _] = tail_geometry(.25, tail_opening=np.deg2rad(40))
     print(b)

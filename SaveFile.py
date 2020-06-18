@@ -7,6 +7,7 @@ def SaveData(results_directory,ptlist, complete_solution,
              eigenVectors_SG,
              eigenValues,
              eigenVectors,
+             trajectory_recomputed,
              Fx, Fy, Fz, Moment_total, F_tail, Moment_wing, Moment_tail, Moment_drag, Moment_lift):
     
     np.save(results_directory+'/outfile_ptlist', ptlist)
@@ -18,6 +19,7 @@ def SaveData(results_directory,ptlist, complete_solution,
     np.save(results_directory+'/outfile_JacobianEigenvector_SG', eigenVectors_SG)
     np.save(results_directory+'/outfile_JacobianEigenvalues', eigenValues)
     np.save(results_directory+'/outfile_JacobianEigenvector', eigenVectors)
+    np.save(results_directory+'/trajectory', trajectory_recomputed)    
     np.save(results_directory+'/Lift_coupled_v2', Fy)
     np.save(results_directory+'/Drag_coupled_v2', Fz)
     np.save(results_directory+'/Force_tail', F_tail)

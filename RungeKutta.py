@@ -101,6 +101,39 @@ def RK2(velocityFunction, initialCondition, timeArray, **optional):
         
     return SolutionArray
 
+def RK2_Gust(velocityFunction, initialCondition, timeArray, **optional):
+    """
+    Runge-Kutta 4 Integrator.
+    Inputs:
+    VelocityFunction: Function name to integrate
+                      this function must have two inputs namely state space
+                      vector and time. For example: velocity(ssp, t)
+    InitialCondition: Initial condition, 1xd NumPy array, where d is the
+                      dimension of the state space
+    TimeArray: 1 x Nt NumPy array which contains instances for the solution
+               to be returned.
+    Outputs:
+    SolutionArray: Nt x d NumPy array which contains numerical solution of the
+                   ODE.
+    """
+    #Generate the solution array to fill in:
+    SolutionArray = np.zeros((np.size(timeArray, 0),
+                              np.size(initialCondition, 0)))
+    #Assign the initial condition to the first element:
+    SolutionArray[0, :] = initialCondition
+
+    for i in range(0, np.size(timeArray)-1):
+        #Read time element:
+        deltat = timeArray[i + 1] - timeArray[i]
+        #Runge Kutta k's:
+        k1 = deltat * velocityFunction(SolutionArray[i], timeArray[i], **optional)[0]
+        k2 = deltat * velocityFunction(SolutionArray[i]+k1*(2/3), timeArray[i]+deltat*(2./3.), **optional)[0]
+        #Next integration step:
+        SolutionArray[i + 1] = SolutionArray[i] + (k1/4. + (3./4.)*k2)
+        
+    return SolutionArray
+
+
 if __name__ == "__main__":
 
     #This block will be evaluated if this script is called as the main routine
@@ -184,7 +217,7 @@ if __name__ == "__main__":
 
         tInitial = 0
         tFinal = .25
-        Nt = 100  # Number of points time points in the interval tInitial, tFinal
+        Nt = 50  # Number of points time points in the interval tInitial, tFinal
         tArray = np.linspace(tInitial, tFinal, Nt)
     
         #Initial condition for the Harmonic oscillator:
@@ -193,7 +226,7 @@ if __name__ == "__main__":
         
         #Compute the solution using Runge-Kutta routine:
 #        sspSolution = ode.odeint(birdEqn, ssp0, tArray)
-        sspSolution_rk2 = RK2(birdEqn, ssp0, tArray)
+        sspSolution_rk2 = ode.odeint(birdEqn, ssp0, tArray)
         sspSolution_rk = RK4(birdEqn, ssp0, tArray)
 
         print("RK done")

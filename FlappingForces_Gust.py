@@ -5,16 +5,15 @@ import Circulation
 import settings as settings
 import TailModels as TailModel
 
-
-def FlappingForces(t, u, w, q, theta, **kinematics):
-
+def FlappingForcesGust(t, u, w, q, theta, gust_w, **kinematics):
+    
     cl_alpha = 2*np.pi
-    rho = 1.225  # Air density
+    rho = 1.225 # Air density
 
-    U = np.array([0, w, u])
+    U = np.array([0, w+gust_w, u])
     ang_velocity = np.array([q, 0, 0])
 
-    dt = 0.25*1e-4 # 1e-6
+    dt = 1e-6
     t2 = t - dt
     wingframe_position = settings.wingframe_position
     tail_frame_position = settings.wingframe_position_tail
@@ -52,6 +51,7 @@ def FlappingForces(t, u, w, q, theta, **kinematics):
     # -------------------------------------------------------------------------
     [line, chordir, updir, chord] = MergeLines(line_right, up_direction_right, chord_direction_right, chord_right, line_left,up_direction_left, chord_direction_left, chord_left,nmid,x_ep)
 
+
     """
     Evaluation of the geometry at time t2 = t - dt
     """
@@ -69,25 +69,22 @@ def FlappingForces(t, u, w, q, theta, **kinematics):
     [line2, _, _, _] = MergeLines(line_right, up_direction_right,
     chord_direction_right, chord_right, line_left,up_direction_left, chord_direction_left, chord_left,nmid,x_ep)
 
-    line_c = line[:, 1:-1:2] # Center points: at the center of each
-    # interval --> every other point, 
-    # starting from the second until the one
-    # before the last one
-    line_c2 = line2[:, 1:-1:2]  # Center points at t-dt
-    updir = updir[:, 1:-1:2]  # updir, chordir and chord at the center points
-    chordir = chordir[:, 1:-1:2]
+    line_c = line[:,1:-1:2] # "Center" points: at the center of each interval --> every other point, starting from the second until the one before the last one
+    line_c2 = line2[:,1:-1:2] # Center points at t-dt
+    updir = updir[:,1:-1:2] # updir, chordir and chord at the center points
+    chordir = chordir[:,1:-1:2]
     chord = chord[1:-1:2]
-    line = line[:, ::2]  # "mid" points: points at the junction between two segments --> every other point from the first one to the last one
+    line = line[:,::2] # "mid" points: points at the junction between two segments --> every other point from the first one to the last one
 
     # -------------------------------------------------------------------------
     #  u_inf = free stream velocity, equal over each profile (points)
     # -------------------------------------------------------------------------
 
     u_inf = np.array([U for j in range(np.size(line_c[0]))]).T
-    # tangential_wing = (line_c - line_c2)/dt
+    #tangential_wing = (line_c - line_c2)/dt
     line_velocity = np.zeros_like(line_c)
     for j in range(np.size(line_c[0])):
-        line_velocity[:, j] = np.cross(ang_velocity, wingframe_position+line_c[:, j])
+        line_velocity[:,j] = np.cross(ang_velocity,wingframe_position+line_c[:,j])
 
     line_velocity = line_velocity + (line_c - line_c2)/dt
 
@@ -102,11 +99,11 @@ def FlappingForces(t, u, w, q, theta, **kinematics):
     angle_of_attack = np.zeros_like(chord)
 
     for j in range(np.size(line_c[0])):
-        line_direction[:, j] = np.cross(updir[:, j], chordir[:, j])
-        velocity_profile[:, j] = velocity[:, j] - line_direction[:, j]*np.sum(line_direction[:, j]*velocity[:, j])
-        norm_velocity[j] = np.sqrt(np.sum(velocity_profile[:, j]*velocity_profile[:, j]))
-        direction_velocity[:, j] = velocity_profile[:, j]/norm_velocity[j]
-        angle_of_attack[j] = np.arctan2(np.sum(direction_velocity[:, j]*updir[:, j]), np.sum(direction_velocity[:, j]*chordir[:, j]))
+        line_direction[:,j] = np.cross(updir[:,j], chordir[:,j])
+        velocity_profile[:,j] = velocity[:,j] - line_direction[:,j]*np.sum(line_direction[:,j]*velocity[:,j])
+        norm_velocity[j] = np.sqrt(np.sum(velocity_profile[:,j]*velocity_profile[:,j]))
+        direction_velocity[:,j] = velocity_profile[:,j]/norm_velocity[j]
+        angle_of_attack[j] = np.arctan2(np.sum(direction_velocity[:,j]*updir[:,j]), np.sum(direction_velocity[:,j]*chordir[:,j]))
     tol = 0.01
     max_iterations = 50
     ds = np.zeros(len(chord))
@@ -119,16 +116,16 @@ def FlappingForces(t, u, w, q, theta, **kinematics):
     # -------------------------------------------------------------------------
 
     for j in range(np.size(line[0])-1):
-        ds[j] = np.sqrt(np.sum((line[:, j+1] - line[:, j])**2))
+        ds[j] = np.sqrt(np.sum((line[:,j+1] - line[:,j])**2))
 
-    for j in range(1, np.size(line[0])):
+    for j in range(1,np.size(line[0])):
         s[j] = s[j-1] + ds[j-1]
 
-    gamma = np.zeros((1, np.size(ds)))
+    gamma = np.zeros((1,np.size(ds)))
     error = tol + 1
     error_p = np.inf
     count = 0
-
+    
     while (error > tol) and (count < max_iterations):
 
         count = count + 1
@@ -174,6 +171,7 @@ def FlappingForces(t, u, w, q, theta, **kinematics):
     
     velocity_tail_q = np.cross(ang_velocity,tail_frame_position)
     U_tail = U + V_ind + velocity_tail_q
+    U_tail[1] = U_tail[1]-gust_w
 #    U_tail = U + V_ind 
     M = np.zeros_like(gamma)
 #    alpha_tail = np.arctan2(U_tail[1],U_tail[2])
@@ -184,12 +182,12 @@ def FlappingForces(t, u, w, q, theta, **kinematics):
         Drag_moment = np.array([0., 0., F[2]*ds[j]])
         Lift_moment = np.array([0., F[1]*ds[j], 0.])
 
-        Fx = Fx + F[0]*ds[j]  # Component along wing span
-        Fy = Fy + F[1]*ds[j]  # Component of Lift (perpendicular to the free stream)
-        Fz = Fz + F[2]*ds[j]  # Component of drag (along free stream)
-        M_drag_j = np.cross(lever_arm[:, j], Drag_moment)
-        M_lift_j = np.cross(lever_arm[:, j], Lift_moment)
-        M_wing_j = np.cross(lever_arm[:, j], F_moment)
+        Fx  =   Fx + F[0]*ds[j]         # Component along wing span
+        Fy  =   Fy + F[1]*ds[j]         # Component of Lift (perpendicular to the free stream)
+        Fz  =   Fz + F[2]*ds[j]         # Component of drag (along free stream)
+        M_drag_j = np.cross(lever_arm[:,j], Drag_moment)
+        M_lift_j = np.cross(lever_arm[:,j], Lift_moment)
+        M_wing_j = np.cross(lever_arm[:,j], F_moment)
 
         M_wing = M_wing + M_wing_j[0]
         M_drag = M_drag + M_drag_j[0]
@@ -216,9 +214,9 @@ if __name__ == "__main__":
     # Wind tunnel approach
     # -------------------------------------------------------------------------
 
-    u = 16.    # Component of free stream velocity
+    u = 10.    # Component of free stream velocity
     v = None   # Component of lateral velocity
-    w = -0.  # Component of vertical velocity
+    w = -1.  # Component of vertical velocity
 #    settings.wingframe_position = np.array([0, -0.0, -0.0])
 
     # -------------------------------------------------------------------------
@@ -245,7 +243,7 @@ if __name__ == "__main__":
     moment_tail = []
     moment_drag = []
     moment_lift = []
-#    settings.tail_opening = np.deg2rad(40)
+    settings.tail_opening = np.deg2rad(40)
     for i in range (len(time_array)):
 
         [Fx, Fy, Fz, My, F_tail_tot, M_wing, M_tail, M_drag, M_lift] = FlappingForces(time_array[i], u, w,
@@ -281,14 +279,14 @@ if __name__ == "__main__":
     fig.suptitle('Lift comparison', fontsize=18)
     plt.xlabel('1/T', fontsize=14)
     plt.ylabel('L(t)', fontsize=14)
-    ax.plot(time_array, Lift, '-', label="Lift")
-    ax.plot(time_array, Drag, '-', label="Drag")
-    ax.plot(time_array, Moment, '-', label="Moment")
+    ax.plot(time_array, Lift, '-', label = "Lift")
+    ax.plot(time_array, Drag, '-', label = "Drag")
+    ax.plot(time_array, Moment, '-', label = "Moment")
 
     ax.legend()
     ax.set_xlim(0, final_time)
     ax.grid(True)
-    tarray_2 = np.linspace(0, 1, len(time_array))
+    tarray_2 = np.linspace(0,1,len(time_array))
     mean_moment = [np.mean(Moment) for i in range(len(Moment))]
     fig1 = plt.figure()
     ax1 = fig1.gca()
@@ -296,8 +294,8 @@ if __name__ == "__main__":
     ax1.plot(time_array/0.25, Moment, '-', color='green', label = "Moment total", linewidth=2.)
     ax1.plot(mean_moment, '-', color='red')
     
-    ax1.plot(time_array, Moment_tail, '-', label="Moment tail")
-    ax1.plot(time_array, Moment_wing, '-', label="Moment wing")
+    ax1.plot(time_array, Moment_tail, '-', label = "Moment tail")
+    ax1.plot(time_array, Moment_wing, '-', label = "Moment wing")
     ax1.set(xlim=(0, 1))
     ax1.set_ylabel('$M_{y} \ [Nm]$', fontsize=18)
     ax1.set_xlabel('$t/T$', fontsize=18)
@@ -313,8 +311,8 @@ if __name__ == "__main__":
     fig3.suptitle('Lift', fontsize=18)
     plt.xlabel('1/T', fontsize=14)
     plt.ylabel('$L(t)$', fontsize=14)
-    ax3.plot(time_array, Lift, '-', label="Lift")
-    ax3.plot(time_array, Drag, '-', label="Drag")
+    ax3.plot(time_array, Lift, '-', label = "Lift")
+    ax3.plot(time_array, Drag, '-', label = "Drag")
 
     ax3.legend()
     ax3.set_xlim(0, final_time)

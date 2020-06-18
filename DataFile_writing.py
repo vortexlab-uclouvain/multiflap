@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import settings as settings
 import numpy as np
 
@@ -49,6 +48,9 @@ def DataFileParameters(simulation_directory):
     simulation_info.close() 
 
     return
+# =============================================================================
+# For Main_MS.py
+# =============================================================================
 
 def DataFileResults(simulation_directory, error, multipliers):
     simulation_info = open(simulation_directory+'/DataFile_Results.txt', 'w+')
@@ -63,6 +65,23 @@ def DataFileResults(simulation_directory, error, multipliers):
     
     return
 
+# =============================================================================
+# For main_LevelFlight.py
+# =============================================================================
 
+def DataFileResults_Level(simulation_directory, error, multipliers, mean_vertical_velocity, u_hor, amplitude_shoulder):
+    simulation_info = open(simulation_directory+'/DataFile_Results.txt', 'w+')
+    simulation_info.write('Number of Iterations: '+str(np.size(error))+'\n')
+    simulation_info.write('Error: '+str((error[-1]))+'\n')
+    simulation_info.write('Floquet Multipliers: '+str(multipliers)+'\n')
+    simulation_info.write('|$Lambda_1$|: '+str(np.linalg.norm(multipliers[0]))+'\n')
+    simulation_info.write('|$Lambda_2$|: '+str(np.linalg.norm(multipliers[1]))+'\n')
+    simulation_info.write('|$Lambda_3$|: '+str(np.linalg.norm(multipliers[2]))+'\n')
+    simulation_info.write('|$Lambda_4$|: '+str(np.linalg.norm(multipliers[3]))+'\n')
+    simulation_info.write('Average vertical velocity: '+str(mean_vertical_velocity)+'\n')
+    simulation_info.write('Average forward flight velocity: '+str(np.mean(u_hor))+'\n')
+    simulation_info.write('Shoulder amp z: '+str(np.rad2deg(amplitude_shoulder))+'\n')
+
+    simulation_info.close() 
     
-    
+    return

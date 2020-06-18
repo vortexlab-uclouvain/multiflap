@@ -166,7 +166,9 @@ if __name__ == "__main__":
 #    amp_sweep = np.deg2rad(20)
 #    amplitude_shoulder = np.deg2rad(42)
 #    amp_shoulder_x = 0.
-    kin.amplitude_shoulder_y = np.deg2rad(20)
+    settings.amplitude_shoulder_y = np.deg2rad(20)
+    settings.offset_shoulder_y = -np.deg2rad(19)
+    
     for i in range(len(tArray)):
 
         [lifting_line, updir, chord_direction, 
@@ -177,8 +179,8 @@ if __name__ == "__main__":
 #                                                             off_shoulder_y=off_sweep,
 #                                                             amp_shoulder_y=amp_sweep)
         tip_line.append(lifting_line[:,-1])
-        root_line.append(lifting_line[:,4])
-    image_path = "/Users/gducci/Desktop"
+        root_line.append(lifting_line[:,1])
+    image_path = "/Users/gducci/UCL/MyPresentations/Confirmation/Figures"
     tip_line = np.asarray(tip_line)
     root_line=np.asarray(root_line)
     import matplotlib.pyplot as plt
@@ -193,7 +195,7 @@ if __name__ == "__main__":
     plt.xlabel('$x_{airfoil}$', fontsize=18)
     plt.ylabel('$y_{airfoil}$', fontsize=18)
     plt.tick_params(labelsize=16)
-    ax1.set_xlim(0.1, -0.2)  # decreasing time
+    ax1.set_xlim(0.1, -0.3)  # decreasing time
 #    ax1.set_xlim(0.45, -0.45)  # decreasing time
 
 
@@ -209,18 +211,18 @@ if __name__ == "__main__":
 
 #    ax1.plot(wingframe_position+root_line[:,2],  root_line[:,1])
     plt.show()
-    ax1.grid()
-#    plt.savefig(image_path+'/Tip_trajectory_0.png', format = 'png', dpi=700)
-    
-    function = off_sweep + amp_sweep*np.sin(((2*np.pi*f*tArray) + np.pi/2))
-    fig2 = plt.figure()
-    ax2 = fig2.gca()
-    plt.xlabel('$t$', fontsize=14)
-    plt.ylabel('$f(t) \ [deg]$', fontsize=14)
-    ax2.plot(tArray, np.rad2deg(function))
-    ax2.set_xlim(0,0.25)
-    ax2.plot(tArray, [np.mean(np.rad2deg(function))]*len(tArray), "--", color = "red", label = "Sweep offset")
-    plt.legend()
+#    ax1.grid()
+    plt.savefig(image_path+'/Tip_trajectory.pdf', format = 'pdf')
+#    
+#    function = off_sweep + amp_sweep*np.sin(((2*np.pi*f*tArray) + np.pi/2))
+#    fig2 = plt.figure()
+#    ax2 = fig2.gca()
+#    plt.xlabel('$t$', fontsize=14)
+#    plt.ylabel('$f(t) \ [deg]$', fontsize=14)
+#    ax2.plot(tArray, np.rad2deg(function))
+#    ax2.set_xlim(0,0.25)
+#    ax2.plot(tArray, [np.mean(np.rad2deg(function))]*len(tArray), "--", color = "red", label = "Sweep offset")
+#    plt.legend()
 #    plt.savefig(image_path+'/Sweep_Function_0.eps', format = 'eps')
     
     fig3 = plt.figure(3)

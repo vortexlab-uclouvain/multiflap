@@ -9,6 +9,12 @@ dim = 4
 
 f = settings.frequency
 
+count = 0
+gust_lift = []
+gust_drag = []
+gust_moment = []
+gust_moment_lift = []
+gust_moment_drag = []
 def birdEqn_py(t, ssp, **kinematics):
         """
         State space velocity function for the Equation of Motion of the longitudinal plane
@@ -39,6 +45,7 @@ def birdEqn_py(t, ssp, **kinematics):
     
         vel = np.array([dudt, dwdt, dqdt, dthetadt], float)  # Velocity vector            
         return vel
+
 
 def StabilityMatrix(t, ssp, **kinematics):
     """
@@ -150,7 +157,7 @@ def Jacobian(ssp, t_initial, integration_time, **kinematics):
     sspJacobian0[dim:] = np.reshape(Jacobian0, dim**2)  # Remaining 9 elements
     #print(sspJacobian0)
     t_Final = t_initial + integration_time  # Final time
-    Nt = 15  # Number of time points to be used in the integration
+    Nt = 25  # Number of time points to be used in the integration
     tArray = np.linspace(t_initial, t_Final, Nt)  # Time array for solution
     start_jac = time.time()
 #    sspJacobianSolution = ode.solve_ivp(JacobianVelocity,[t_initial, t_Final], sspJacobian0, 'RK45')
@@ -196,6 +203,55 @@ def Velocity(ssp, t, **kinematics):
         
         return vel
 
+def Velocity_Gust(ssp, t, **kinematics):
+        global count
+        count = count+1
+
+        """
+        State space velocity function for the Equation of Motion of the longitudinal plane
+
+        Inputs:
+        ssp: State space vector
+        ssp = (u, w, q, theta)
+        t: Time
+        
+        Outputs:
+        vel: Time derivative of ssp.
+        """
+        #Parameters:
+        g = 9.81
+        mass = 1.2
+        #Read inputs:
+        u, w, q, theta  = ssp  # Read state space points
+        u = ssp[0]
+        w = ssp[1] 
+        q = ssp[2]
+        theta = ssp[3]
+        # Longitudinal equation of motion:
+        if count > 100 and count < 103:
+            [Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift] = FlappingForces(t, u, w+3, q, theta, **kinematics)
+            gust_lift.append(Fy)
+            gust_drag.append(Fz)
+            gust_moment.append(My)
+            gust_moment_lift.append(M_lift)
+            gust_moment_drag.append(M_drag)
+        else:
+            [Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift] = FlappingForces(t, u, w, q, theta, **kinematics)
+            gust_lift.append(Fy)
+            gust_drag.append(Fz)
+            gust_moment.append(My)
+            gust_moment_lift.append(M_lift)
+            gust_moment_drag.append(M_drag)
+
+        dudt = -q*w - g*np.sin(theta) - Fz/mass 
+        dwdt = q*u + g*np.cos(theta) - Fy/mass - F_tail/mass
+        dqdt =  My/0.1
+        dthetadt = q
+        # Collect Equations of motion in a single NumPy array:
+
+        vel = np.array([dudt, dwdt, dqdt, dthetadt], float)  # Velocity vector
+        
+        return vel, dthetadt
 
 def Flow(ssp0, initial_time, deltat, time_steps, **kinematics):
     """
@@ -216,9 +272,9 @@ def Flow(ssp0, initial_time, deltat, time_steps, **kinematics):
     Nt = time_steps                     # Number of time points to be used in the integration
 
     tArray = np.linspace(tInitial, tFinal, Nt)  # Time array for solution
-
+    print(tFinal)
     sspSolution = rk.RK2(Velocity, ssp0, tArray, **kinematics) # RK 
-#    sspSolution = ode.solve_ivp(birdEqn_py, [tInitial, tFinal], ssp0,'RK23', max_step = deltat/Nt)
+#    sspSolution = ode.solve_ivp(birdEqn_py, [tInitial, tFinal], ssp0,'LSODA', max_step = deltat/Nt)
 #    sspSolution = (sspSolution.y).T
     sspdeltat = sspSolution[-1, :]  # Read the final point to sspdeltat
     return sspdeltat, sspSolution
@@ -237,7 +293,7 @@ def JacobianNumerical(ssp, initial_time, integration_time, **kinematics):
     
     epsilon = value of the perturbation   
     """
-    time_steps = 70
+    time_steps = 50
     # -------------------------------------------------------------------------
     #  Initialization of the Jacobian Matrix
     # -------------------------------------------------------------------------
@@ -264,7 +320,7 @@ def JacobianNumerical(ssp, initial_time, integration_time, **kinematics):
     for j in range (dim):
         perturbation = np.zeros(dim)
 
-        perturbation[j] = perturbation[j] + epsilon 
+        perturbation[j] = perturbation[j] + ssp[j]*epsilon 
         ssp_pert = ssp + perturbation
         [vel, _] = Flow(ssp0, initial_time, integration_time, time_steps, **kinematics)
         [vel_pert, _] =  Flow(ssp_pert, initial_time, integration_time, time_steps, **kinematics)
@@ -282,13 +338,16 @@ the lifting line method. This is totally disconnected from the multi-shooting
 code, it's just coupled numerical integration over a certain time.
 """    
 if __name__ == "__main__":
-    
+#    settings.amplitude_shoulder_z = np.deg2rad(39.45047827064355)
+#    settings.offset_shoulder_y = -np.deg2rad(26)
+#    settings.tail_opening = np.deg2rad(40)
+
     force_retrieving =  True
 #    case_name = 'TestCase12b'
 
     if force_retrieving ==  True:    
-        case_name = 'TestOffset'
-        results_directory = '/Users/gducci/UCL/PROJECT/Simulations/ResultsPaper/LevelSimulations/M5_Sim0/SweepAmplitude_20/SweepOff_Neg-19'
+        case_name = 'NonLevel'
+        results_directory = '/Users/gducci/UCL/PROJECT/Simulations/ResultsPaper/M10_ref/Results'
 
         periodic_orbit_filename = results_directory+'/complete_solution.npy'
         periodic_orbit = np.load(periodic_orbit_filename)
@@ -297,10 +356,10 @@ if __name__ == "__main__":
         q_0 =  periodic_orbit[0,0][2]    # Q-velocity initial condition
         theta_0 = periodic_orbit[0,0][3]     # Theta-angle initial condition
         ssp0 = np.array([u_0, w_0, q_0, theta_0], float) # Vector of initial conditions
-        periodic_orbit = periodic_orbit.reshape(-1, periodic_orbit.shape[2])
+#        periodic_orbit = periodic_orbit.reshape(-1, periodic_orbit.shape[2])
 
     else:
-        u_0 =  20.   # U-velocity initial condition
+        u_0 =  16.   # U-velocity initial condition
         w_0 = .0          # W-velocity initial condition
         q_0 = 0. # Q-velocity initial condition
         theta_0 = 0.  # Theta-angle initial condition
@@ -313,35 +372,14 @@ if __name__ == "__main__":
     period_number = 1       # Number of periods over which integrate the EoM
     tInitial = 0                      # Initial time
     tFinal = period_number*(1/f)      # Final time (This is one period)
-    Nt = 30*period_number                   # Discretisation of time array
-    tArray = np.linspace(tInitial, tFinal, Nt)  # Time array
-    states_stack =[18.5009, -2.10883, -0.118833, -0.116133]
-    amplitude_shoulder = np.deg2rad(43.47376941564374)
-    sweep = np.deg2rad(20)
-    offset_shoulder_y = -np.deg2rad(19)
+    Nt = 10*period_number                   # Discretisation of time array
+    tArray = np.linspace(tInitial, tFinal, 80)  # Time array
     tail_op = np.deg2rad(0)
-
-    sspSolution_V0 = ode.solve_ivp(birdEqn_py, [tInitial, tFinal], states_stack,'BDF')
     
-    import matplotlib.pyplot as plt
-
-    plt.plot(sspSolution_V0.t, sspSolution_V0.y[0])
-    plt.grid(True)
-    plt.show()
-
-#    plt.plot(tArray,  sspSolution_V0[:,0], '.', color = 'red', label = 'RK2')
-
-###    plt.plot(tArray,  sspSolution_RK4[:,0], color = 'blue', label = 'RK4')
-#    plt.plot(tArray,  sspSolution[:,1], color = 'green', label = 'RK4')
-##
-##
-###    plt.plot(tArray,  USolution_RK3)
-#    plt.show()
-#    start_Jac = time.time()
-#    Jac = Jacobian(ssp0, tInitial, tFinal,amp_shoulder_y=sweep,
-#                                        amp_shoulder_z=amplitude_shoulder,
-#                                        off_shoulder_y=offset_shoulder_y,
-#                                        tail_opening=tail_op)
+    sspSolution_V0 = rk.RK2(Velocity, ssp0,tArray)
+    test = Flow(ssp0, 0, tFinal, 80)
+    
+#    Jac = JacobianNumerical(ssp0, tArray[40], 0.25, endpoint=True)
 #    
 #    eignevalues_numerical, eigenvector_numerical = np.linalg.eig(Jac)
 #    np.save(results_directory+'/eigenvalues_jacobian_num', eignevalues_numerical)

@@ -17,7 +17,7 @@ amplitude_shoulder_x = 0.014
 offset_shoulder_x = 0.2
 phaseangle_shoulder_x = -np.pi/2
 
-amplitude_shoulder_y = np.pi/12
+amplitude_shoulder_y =  np.pi/12 #np.deg2rad(20)
 offset_shoulder_y =  -np.deg2rad(19)
 phaseangle_shoulder_y = np.pi/2
 

@@ -161,21 +161,12 @@ if __name__ == "__main__":
     #This is a handy structure in Python which lets us test the functions
     #in a package
 
-    #In order to test our integration routine, we are going to define Harmonic
-    #Oscillator equations in a 2D state space:
-    # -------------------------------------------------------------------------
-    # ● Definition of the time array
-    # -------------------------------------------------------------------------
     f = 4
     period_number = 1            # Number of periods over which integrate the EoM
     tInitial = 0.            # Initial time
     tFinal = tInitial+period_number*(1/f)      # Final time (This is one period)
     Nt = 50                      # Discretisation of time array
     tArray = np.linspace(tInitial, tFinal, Nt)  # Time array
-
-    # -------------------------------------------------------------------------
-    # ● Initial conditions for numerical integration
-    # -------------------------------------------------------------------------
 			
 
     case_name = 'JacobianAnalytical'
@@ -188,16 +179,14 @@ if __name__ == "__main__":
     theta_0 = periodic_orbit[0,0][3]     # Theta-angle initial condition
     k = 1# Theta-angle initial condition
     ssp0 = np.array([u_0 , w_0, q_0, theta_0, k], float) # Vector of initial conditions
-    # -------------------------------------------------------------------------
-    # ● Call the numerical integration function
-    # -------------------------------------------------------------------------
+    
     start = time.time()
 
 #    start_RK2 = time.time()
 #    sspSolution_RK3 = ode.solve_ivp(Velocity,[tInitial, tFinal], ssp0, 'RK23', max_step=tFinal/50)
 #    solution = sspSolution_RK3.y.T
-    solution = rk.RK4(Velocity, ssp0, tArray)
-    print(solution[0,0] - solution[-1,0])
+#    solution = rk.RK4(Velocity, ssp0, tArray)
+#    print(solution[0,0] - solution[-1,0])
 #    end_RK2 = time.time()
 #    time_RK2 = end_RK2 - start_RK2
 #    print("RK2 = ", time_RK2)
