@@ -234,8 +234,8 @@ def MultiShootingMatrix(states_stack, tau, **optional):
 
     # The dimension of the error vector is (NxM)
     dF = np.zeros(N*M)
-    
-    
+
+
     # Last guessed point x_m
     x_m = states_stack[-1,:]
 

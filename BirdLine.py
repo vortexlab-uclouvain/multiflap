@@ -1,6 +1,6 @@
 import numpy as np  # Import NumPy
 import math as m
-from WingEnvelope import WingEnvelope 
+from WingEnvelope import WingEnvelope
 from SmoothLine import SmoothLine
 from SmoothQuarterLine import SmoothQuarterLine
 from QuartChordNaive import QuartChordNaive
@@ -28,14 +28,14 @@ def BirdLine(t, **kwargs):
     amp_shoulder_z=kwargs.get('amp_shoulder_z', settings.amplitude_shoulder_z)
     off_shoulder_z=kwargs.get('off_shoulder_z', settings.offset_shoulder_z)
     phase_shoulder_z=kwargs.get('phase_shoulder_z', settings.phaseangle_shoulder_z)
-    
+
 # =============================================================================
 #     Elbow joint default kinematics
 # =============================================================================
     off_elbow_y=kwargs.get('off_elbow_y', settings.offset_elbow_y)
     amp_elbow_y=kwargs.get('amp_elbow_y', settings.amplitude_elbow_y)
     phase_elbow_y=kwargs.get('phase_elbow_y', settings.phaseangle_elbow_y)
-    
+
     off_elbow_x=kwargs.get('off_elbow_x', settings.offset_elbow_x)
     amp_elbow_x=kwargs.get('amp_elbow_x', settings.amplitude_elbow_x)
     phase_elbow_x=kwargs.get('phase_elbow_x', settings.phaseangle_elbow_x)

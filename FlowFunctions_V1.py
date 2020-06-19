@@ -18,12 +18,12 @@ gust_moment_drag = []
 def birdEqn_py(t, ssp, **kinematics):
         """
         State space velocity function for the Equation of Motion of the longitudinal plane
-    
+
         Inputs:
         ssp: State space vector
         ssp = (u, w, q, theta)
         t: Time
-        
+
         Outputs:
         vel: Time derivative of ssp.
         """
@@ -38,12 +38,12 @@ def birdEqn_py(t, ssp, **kinematics):
         theta = ssp[3]
         # Longitudinal equation of motion:
         [Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift] = FlappingForces(t, u, w, q, theta, **kinematics)
-        dudt = -q*w - g*sin(theta) - Fz/mass 
+        dudt = -q*w - g*sin(theta) - Fz/mass
         dwdt = q*u + g*cos(theta) - Fy/mass - F_tail/mass
         dqdt =  My/0.1
         dthetadt = q                # Collect Equations of motion in a single NumPy array:
-    
-        vel = np.array([dudt, dwdt, dqdt, dthetadt], float)  # Velocity vector            
+
+        vel = np.array([dudt, dwdt, dqdt, dthetadt], float)  # Velocity vector
         return vel
 
 
@@ -70,18 +70,18 @@ def StabilityMatrix(t, ssp, **kinematics):
     dFzu_dU = (Fzu - Fz)/(u*perturbation)
     dFzw_dW = (Fzw - Fz)/(w*perturbation)
     dFzq_dq = (Fzq - Fz)/(q*perturbation)
-    
+
     # Derivatives of Fy with respect to the state space variables
     dFyu_dU = (Fyu - Fy)/(u*perturbation)
     dFyw_dW = (Fyw - Fy)/(w*perturbation)
     dFyq_dq = (Fyq - Fy)/(q*perturbation)
-    
-    # Derivatives of F_tail with respect to the state space variables    
+
+    # Derivatives of F_tail with respect to the state space variables
     dFytail_du = (F_tailu - F_tail)/(u*perturbation)
     dFytail_dw = (F_tailw - F_tail)/(w*perturbation)
     dFytail_dq = (F_tailq - F_tail)/(q*perturbation)
-    
-    # Derivatives of My with respect to the state space variables        
+
+    # Derivatives of My with respect to the state space variables
     dMy_du = (Myu - My)/(u*perturbation)
     dMy_dw = (Myw - My)/(w*perturbation)
     dMy_dq = (Myq - My)/(q*perturbation)
@@ -89,7 +89,7 @@ def StabilityMatrix(t, ssp, **kinematics):
     A = np.array([[-dFzu_dU/m, -q - dFzw_dW/m, -w - dFzq_dq/m, -g*cos(theta)],
                   [q - dFyu_dU/m - dFytail_du/m, -dFyw_dW/m - dFytail_dw/m, u - dFyq_dq/m - dFytail_dq/m, -g*sin(theta)],
                   [dMy_du/0.1, dMy_dw/0.1, dMy_dq/0.1, 0],
-                  [0, 0, 1, 0]], float) 
+                  [0, 0, 1, 0]], float)
     return A
 
 def JacobianVelocity(sspJacobian, t, **kinematics):
@@ -106,8 +106,8 @@ def JacobianVelocity(sspJacobian, t, **kinematics):
     Outputs:
     velJ = (d+d^2)x1 dimensional velocity vector
     """
-    
-    # Prendo il vettore sspJacobian (d + d^2) e la parte d la riempio, mentre 
+
+    # Prendo il vettore sspJacobian (d + d^2) e la parte d la riempio, mentre
     # la parte d^2 la trasformo nel Jacobiano (d x d)
     ssp = sspJacobian[0:dim]  # First three (or d in general) elements form the original state
                             # space vector
@@ -125,7 +125,7 @@ def JacobianVelocity(sspJacobian, t, **kinematics):
 #    velJ[0:dim] = birdEqn_py(t, ssp)
     velJ[0:dim] = Velocity(ssp, t, **kinematics)
 
-   
+
     #Last dxd elements of the velJ are determined by the action of
     #stability matrix on the current value of the Jacobian:
 
@@ -178,7 +178,7 @@ def Velocity(ssp, t, **kinematics):
         ssp: State space vector
         ssp = (u, w, q, theta)
         t: Time
-        
+
         Outputs:
         vel: Time derivative of ssp.
         """
@@ -193,14 +193,14 @@ def Velocity(ssp, t, **kinematics):
         theta = ssp[3]
         # Longitudinal equation of motion:
         [Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift] = FlappingForces(t, u, w, q, theta, **kinematics)
-        dudt = -q*w - g*np.sin(theta) - Fz/mass 
+        dudt = -q*w - g*np.sin(theta) - Fz/mass
         dwdt = q*u + g*np.cos(theta) - Fy/mass - F_tail/mass
         dqdt =  My/0.1
         dthetadt = q
         # Collect Equations of motion in a single NumPy array:
 
         vel = np.array([dudt, dwdt, dqdt, dthetadt], float)  # Velocity vector
-        
+
         return vel
 
 def Velocity_Gust(ssp, t, **kinematics):
@@ -214,7 +214,7 @@ def Velocity_Gust(ssp, t, **kinematics):
         ssp: State space vector
         ssp = (u, w, q, theta)
         t: Time
-        
+
         Outputs:
         vel: Time derivative of ssp.
         """
@@ -224,7 +224,7 @@ def Velocity_Gust(ssp, t, **kinematics):
         #Read inputs:
         u, w, q, theta  = ssp  # Read state space points
         u = ssp[0]
-        w = ssp[1] 
+        w = ssp[1]
         q = ssp[2]
         theta = ssp[3]
         # Longitudinal equation of motion:
@@ -243,14 +243,14 @@ def Velocity_Gust(ssp, t, **kinematics):
             gust_moment_lift.append(M_lift)
             gust_moment_drag.append(M_drag)
 
-        dudt = -q*w - g*np.sin(theta) - Fz/mass 
+        dudt = -q*w - g*np.sin(theta) - Fz/mass
         dwdt = q*u + g*np.cos(theta) - Fy/mass - F_tail/mass
         dqdt =  My/0.1
         dthetadt = q
         # Collect Equations of motion in a single NumPy array:
 
         vel = np.array([dudt, dwdt, dqdt, dthetadt], float)  # Velocity vector
-        
+
         return vel, dthetadt
 
 def Flow(ssp0, initial_time, deltat, time_steps, **kinematics):
@@ -273,7 +273,7 @@ def Flow(ssp0, initial_time, deltat, time_steps, **kinematics):
 
     tArray = np.linspace(tInitial, tFinal, Nt)  # Time array for solution
     print(tFinal)
-    sspSolution = rk.RK2(Velocity, ssp0, tArray, **kinematics) # RK 
+    sspSolution = rk.RK2(Velocity, ssp0, tArray, **kinematics) # RK
 #    sspSolution = ode.solve_ivp(birdEqn_py, [tInitial, tFinal], ssp0,'LSODA', max_step = deltat/Nt)
 #    sspSolution = (sspSolution.y).T
     sspdeltat = sspSolution[-1, :]  # Read the final point to sspdeltat
@@ -281,53 +281,53 @@ def Flow(ssp0, initial_time, deltat, time_steps, **kinematics):
 
 
 def JacobianNumerical(ssp, initial_time, integration_time, **kinematics):
-    
+
     """
     Finite difference evaluation of Jacobian
     Flow is perturbed in all directions of the phase space, and the generic
     component of the Jacobian is calculated by finite difference as follow:
-        
+
     dF[i]/dx[j] = (F^t(x_perturbed)[i] - F^t(x)[i])/perturbation
-    
+
     Jacobian = dF[i]/dx[j] (dim x dim) matrix
-    
-    epsilon = value of the perturbation   
+
+    epsilon = value of the perturbation
     """
     time_steps = 50
     # -------------------------------------------------------------------------
     #  Initialization of the Jacobian Matrix
     # -------------------------------------------------------------------------
-    
+
     Jacobian = np.zeros((dim,dim))
-    
+
     # -------------------------------------------------------------------------
     # Set the numerical perturbation over the direction of the flow
     # -------------------------------------------------------------------------
-    
+
     epsilon = 1e-3
 
-    # ------------------------------------------------------------------------- 
+    # -------------------------------------------------------------------------
     # Unperturbed initial condition
     # -------------------------------------------------------------------------
-    
+
     ssp0 = ssp
-    
+
     # -------------------------------------------------------------------------
     # Finite difference scheme for Jacobian evaluation
     # -------------------------------------------------------------------------
-    
+
     print("... Running Jacobian Function")
     for j in range (dim):
         perturbation = np.zeros(dim)
 
-        perturbation[j] = perturbation[j] + ssp[j]*epsilon 
+        perturbation[j] = perturbation[j] + ssp[j]*epsilon
         ssp_pert = ssp + perturbation
         [vel, _] = Flow(ssp0, initial_time, integration_time, time_steps, **kinematics)
         [vel_pert, _] =  Flow(ssp_pert, initial_time, integration_time, time_steps, **kinematics)
         for i in range (dim):
             Jacobian[i,j] = (vel_pert[i] - vel[i])/perturbation[j]
-        
-        
+
+
     print("... Jacobian Calculated")
     return Jacobian
 
@@ -336,7 +336,7 @@ def JacobianNumerical(ssp, initial_time, integration_time, **kinematics):
 The following block integrates numerically the equations of motion coupled with
 the lifting line method. This is totally disconnected from the multi-shooting
 code, it's just coupled numerical integration over a certain time.
-"""    
+"""
 if __name__ == "__main__":
 #    settings.amplitude_shoulder_z = np.deg2rad(39.45047827064355)
 #    settings.offset_shoulder_y = -np.deg2rad(26)
@@ -345,7 +345,7 @@ if __name__ == "__main__":
     force_retrieving =  True
 #    case_name = 'TestCase12b'
 
-    if force_retrieving ==  True:    
+    if force_retrieving ==  True:
         case_name = 'NonLevel'
         results_directory = '/Users/gducci/UCL/PROJECT/Simulations/ResultsPaper/M10_ref/Results'
 
@@ -364,7 +364,7 @@ if __name__ == "__main__":
         q_0 = 0. # Q-velocity initial condition
         theta_0 = 0.  # Theta-angle initial condition
         ssp0 = np.array([u_0, w_0, q_0, theta_0], float) # Vector of initial conditions
-        
+
 
     # -------------------------------------------------------------------------
     #  Definition of the time array
@@ -375,12 +375,12 @@ if __name__ == "__main__":
     Nt = 10*period_number                   # Discretisation of time array
     tArray = np.linspace(tInitial, tFinal, 80)  # Time array
     tail_op = np.deg2rad(0)
-    
+
     sspSolution_V0 = rk.RK2(Velocity, ssp0,tArray)
     test = Flow(ssp0, 0, tFinal, 80)
-    
+
 #    Jac = JacobianNumerical(ssp0, tArray[40], 0.25, endpoint=True)
-#    
+#
 #    eignevalues_numerical, eigenvector_numerical = np.linalg.eig(Jac)
 #    np.save(results_directory+'/eigenvalues_jacobian_num', eignevalues_numerical)
 #    end_Jac = time.time()
