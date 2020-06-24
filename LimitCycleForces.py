@@ -1,5 +1,5 @@
 import numpy as np
-from FlappingForcesDev import FlappingForces
+from flapping_forces import flapping_forces
 import settings as settings
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -28,7 +28,7 @@ def ForceRetrieving_CaseName(case_name, **kinematics):
     q = periodic_orbit[:,2]
     theta = periodic_orbit[:,3]
     for i in range (time_steps):
-        Fx[i], Fy[i], Fz[i], My[i], F_tail[i], M_wing[i], M_tail[i], M_drag[i], M_lift[i] = FlappingForces(timeArray[i],u[i],w[i],q[i],theta[i], **kinematics)
+        Fx[i], Fy[i], Fz[i], My[i], F_tail[i], M_wing[i], M_tail[i], M_drag[i], M_lift[i] = flapping_forces(timeArray[i],u[i],w[i],q[i],theta[i], **kinematics)
     return Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift, timeArray
 
 def ForceRetrieving(periodic_orbit, **kinematics):
@@ -52,7 +52,7 @@ def ForceRetrieving(periodic_orbit, **kinematics):
     q = periodic_orbit[:,2]
     theta = periodic_orbit[:,3]
     for i in range (time_steps):
-        Fx[i], Fy[i], Fz[i], My[i], F_tail[i], M_wing[i], M_tail[i], M_drag[i], M_lift[i] = FlappingForces(timeArray[i],u[i],w[i],q[i],theta[i], **kinematics)
+        Fx[i], Fy[i], Fz[i], My[i], F_tail[i], M_wing[i], M_tail[i], M_drag[i], M_lift[i] = flapping_forces(timeArray[i],u[i],w[i],q[i],theta[i], **kinematics)
     return Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift
 
 

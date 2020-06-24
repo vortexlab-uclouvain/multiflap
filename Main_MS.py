@@ -12,7 +12,7 @@ import SaveFile as saving
 # It is simply asked to type from terminal the name the folder you wish to create
 # -------------------------------------------------------------------------
 
-path_directory = "../Simulations/ResultsPaper/"          # Type here the path where you wish to create your folder
+path_directory = "../Simulations/setting_class/"          # Type here the path where you wish to create your folder
 
 simulation_name = input("Type here the name of the folder: ")      # Input name from terminal
 simulation_directory = path_directory+simulation_name
@@ -27,8 +27,8 @@ tolerance = float(input("Type here the tolerance value: "))     # Input name fro
 
 """
 Parameters of the flow:
-    dim = dimension of the ODE system, this is read from the FlowFunction file    
-    period = Period of the orbit. This is in the scheme used, known a priori    
+    dim = dimension of the ODE system, this is read from the FlowFunction file
+    period = Period of the orbit. This is in the scheme used, known a priori
     M = number of the guessed points for the multiple-shooting scheme
     states_stack = initialization of the matrix that stores the coordinates of the guessed points (M x dim)
     tau = time interval between two consecutives points
@@ -60,29 +60,29 @@ data_writing.DataFileParameters(simulation_directory)
 MultiShootingScheme
 
 ---------------------------------------------------------------------------
----------------------------------------------------------------------------    
-
-    Args: 
-           states_stack: Coordinates of the points at each time step     
-           tau:          Time interval between two consecutives points   
-           maxIter:      Maximum number of iteration, defined in the main
-           tol:          Tolerance before exiting the loop              
-          
 ---------------------------------------------------------------------------
----------------------------------------------------------------------------    
-          
+
+    Args:
+           states_stack: Coordinates of the points at each time step
+           tau:          Time interval between two consecutives points
+           maxIter:      Maximum number of iteration, defined in the main
+           tol:          Tolerance before exiting the loop
+
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
     Return:
-           x_fin:        Coordinates of the points that belong to the Limit cycle. 
+           x_fin:        Coordinates of the points that belong to the Limit cycle.
            ptlist:       List of the point coordinates for post-processing
            error:        List of the error for every step of the iteration
-          
+
 ---------------------------------------------------------------------------
----------------------------------------------------------------------------       
+---------------------------------------------------------------------------
 """
-xfin, ptlist, error, complete_solution, Jacobian_semigroup = multi2.MultiShootingScheme(states_stack, 
-                                                                                        tau, 
-                                                                                        100, 
-                                                                                        tolerance, 
+xfin, ptlist, error, complete_solution, Jacobian_semigroup = multi2.MultiShootingScheme(states_stack,
+                                                                                        tau,
+                                                                                        100,
+                                                                                        tolerance,
                                                                                         simulation_directory)
 results_directory = simulation_directory+"/Results_2"
 os.mkdir(results_directory) # Create target Directory
@@ -135,9 +135,9 @@ fig1 = plt.figure(1)
 ax = fig1.gca(projection='3d')
 
 # Set axis label
-ax.set_xlabel('$x$')  
-ax.set_ylabel('$y$')  
-ax.set_zlabel('$z$') 
+ax.set_xlabel('$x$')
+ax.set_ylabel('$y$')
+ax.set_zlabel('$z$')
 
 
 # Plot the periodic orbit:
@@ -151,16 +151,16 @@ ax.scatter(xfin[:,0],
            xfin[:,2], color='red', label='Final points')
 
 # Plot the initial guessed M-points
-ax.scatter(states_stack[:,0], 
-           states_stack[:,1], 
+ax.scatter(states_stack[:,0],
+           states_stack[:,1],
            states_stack[:,2], color = 'green', label='Guessed points')
 plt.legend(loc='upper left', numpoints = 1 )
 M
 fig2 = plt.figure(2)
 ax2 = fig2.gca()
 ax2.set_aspect('equal')
-ax2.set_xlabel('$Re$', fontsize=18)  
-ax2.set_ylabel('$Im$', fontsize=18)  
+ax2.set_xlabel('$Re$', fontsize=18)
+ax2.set_ylabel('$Im$', fontsize=18)
 ax2.xaxis.set_tick_params(labelsize=10)
 
 circle = np.linspace(0,2*np.pi,101)

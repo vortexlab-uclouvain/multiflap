@@ -1,12 +1,12 @@
 import numpy as np  # Import NumPy
-from BirdLine import BirdLine
+from bird_line import bird_line
 from MergeLines import MergeLines
 import Circulation
 import settings as settings
 import TailModels as TailModel
+import bird_constructor as bc
 
-
-def FlappingForces(t, u, w, q, theta, **kinematics):
+def flapping_forces(t, u, w, q, theta, **kinematics):
 
     cl_alpha = 2*np.pi
     rho = 1.225  # Air density
@@ -44,7 +44,7 @@ def FlappingForces(t, u, w, q, theta, **kinematics):
     # -------------------------------------------------------------------------
 
     [line_right, up_direction_right, chord_direction_right, chord_right,
-     line_left, up_direction_left, chord_direction_left, chord_left, dx] = BirdLine(t, **kinematics)
+     line_left, up_direction_left, chord_direction_left, chord_left, dx] = bird_line(t, **kinematics)
 
     nmid = int(np.ceil(2*x_ep/dx))                                              # Corrected for New update
     # -------------------------------------------------------------------------
@@ -60,7 +60,7 @@ def FlappingForces(t, u, w, q, theta, **kinematics):
     # -------------------------------------------------------------------------
 
     [line_right, up_direction_right, chord_direction_right, chord_right,
-     line_left, up_direction_left, chord_direction_left, chord_left, dx] = BirdLine(t2, **kinematics)
+     line_left, up_direction_left, chord_direction_left, chord_left, dx] = bird_line(t2, **kinematics)
 
     # -------------------------------------------------------------------------
     #  Geometry at time t2 = t-dt
@@ -246,6 +246,7 @@ if __name__ == "__main__":
     moment_drag = []
     moment_lift = []
 #    settings.tail_opening = np.deg2rad(40)
+    bc.shoulder_z = bc.Shoulder(0., np.deg2rad(55), np.pi, 'z')
     for i in range (len(time_array)):
 
         [Fx, Fy, Fz, My, F_tail_tot, M_wing, M_tail, M_drag, M_lift] = FlappingForces(time_array[i], u, w,
@@ -295,7 +296,7 @@ if __name__ == "__main__":
 #    fig1.suptitle('Moments', fontsize=18)
     ax1.plot(time_array/0.25, Moment, '-', color='green', label = "Moment total", linewidth=2.)
     ax1.plot(mean_moment, '-', color='red')
-    
+
     ax1.plot(time_array, Moment_tail, '-', label="Moment tail")
     ax1.plot(time_array, Moment_wing, '-', label="Moment wing")
     ax1.set(xlim=(0, 1))

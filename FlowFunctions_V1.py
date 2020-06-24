@@ -1,6 +1,6 @@
 import numpy as np  # Import NumPy
 import RungeKutta as rk
-from FlappingForcesDev import FlappingForces
+from flapping_forces import flapping_forces
 import settings as settings
 import scipy.integrate as ode
 import time
@@ -37,7 +37,7 @@ def birdEqn_py(t, ssp, **kinematics):
         q = ssp[2]
         theta = ssp[3]
         # Longitudinal equation of motion:
-        [Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift] = FlappingForces(t, u, w, q, theta, **kinematics)
+        [Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift] = flapping_forces(t, u, w, q, theta, **kinematics)
         dudt = -q*w - g*sin(theta) - Fz/mass
         dwdt = q*u + g*cos(theta) - Fy/mass - F_tail/mass
         dqdt =  My/0.1
@@ -61,10 +61,10 @@ def StabilityMatrix(t, ssp, **kinematics):
     m = 1.2
     perturbation = 1e-3
     u, w, q, theta = ssp
-    [Fx, Fy, Fz, My, F_tail, _, _, _, _] = FlappingForces(t, u, w, q, theta, **kinematics)
-    [Fxu, Fyu, Fzu, Myu, F_tailu, _, _, _, _] = FlappingForces(t, u + u*perturbation, w, q, theta, **kinematics)
-    [Fxw, Fyw, Fzw, Myw, F_tailw, _, _, _, _] = FlappingForces(t, u ,w + w*perturbation, q, theta, **kinematics)
-    [Fxq, Fyq, Fzq, Myq, F_tailq, _, _, _, _] = FlappingForces(t, u ,w , q + q*perturbation, theta, **kinematics)
+    [Fx, Fy, Fz, My, F_tail, _, _, _, _] = flapping_forces(t, u, w, q, theta, **kinematics)
+    [Fxu, Fyu, Fzu, Myu, F_tailu, _, _, _, _] = flapping_forces(t, u + u*perturbation, w, q, theta, **kinematics)
+    [Fxw, Fyw, Fzw, Myw, F_tailw, _, _, _, _] = flapping_forces(t, u ,w + w*perturbation, q, theta, **kinematics)
+    [Fxq, Fyq, Fzq, Myq, F_tailq, _, _, _, _] = flapping_forces(t, u ,w , q + q*perturbation, theta, **kinematics)
 
     # Derivatives of Fz with respect to the state space variables
     dFzu_dU = (Fzu - Fz)/(u*perturbation)
@@ -192,7 +192,7 @@ def Velocity(ssp, t, **kinematics):
         q = ssp[2]
         theta = ssp[3]
         # Longitudinal equation of motion:
-        [Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift] = FlappingForces(t, u, w, q, theta, **kinematics)
+        [Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift] = flapping_forces(t, u, w, q, theta, **kinematics)
         dudt = -q*w - g*np.sin(theta) - Fz/mass
         dwdt = q*u + g*np.cos(theta) - Fy/mass - F_tail/mass
         dqdt =  My/0.1
@@ -229,14 +229,14 @@ def Velocity_Gust(ssp, t, **kinematics):
         theta = ssp[3]
         # Longitudinal equation of motion:
         if count > 100 and count < 103:
-            [Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift] = FlappingForces(t, u, w+3, q, theta, **kinematics)
+            [Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift] = flapping_forces(t, u, w+3, q, theta, **kinematics)
             gust_lift.append(Fy)
             gust_drag.append(Fz)
             gust_moment.append(My)
             gust_moment_lift.append(M_lift)
             gust_moment_drag.append(M_drag)
         else:
-            [Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift] = FlappingForces(t, u, w, q, theta, **kinematics)
+            [Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift] = flapping_forces(t, u, w, q, theta, **kinematics)
             gust_lift.append(Fy)
             gust_drag.append(Fz)
             gust_moment.append(My)

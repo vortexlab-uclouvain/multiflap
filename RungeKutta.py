@@ -1,5 +1,5 @@
 import numpy as np  # Import numpy
-import FlappingForcesDev as FF
+import flapping_forces as FF
 import scipy.integrate as ode
 
 def RK4(velocityFunction, initialCondition, timeArray, **optional):
@@ -167,7 +167,7 @@ if __name__ == "__main__":
                 q = ssp[2]
                 theta = ssp[3]
                 # Longitudinal equation of motion:
-                [Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift] = FF.FlappingForces(t, u, w, q, theta)
+                [Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift] = FF.flapping_forces(t, u, w, q, theta)
                 lift_py.append(Fy)
                 moment_py.append(My)
                 dudt = -q*w - g*np.sin(theta) - Fz/mass 

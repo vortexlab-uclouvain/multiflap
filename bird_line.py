@@ -7,154 +7,115 @@ from QuartChordNaive import QuartChordNaive
 from ImproveLineIteration import ImproveLineIteration
 import settings as settings
 from KinematicsFunction import WingKinematics
-#import KinematicsParameters as kin
+import bird_constructor as bc
 
-def BirdLine(t, **kwargs):
-# =============================================================================
-#     Wrist joint default kinematics
-# =============================================================================
-    amp_shoulder_x=kwargs.get('amp_shoulder_x', settings.amplitude_shoulder_x)
-    off_shoulder_x=kwargs.get('off_shoulder_x',settings.offset_shoulder_x)
-    phase_shoulder_x=kwargs.get('phase_shoulder_x',settings.phaseangle_shoulder_x)
+def bird_line(t, **kwargs):
 
-    amp_shoulder_y=kwargs.get('amp_shoulder_y', settings.amplitude_shoulder_y)
-#    amp_shoulder_y=kwargs.get('amp_shoulder_y', np.deg2rad(20))
+    # Shoulder motion
+    shoulder_x = bc.shoulder_x.motion_joint(t)
+    shoulder_y = bc.shoulder_y.motion_joint(t)
+    shoulder_z = bc.shoulder_z.motion_joint(t)
+    # Elbow motion
+    elbow_x = bc.elbow_x.motion_joint(t)
+    elbow_y = bc.elbow_y.motion_joint(t)
+    # Wrist motion
+    wrist_y = bc.wrist_y.motion_joint(t)
+    wrist_z = bc.wrist_z.motion_joint(t)
 
-#    off_shoulder_y=kwargs.get('off_shoulder_y', -0.2 -np.pi/12)
-    off_shoulder_y=kwargs.get('off_shoulder_y', settings.offset_shoulder_y)
-
-    phase_shoulder_y=kwargs.get('phase_shoulder_y', settings.phaseangle_shoulder_y)
-
-    amp_shoulder_z=kwargs.get('amp_shoulder_z', settings.amplitude_shoulder_z)
-    off_shoulder_z=kwargs.get('off_shoulder_z', settings.offset_shoulder_z)
-    phase_shoulder_z=kwargs.get('phase_shoulder_z', settings.phaseangle_shoulder_z)
-
-# =============================================================================
-#     Elbow joint default kinematics
-# =============================================================================
-    off_elbow_y=kwargs.get('off_elbow_y', settings.offset_elbow_y)
-    amp_elbow_y=kwargs.get('amp_elbow_y', settings.amplitude_elbow_y)
-    phase_elbow_y=kwargs.get('phase_elbow_y', settings.phaseangle_elbow_y)
-
-    off_elbow_x=kwargs.get('off_elbow_x', settings.offset_elbow_x)
-    amp_elbow_x=kwargs.get('amp_elbow_x', settings.amplitude_elbow_x)
-    phase_elbow_x=kwargs.get('phase_elbow_x', settings.phaseangle_elbow_x)
-    
-# =============================================================================
-#   Wrist default kinematics
-# =============================================================================
-    off_wrist_y = kwargs.get('off_wrist_y', settings.offset_wrist_y)
-    amp_wrist_y = kwargs.get('amp_wrist_y', settings.amplitude_wrist_y)
-    phase_wrist_y = kwargs.get('phase_wrist_y', settings.phaseangle_wrist_y)
-
-    off_wrist_z = kwargs.get('off_wrist_z', settings.offset_wrist_z)
-    amp_wrist_z = kwargs.get('amp_wrist_z', settings.amplitude_wrist_z)
-    phase_wrist_z = kwargs.get('phase_wrist_z', settings.phaseangle_wrist_z)
-#    print(np.rad2deg(amp_shoulder_y))
-    shoulder_x = WingKinematics(off_shoulder_x, amp_shoulder_x, t, phase_shoulder_x)        # 0.014
-    shoulder_y = WingKinematics(off_shoulder_y , amp_shoulder_y, t, phase_shoulder_y)              # -0.2 -np.pi/12, np.pi/12, t, np.pi/2
-    shoulder_z = WingKinematics(off_shoulder_z, amp_shoulder_z, t, phase_shoulder_z)           # np.pi/4
-
-    elbow_y = WingKinematics(off_elbow_y, amp_elbow_y, t, phase_elbow_y)
-    elbow_x = WingKinematics(off_elbow_x, amp_elbow_x, t, phase_elbow_x)
-    
-    wrist_y = WingKinematics(off_wrist_y, amp_wrist_y, t, phase_wrist_y)
-    wrist_z = WingKinematics(off_wrist_z, amp_wrist_z, t, phase_wrist_z)
-       
     """
     === Call of WingEnvelope function. Given the kinematics, the wing shape is found ===
-    """   
+    """
 
-    
-    [leadingedge, trailingedge] =   WingEnvelope(shoulder_x, shoulder_z, shoulder_y, elbow_y, elbow_x, wrist_y, wrist_z) 
-    
+
+    [leadingedge, trailingedge] =   WingEnvelope(shoulder_x, shoulder_z, shoulder_y, elbow_y, elbow_x, wrist_y, wrist_z)
+
     nlete = 16
-        
+
     leadingedge = SmoothLine(leadingedge, nlete)
     trailingedge = SmoothLine(trailingedge, nlete)
-    
+
     [line, chord_leadingedge, chord_trailingedge] = QuartChordNaive(leadingedge, trailingedge)
-    
+
     """"
     ============= PLOT ROUTINE =============
     Here in the original code there is a function that prints out on the screen wing plots.
     It is now omitted, and there will be implemented later in a second time
     ========================================
     """
-    
+
     tol = 0.1
     nmax = 10
     a = tol + 1
     chg = tol + 1
     it = 1
-    
+
     while a > tol and it < nmax:
         [line, chord_leadingedge, chord_trailingedge, a] = ImproveLineIteration(line,chord_leadingedge,
                                                         chord_trailingedge,leadingedge,trailingedge,it)
-        
+
         chg = np.c_[chg, a]
-    
+
         it = it + 1
-    
+
     [lifting_line, chord_leadingedge, chord_trailingedge] = SmoothQuarterLine(line, chord_leadingedge, chord_trailingedge)
-    
+
     """
-    Output lifting_line, chord_leadingedge, chord_trailingedge CHECKED. 
+    Output lifting_line, chord_leadingedge, chord_trailingedge CHECKED
     """
     line_dummy = np.copy(lifting_line)
     nl = np.size(line[0])
     chord_direction = np.zeros((3,nl))
     updir = np.zeros((3,nl))
     chord = np.zeros((nl))
-    
+
 # =============================================================================
 #     Evaluating the chord and its direction
 #     For every slice, it's calculated the distance btw Lead. edge and Trail. 
 #     edge (chord_distance), and then the modulus, so that the versor is 
 #     identified.
 # =============================================================================
-    
+
     for i in range(nl):
-        
+
         chord_distance = (chord_trailingedge[:,i] - chord_leadingedge[:,i]) + 1e-20
         chord[i] = np.linalg.norm(chord_distance)
         #chord = chord[:,np.newaxis]
         chord_direction[:,i] = chord_distance/chord[i]
-        
+
         if i == 0:
             linevec = line[:,1] - line[:,0]
         elif i == (nl - 1):
             linevec = line[:,-1] - line[:,-2]
         else:
             linevec = line[:,i+1] - line[:,i-1]
-            
+
         linevec = linevec/np.linalg.norm(linevec)
         updir[:,i] = np.cross(chord_direction[:,i], linevec)  # Different value in the last iteration
-    
+
     updir_dummy = np.copy(updir)
     chord_direction_dummy = np.copy(chord_direction)
     chord_dummy = np.copy(chord)
     # Left Wing
-    
+
     line_left = np.fliplr(line_dummy)
     up_direction_left = np.fliplr(updir_dummy)
     chord_direction_left = np.fliplr(chord_direction_dummy)
     chord_left = chord_dummy[::-1]
-    
+
     line_left[0,:] = np.negative(line_left[0,:])
     chord_direction_left[0,:] = np.negative(chord_direction_left[0,:])
     up_direction_left[0,:] = np.negative(up_direction_left[0,:])
-    
+
     sumvector = np.zeros((1,nl))
     for i in range(nl):
         if i < nl-1:
             sumvector[0,i] = np.sum((lifting_line[:,i+1] - lifting_line[:,i])**2)
         else:
             sumvector[0,i] = np.sum((lifting_line[:,-1] - lifting_line[:, -2])**2)
-    
-    
+
+
     dx = np.mean(np.sqrt(sumvector))
-    
+
     return lifting_line, updir, chord_direction, chord, line_left, up_direction_left, chord_direction_left, chord_left, dx
 
 if __name__ == "__main__":
@@ -166,8 +127,9 @@ if __name__ == "__main__":
 #    amp_sweep = np.deg2rad(20)
 #    amplitude_shoulder = np.deg2rad(42)
 #    amp_shoulder_x = 0.
-    settings.amplitude_shoulder_y = np.deg2rad(20)
-    settings.offset_shoulder_y = -np.deg2rad(19)
+#    settings.amplitude_shoulder_y = np.deg2rad(20)
+    bc.shoulder_y = bc.joint(-np.deg2rad(19), np.deg2rad(20), np.pi/2)
+#    settings.offset_shoulder_y = -np.deg2rad(19)
     
     for i in range(len(tArray)):
 
