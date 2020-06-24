@@ -171,7 +171,7 @@ def Jacobian(ssp, t_initial, integration_time, **kinematics):
     J = sspJacobianSolution[-1, dim:].reshape((dim, dim))
     return J
 
-def dynamics(self, x0, t):
+def dynamics(self, x0: BirdState, t):
         """
         State space velocity function for the Equation of Motion of the longitudinal plane
 
@@ -187,10 +187,10 @@ def dynamics(self, x0, t):
         u, w, q, theta  = x0  # Read state space points
         # Longitudinal equation of motion:
 
-        af = self.get_aeroforces(x0, t)
+        af = self.flapping_forces(x0, t)
 
         # bird body dynamics
-        dudt = -self.g*w - self.g*np.sin(theta) - af.Fz/self.mass
+        dudt = -self.g*w - g*np.sin(theta) - af.Fz/self.mass
         dwdt = q*u + self.g*np.cos(theta) - af.Fy/self.mass - af.F_tail/self.mass
         dqdt =  af.My/0.1
         dthetadt = q
@@ -200,9 +200,8 @@ def dynamics(self, x0, t):
 
         return vel
 
-def get_aeroforces(self, x0, t):
+def flapping_forces(x0, t):
         # aereodynamic forces
-        u, w, q, theta = x0
         wing_state = self.get_wingstate(t)
         [leadingedge, trailingedge] =   self.get_wingenvelope(wing_state)
         lifting_line =  self.get_liftingline(leadingedge, trailingedge)
@@ -278,7 +277,7 @@ def Flow(ssp0, initial_time, deltat, time_steps, **kinematics):
 
     tArray = np.linspace(tInitial, tFinal, Nt)  # Time array for solution
     print(tFinal)
-    sspSolution = rk.RK2(dynamics, ssp0, tArray, **kinematics) # RK
+    sspSolution = rk.RK2(Velocity, ssp0, tArray, **kinematics) # RK
 #    sspSolution = ode.solve_ivp(birdEqn_py, [tInitial, tFinal], ssp0,'LSODA', max_step = deltat/Nt)
 #    sspSolution = (sspSolution.y).T
     sspdeltat = sspSolution[-1, :]  # Read the final point to sspdeltat

@@ -37,7 +37,7 @@ class Shoulder():
             self.axis_z = axis_z
 
 class Elbow():
-    def __init__(self, axis_x=None, axis_y=None):
+    def __init__(self, axis_x=None, axis_y=None)
         self.axis_x  = Joint()
         self.axis_y  = Joint()
         if isinstance(axis_x, Joint):
@@ -46,7 +46,7 @@ class Elbow():
             self.axis_y = axis_y
 
 class Wrist():
-    def __init__(self, axis_y=None, axis_z=None):
+    def __init__(self, axis_y=None, axis_z=None)
         self.axis_y  = Joint()
         self.axis_z  = Joint()
         if isinstance(axis_y, Joint):
@@ -55,7 +55,7 @@ class Wrist():
             self.axis_z = axis_z
 
 
-class Bird:
+class BirdLiftingline:
 
     def __init__(self, shoulder=None, elbow=None, wrist=None):
         self.shoulder = Shoulder()
@@ -70,7 +70,7 @@ class Bird:
             self.elbow = elbow
 
 
-    def bird_line(self, t):
+    def compute_liftingline(self, t):
 
         # Shoulder motion
         shoulder_x = self.shoulder.axis_x.motion_joint(t)
@@ -181,16 +181,3 @@ class Bird:
 # Initialization of the kinematics
 #shoulder_x = Joint(0.2, 0.014, -np.pi/2)
 
-bc = Bird()
-
-bc.shoulder.axis_x = Joint(0.2, 0.014, -np.pi/2, 'x')
-
-shoulder_x = Shoulder(0.2, 0.014, -np.pi/2, 'x')
-shoulder_y = Shoulder(-np.deg2rad(19), np.deg2rad(20), np.pi/2, 'y')
-shoulder_z = Shoulder(0., np.deg2rad(42), np.pi, 'z')
-
-elbow_x = Elbow(0., np.pi/6, -np.pi/2, 'x')
-elbow_y = Elbow(np.pi/6, np.pi/6, -np.pi/2, 'y')
-
-wrist_y = Wrist(-np.pi/6, np.pi/6, np.pi/2, 'y')
-wrist_z = Wrist(0., 0., 0., 'z')

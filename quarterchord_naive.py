@@ -1,6 +1,6 @@
 import numpy as np  # Import NumPy
 
-def QuartChordNaive(leadingedge, trailingedge):
+def quarterchord_naive(leadingedge, trailingedge):
     line = .75*leadingedge + .25*trailingedge;
     chord_leadingedge = leadingedge;
     chord_trailingedge = trailingedge;

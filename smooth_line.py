@@ -1,9 +1,9 @@
 import numpy as np  # Import NumPy
 
-def SmoothLine(line, npt):
-    
+def smooth_line(line, npt):
+
     smooth_radius = 0.05
-    
+
     # Getting the length of the curve
     notok = 1
     l = np.zeros((3, npt))
@@ -14,13 +14,13 @@ def SmoothLine(line, npt):
         lcurve = 0
         for i in range(n-1):
             lcurve = lcurve + np.sqrt(np.sum((line[:,i+1]-line[:,i])**2))
-        
+
         ds = lcurve/(npt-1)
-        
+
         l[:,0] = line [:,0]
-        
+
         j = 0  #Until here is OK
-        
+
         for i in range(1,npt):
             dist = np.sqrt(np.sum((line[:,j+1]-l[:,i-1])**2))
             while dist < ds:
@@ -29,7 +29,7 @@ def SmoothLine(line, npt):
                     dist = dist + np.sqrt(np.sum((line[:,j+1]-line[:,j])**2))
                 else:
                     dist = ds + 1
-            
+
             if j < (np.size(line[0])-1):
                 fac = dist - ds
                 den = np.sqrt(np.sum((line[:,j+1]-line[:,j])**2))
@@ -37,11 +37,11 @@ def SmoothLine(line, npt):
                 l[:,i] = (1-fac)*line[:,j+1]+fac*line[:,j]
             else:
                 l[:,i] = line [:,-1]
-        
+
         l2 = l
-        
+
         notok = 0
-        
+
         for i in range(1,npt-1):
             vec1 = l[:,i] - l[:,i-1]
             vec2 = l[:,i+1] - l[:,i]
@@ -65,7 +65,7 @@ def SmoothLine(line, npt):
                 angle = np.arccos(coss)
                 d = np.linalg.norm(vec1)
                 smooth_angle = d/smooth_radius
-                
+
         line = l2
-            
+
     return line

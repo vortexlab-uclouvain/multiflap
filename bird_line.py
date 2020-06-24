@@ -1,12 +1,11 @@
 import numpy as np  # Import NumPy
 import math as m
-from WingEnvelope import WingEnvelope
-from SmoothLine import SmoothLine
-from SmoothQuarterLine import SmoothQuarterLine
-from QuartChordNaive import QuartChordNaive
-from ImproveLineIteration import ImproveLineIteration
+from wing_envelope import wing_envelope
+from smooth_line import smooth_line
+from smooth_quarterline import smooth_quarterline
+from quarterchord_naive import quarterchord_naive
+from improveline_iteration import improveline_iteration
 import settings as settings
-from KinematicsFunction import WingKinematics
 import bird_constructor as bc
 
 def bird_line(t, **kwargs):
@@ -23,18 +22,18 @@ def bird_line(t, **kwargs):
     wrist_z = bc.wrist_z.motion_joint(t)
 
     """
-    === Call of WingEnvelope function. Given the kinematics, the wing shape is found ===
+    === Call of wing_envelope function. Given the kinematics, the wing shape is found ===
     """
 
 
-    [leadingedge, trailingedge] =   WingEnvelope(shoulder_x, shoulder_z, shoulder_y, elbow_y, elbow_x, wrist_y, wrist_z)
+    [leadingedge, trailingedge] =   wing_envelope(shoulder_x, shoulder_z, shoulder_y, elbow_y, elbow_x, wrist_y, wrist_z)
 
     nlete = 16
 
-    leadingedge = SmoothLine(leadingedge, nlete)
-    trailingedge = SmoothLine(trailingedge, nlete)
+    leadingedge = smooth_line(leadingedge, nlete)
+    trailingedge = smooth_line(trailingedge, nlete)
 
-    [line, chord_leadingedge, chord_trailingedge] = QuartChordNaive(leadingedge, trailingedge)
+    [line, chord_leadingedge, chord_trailingedge] = quarterchord_naive(leadingedge, trailingedge)
 
     """"
     ============= PLOT ROUTINE =============
@@ -50,14 +49,14 @@ def bird_line(t, **kwargs):
     it = 1
 
     while a > tol and it < nmax:
-        [line, chord_leadingedge, chord_trailingedge, a] = ImproveLineIteration(line,chord_leadingedge,
+        [line, chord_leadingedge, chord_trailingedge, a] = improveline_iteration(line,chord_leadingedge,
                                                         chord_trailingedge,leadingedge,trailingedge,it)
 
         chg = np.c_[chg, a]
 
         it = it + 1
 
-    [lifting_line, chord_leadingedge, chord_trailingedge] = SmoothQuarterLine(line, chord_leadingedge, chord_trailingedge)
+    [lifting_line, chord_leadingedge, chord_trailingedge] = smooth_quarterline(line, chord_leadingedge, chord_trailingedge)
 
     """
     Output lifting_line, chord_leadingedge, chord_trailingedge CHECKED
@@ -70,8 +69,8 @@ def bird_line(t, **kwargs):
 
 # =============================================================================
 #     Evaluating the chord and its direction
-#     For every slice, it's calculated the distance btw Lead. edge and Trail. 
-#     edge (chord_distance), and then the modulus, so that the versor is 
+#     For every slice, it's calculated the distance btw Lead. edge and Trail.
+#     edge (chord_distance), and then the modulus, so that the versor is
 #     identified.
 # =============================================================================
 
@@ -119,8 +118,8 @@ def bird_line(t, **kwargs):
     return lifting_line, updir, chord_direction, chord, line_left, up_direction_left, chord_direction_left, chord_left, dx
 
 if __name__ == "__main__":
-    f = settings.frequency 
-    tArray = np.linspace(0, 1/f, 400) 
+    f = settings.frequency
+    tArray = np.linspace(0, 1/f, 400)
     tip_line =[]
     root_line=[]
 #    off_sweep = -np.deg2rad(26)
@@ -128,16 +127,16 @@ if __name__ == "__main__":
 #    amplitude_shoulder = np.deg2rad(42)
 #    amp_shoulder_x = 0.
 #    settings.amplitude_shoulder_y = np.deg2rad(20)
-    bc.shoulder_y = bc.joint(-np.deg2rad(19), np.deg2rad(20), np.pi/2)
+    bc.shoulder_y = bc.Joint(-np.deg2rad(19), np.deg2rad(20), np.pi/2)
 #    settings.offset_shoulder_y = -np.deg2rad(19)
-    
+
     for i in range(len(tArray)):
 
-        [lifting_line, updir, chord_direction, 
-         chord, line_left, up_direction_left, 
-         chord_direction_left, chord_left, dx] = BirdLine(tArray[i])
-        
-#                                                             amp_shoulder_z=amplitude_shoulder, 
+        [lifting_line, updir, chord_direction,
+         chord, line_left, up_direction_left,
+         chord_direction_left, chord_left, dx] = bird_line(tArray[i])
+
+#                                                             amp_shoulder_z=amplitude_shoulder,
 #                                                             off_shoulder_y=off_sweep,
 #                                                             amp_shoulder_y=amp_sweep)
         tip_line.append(lifting_line[:,-1])
@@ -153,7 +152,7 @@ if __name__ == "__main__":
 
     #   plt.ylim((0.,0.6))
     fig1 = plt.figure()
-    ax1 = fig1.gca() 
+    ax1 = fig1.gca()
     plt.xlabel('$x_{airfoil}$', fontsize=18)
     plt.ylabel('$y_{airfoil}$', fontsize=18)
     plt.tick_params(labelsize=16)
@@ -175,7 +174,7 @@ if __name__ == "__main__":
     plt.show()
 #    ax1.grid()
     plt.savefig(image_path+'/Tip_trajectory.pdf', format = 'pdf')
-#    
+#
 #    function = off_sweep + amp_sweep*np.sin(((2*np.pi*f*tArray) + np.pi/2))
 #    fig2 = plt.figure()
 #    ax2 = fig2.gca()
@@ -186,18 +185,18 @@ if __name__ == "__main__":
 #    ax2.plot(tArray, [np.mean(np.rad2deg(function))]*len(tArray), "--", color = "red", label = "Sweep offset")
 #    plt.legend()
 #    plt.savefig(image_path+'/Sweep_Function_0.eps', format = 'eps')
-    
+
     fig3 = plt.figure(3)
     ax3 = fig3.gca(projection='3d')
-    
+
     # Set axis label
-    ax3.set_xlabel('$x$')  
-    ax3.set_ylabel('$y$')  
-    ax3.set_zlabel('$z$') 
-    
-    
+    ax3.set_xlabel('$x$')
+    ax3.set_ylabel('$y$')
+    ax3.set_zlabel('$z$')
+
+
     # Plot the periodic orbit:
     ax3.plot(tip_line[:, 0],
             tip_line[:, 1],
             tip_line[:, 2],color = 'b')
-    
+

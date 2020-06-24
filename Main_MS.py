@@ -2,11 +2,12 @@ import numpy as np
 import FlowFunctions_V1 as func
 import MultiShooting_newscheme as multi2
 from RungeKutta import RK4, RK2
-import settings as settings
+from settings import SimulationsSettings
 from LimitCycleForces import ForceRetrieving
 import os
 import DataFile_writing as data_writing
 import SaveFile as saving
+from bird import BirdLiftingline, Joint
 # -------------------------------------------------------------------------
 # Creation of the Folder where simulation data will be stored
 # It is simply asked to type from terminal the name the folder you wish to create
@@ -33,6 +34,19 @@ Parameters of the flow:
     states_stack = initialization of the matrix that stores the coordinates of the guessed points (M x dim)
     tau = time interval between two consecutives points
 """
+settings = SimulationsSettings()
+
+bc = BirdLiftingline()
+
+bc.shoulder.axis_x = Joint(0.2, 0.014, -np.pi/2)
+bc.shoulder.axis_y  = Joint(-np.deg2rad(19), np.deg2rad(20), np.pi/2)
+bc.shoulder.axis_z  = Joint(0., np.deg2rad(42), np.pi)
+
+bc.elbow.axis_x = Joint(0., np.pi/6, -np.pi/2)
+bc.elbow.axis_y = Joint(np.pi/6, np.pi/6, -np.pi/2)
+
+bc.wrist.axis_y = Joint(-np.pi/6, np.pi/6, np.pi/2)
+bc.wrist.axis_z = Joint(0., 0., 0.)
 
 dim = func.dim
 period = 1/(settings.frequency)
