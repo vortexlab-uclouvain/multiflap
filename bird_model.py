@@ -9,7 +9,6 @@ from CompMatrix import CompMatrix
 from Plumes import plumes
 from collections import namedtuple
 from bird_dynamics import dynamics, get_aeroforces
-import flapping_forces as fp
 
 WingState = namedtuple('WingState',[
     'shoulder_x',
@@ -28,7 +27,7 @@ class BirdModel:
         #Parameters:
         self.g = 9.81
         self.mass = 1.2
-
+        self.frequency = 4
         self.shoulder = Shoulder()
         self.wrist = Wrist()
         self.elbow = Elbow()

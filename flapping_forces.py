@@ -4,7 +4,6 @@ from MergeLines import MergeLines
 import circulation
 import TailModels as TailModel
 from settings import SimulationsSettings
-from bird_model import BirdModel
 from bird import Shoulder, Elbow, Wrist, Joint
 settings = SimulationsSettings()
 def get_flappingforces(x0, v_kin, line, chordir, updir, chord):
