@@ -29,7 +29,7 @@ def dynamics(self, x0, t):
         [_, Fy, Fz, My, F_tail, _, _, _, _] = self.get_aeroforces(x0, t)
 
         # bird body dynamics
-        dudt = -self.g*w - self.g*np.sin(theta) - Fz/self.mass
+        dudt = -q*w - self.g*np.sin(theta) - Fz/self.mass
         dwdt = q*u + self.g*np.cos(theta) - Fy/self.mass - F_tail/self.mass
         dqdt =  My/0.1
         dthetadt = q
