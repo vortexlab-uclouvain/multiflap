@@ -1,6 +1,5 @@
 import numpy as np
-from bird_constructor import Joint, Shoulder, Elbow, Wrist
-from wing_envelope import wing_envelope
+from bird import Joint, Shoulder, Elbow, Wrist
 from smooth_line import smooth_line
 from smooth_quarterline import smooth_quarterline
 from quarterchord_naive import quarterchord_naive
@@ -9,7 +8,8 @@ from RotationMatrix import RotationMatrix
 from CompMatrix import CompMatrix
 from Plumes import plumes
 from collections import namedtuple
-from bird_dynamics import dynamics, wing_state
+from bird_dynamics import dynamics, get_aeroforces
+import flapping_forces as fp
 
 WingState = namedtuple('WingState',[
     'shoulder_x',
@@ -17,7 +17,7 @@ WingState = namedtuple('WingState',[
     'shoulder_z',
     'elbow_x',
     'elbow_y',
-    'wrist_y', 
+    'wrist_y',
     'wrist_z'] )
 
 
@@ -43,118 +43,34 @@ class BirdModel:
 
     def get_wingstate(self, t):
 
-        ws = WingState()
+#        ws = WingState()
 
         # Shoulder motion
-        ws.shoulder_x = self.shoulder.axis_x.motion_joint(t)
-        ws.shoulder_y = self.shoulder.axis_y.motion_joint(t)
-        ws.shoulder_z = self.shoulder.axis_z.motion_joint(t)
+        #ws.shoulder_x = self.shoulder.axis_x.motion_joint(t)
+        #ws.shoulder_y = self.shoulder.axis_y.motion_joint(t)
+        #ws.shoulder_z = self.shoulder.axis_z.motion_joint(t)
+        ## Elbow motion
+        #ws.elbow_x = self.elbow.axis_x.motion_joint(t)
+        #ws.elbow_y = self.elbow.axis_y.motion_joint(t)
+        ## Wrist motion
+        #ws.wrist_y = self.wrist.axis_y.motion_joint(t)
+        #ws.wrist_z = self.wrist.axis_z.motion_joint(t)
+        state_shoulder_x = self.shoulder.axis_x.motion_joint(t)
+        state_shoulder_y = self.shoulder.axis_y.motion_joint(t)
+        state_shoulder_z = self.shoulder.axis_z.motion_joint(t)
         # Elbow motion
-        ws.elbow_x = self.elbow.axis_x.motion_joint(t)
-        ws.elbow_y = self.elbow.axis_y.motion_joint(t)
+        state_elbow_x = self.elbow.axis_x.motion_joint(t)
+        state_elbow_y = self.elbow.axis_y.motion_joint(t)
         # Wrist motion
-        ws.wrist_y = self.wrist.axis_y.motion_joint(t)
-        ws.wrist_z = self.wrist.axis_z.motion_joint(t)
+        state_wrist_y = self.wrist.axis_y.motion_joint(t)
+        state_wrist_z = self.wrist.axis_z.motion_joint(t)
 
-        return ws
+        wing_state = [state_shoulder_x, state_shoulder_z, state_shoulder_y, state_elbow_y, state_elbow_x, state_wrist_y, state_wrist_z]
+        #return ws
+        return wing_state
 
-    def get_liftingline(leadingedge, trailing):
-        """
-        === Call of wing_envelope function. Given the kinematics, the wing shape is found ===
-        """
-
-        nlete = 16
-
-        leadingedge = smooth_line(leadingedge, nlete)
-        trailingedge = smooth_line(trailingedge, nlete)
-
-        [line, chord_leadingedge, chord_trailingedge] = quarterchord_naive(leadingedge, trailingedge)
-
-        """"
-        ============= PLOT ROUTINE =============
-        Here in the original code there is a function that prints out on the screen wing plots.
-        It is now omitted, and there will be implemented later in a second time
-        ========================================
-        """
-
-        tol = 0.1
-        nmax = 10
-        a = tol + 1
-        chg = tol + 1
-        it = 1
-
-        while a > tol and it < nmax:
-            [line, chord_leadingedge, chord_trailingedge, a] = improveline_iteration(line,chord_leadingedge,
-                                                            chord_trailingedge,leadingedge,trailingedge,it)
-
-            chg = np.c_[chg, a]
-
-            it = it + 1
-
-        [lifting_line, chord_leadingedge, chord_trailingedge] = smooth_quarterline(line, chord_leadingedge, chord_trailingedge)
-
-        """
-        Output lifting_line, chord_leadingedge, chord_trailingedge CHECKED
-        """
-        line_dummy = np.copy(lifting_line)
-        nl = np.size(line[0])
-        chord_direction = np.zeros((3,nl))
-        updir = np.zeros((3,nl))
-        chord = np.zeros((nl))
-
-    # =============================================================================
-    #     Evaluating the chord and its direction
-    #     For every slice, it's calculated the distance btw Lead. edge and Trail.
-    #     edge (chord_distance), and then the modulus, so that the versor is
-    #     identified.
-    # =============================================================================
-
-        for i in range(nl):
-
-            chord_distance = (chord_trailingedge[:,i] - chord_leadingedge[:,i]) + 1e-20
-            chord[i] = np.linalg.norm(chord_distance)
-            #chord = chord[:,np.newaxis]
-            chord_direction[:,i] = chord_distance/chord[i]
-
-            if i == 0:
-                linevec = line[:,1] - line[:,0]
-            elif i == (nl - 1):
-                linevec = line[:,-1] - line[:,-2]
-            else:
-                linevec = line[:,i+1] - line[:,i-1]
-
-            linevec = linevec/np.linalg.norm(linevec)
-            updir[:,i] = np.cross(chord_direction[:,i], linevec)  # Different value in the last iteration
-
-        updir_dummy = np.copy(updir)
-        chord_direction_dummy = np.copy(chord_direction)
-        chord_dummy = np.copy(chord)
-        # Left Wing
-
-        line_left = np.fliplr(line_dummy)
-        up_direction_left = np.fliplr(updir_dummy)
-        chord_direction_left = np.fliplr(chord_direction_dummy)
-        chord_left = chord_dummy[::-1]
-
-        line_left[0,:] = np.negative(line_left[0,:])
-        chord_direction_left[0,:] = np.negative(chord_direction_left[0,:])
-        up_direction_left[0,:] = np.negative(up_direction_left[0,:])
-
-        sumvector = np.zeros((1,nl))
-        for i in range(nl):
-            if i < nl-1:
-                sumvector[0,i] = np.sum((lifting_line[:,i+1] - lifting_line[:,i])**2)
-            else:
-                sumvector[0,i] = np.sum((lifting_line[:,-1] - lifting_line[:, -2])**2)
-
-
-        dx = np.mean(np.sqrt(sumvector))
-
-        return lifting_line, updir, chord_direction, chord, line_left, up_direction_left, chord_direction_left, chord_left, dx
-
-
-    def wing_envelope(self, shoulder_x, shoulder_z, shoulder_y, elbow_y, elbow_x, wrist_y, wrist_z):
-
+    def get_wingenvelope(self, wing_state):
+        shoulder_x, shoulder_z, shoulder_y, elbow_y, elbow_x, wrist_y, wrist_z = wing_state
         [plumesrot, plumesvec] = plumes()
         dim_plumesrot0 = np.size(plumesrot[0])
         """
@@ -455,8 +371,134 @@ class BirdModel:
 
         leadingedge = np.c_[pts[:,int(number_ellipses/2)::int(number_ellipses)],trailingedge[:,-1]]
         return leadingedge, trailingedge
+    def get_liftingline(self, leadingedge, trailingedge):
+        """
+        === Call of wing_envelope function. Given the kinematics, the wing shape is found ===
+        """
 
-# assing methods defined in other modules
-bird_dynamics.dynamics = dynamics
-bird_dynamics.get_wingstate = get_wingstate
-...
+        nlete = 16
+
+        leadingedge = smooth_line(leadingedge, nlete)
+        trailingedge = smooth_line(trailingedge, nlete)
+
+        [line, chord_leadingedge, chord_trailingedge] = quarterchord_naive(leadingedge, trailingedge)
+
+        """"
+        ============= PLOT ROUTINE =============
+        Here in the original code there is a function that prints out on the screen wing plots.
+        It is now omitted, and there will be implemented later in a second time
+        ========================================
+        """
+
+        tol = 0.1
+        nmax = 10
+        a = tol + 1
+        chg = tol + 1
+        it = 1
+
+        while a > tol and it < nmax:
+            [line, chord_leadingedge, chord_trailingedge, a] = improveline_iteration(line,chord_leadingedge,
+                                                            chord_trailingedge,leadingedge,trailingedge,it)
+
+            chg = np.c_[chg, a]
+
+            it = it + 1
+
+        [lifting_line, chord_leadingedge, chord_trailingedge] = smooth_quarterline(line, chord_leadingedge, chord_trailingedge)
+
+        """
+        Output lifting_line, chord_leadingedge, chord_trailingedge CHECKED
+        """
+        line_dummy = np.copy(lifting_line)
+        nl = np.size(line[0])
+        chord_direction = np.zeros((3,nl))
+        updir = np.zeros((3,nl))
+        chord = np.zeros((nl))
+
+    # =============================================================================
+    #     Evaluating the chord and its direction
+    #     For every slice, it's calculated the distance btw Lead. edge and Trail.
+    #     edge (chord_distance), and then the modulus, so that the versor is
+    #     identified.
+    # =============================================================================
+
+        for i in range(nl):
+
+            chord_distance = (chord_trailingedge[:,i] - chord_leadingedge[:,i]) + 1e-20
+            chord[i] = np.linalg.norm(chord_distance)
+            #chord = chord[:,np.newaxis]
+            chord_direction[:,i] = chord_distance/chord[i]
+
+            if i == 0:
+                linevec = line[:,1] - line[:,0]
+            elif i == (nl - 1):
+                linevec = line[:,-1] - line[:,-2]
+            else:
+                linevec = line[:,i+1] - line[:,i-1]
+
+            linevec = linevec/np.linalg.norm(linevec)
+            updir[:,i] = np.cross(chord_direction[:,i], linevec)  # Different value in the last iteration
+
+        updir_dummy = np.copy(updir)
+        chord_direction_dummy = np.copy(chord_direction)
+        chord_dummy = np.copy(chord)
+        # Left Wing
+
+        line_left = np.fliplr(line_dummy)
+        up_direction_left = np.fliplr(updir_dummy)
+        chord_direction_left = np.fliplr(chord_direction_dummy)
+        chord_left = chord_dummy[::-1]
+
+        line_left[0,:] = np.negative(line_left[0,:])
+        chord_direction_left[0,:] = np.negative(chord_direction_left[0,:])
+        up_direction_left[0,:] = np.negative(up_direction_left[0,:])
+
+        sumvector = np.zeros((1,nl))
+        for i in range(nl):
+            if i < nl-1:
+                sumvector[0,i] = np.sum((lifting_line[:,i+1] - lifting_line[:,i])**2)
+            else:
+                sumvector[0,i] = np.sum((lifting_line[:,-1] - lifting_line[:, -2])**2)
+
+
+        dx = np.mean(np.sqrt(sumvector))
+
+        return lifting_line, updir, chord_direction, chord, line_left, up_direction_left, chord_direction_left, chord_left, dx
+
+
+
+    def merge_lines(self, line_package):
+        line_r,updir_r,chordir_r,chord_r,line_l,updir_l,chordir_l,chord_l, dx = line_package
+        x_ep = 0.05
+        nmid = int(np.ceil(2*x_ep/dx))
+        line_r[0,:] = line_r[0,:] + x_ep
+        line_l[0,:] = line_l[0,:] - x_ep
+
+        xmid = np.linspace(line_l[0,-1],line_r[0,0],nmid)
+        length_xmid = np.size(xmid)
+        line_mid = np.array([xmid, line_r[1,0]*np.ones(np.size(xmid)), line_r[2,0]*np.ones(np.size(xmid))])
+        chordir_mid = np.array([chordir_r[:,0] for i in range(np.size(xmid))]).T
+        updir_mid = np.array([updir_r[:,0] for i in range(np.size(xmid))]).T
+        chord_mid = np.zeros(length_xmid)
+        chord_mid[:] = chord_r[0]*np.ones(length_xmid)
+
+        line = np.c_[line_l,line_mid[:,1:-1],line_r]
+        chordir = np.c_[chordir_l, chordir_mid[:,1:-1], chordir_r]
+        updir = np.c_[updir_l, updir_mid[:,1:-1], updir_r]
+        chord = np.concatenate([chord_l, chord_mid[1:-1]/1e4, chord_r])
+        return line, chordir, updir, chord
+
+    # calling methods of BirdModel that are defined in other files
+    get_aeroforces = get_aeroforces
+    dynamics = dynamics
+
+bird_shoulder = Shoulder(axis_x=Joint(0.2,0.014,-np.pi/2), 
+                         axis_y=Joint(-np.deg2rad(19),np.pi/12,np.pi/2), 
+                         axis_z=Joint(0,np.deg2rad(42),np.pi))
+bird_elbow = Elbow(axis_x=Joint(0.,np.pi/6,-np.pi/2), 
+                   axis_y=Joint(np.pi/6,np.pi/6,-np.pi/2))
+
+bird_wrist = Wrist(axis_y=Joint(-np.pi/6,np.pi/6,np.pi/2), 
+                   axis_z=Joint(0.,0.,0.))
+
+mybird = BirdModel(shoulder=bird_shoulder, elbow=bird_elbow, wrist=bird_wrist)

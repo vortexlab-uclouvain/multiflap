@@ -6,7 +6,6 @@ from smooth_quarterline import smooth_quarterline
 from quarterchord_naive import quarterchord_naive
 from improveline_iteration import improveline_iteration
 import settings as settings
-import bird_constructor as bc
 
 def bird_line(t, **kwargs):
 

@@ -1,5 +1,7 @@
 import numpy as np
-import settings 
+from settings import SimulationsSettings
+
+settings = SimulationsSettings()
 rho = 1.225
 kin_viscosity = 1.5e-5
 Reynolds = float(15*settings.tail_length/kin_viscosity)

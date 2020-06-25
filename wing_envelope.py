@@ -2,10 +2,9 @@ import numpy as np  # Import NumPy
 from RotationMatrix import RotationMatrix
 from CompMatrix import CompMatrix
 from Plumes import plumes
-from bird_model import WingState
 
 
-def wing_envelope(ws: WingState):
+def wing_envelope(ws):
 
     [plumesrot, plumesvec] = plumes()
     dim_plumesrot0 = np.size(plumesrot[0])

@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class SimulationsSettings():
+class SimulationsSettings:
 
     def __init__(self):
 
