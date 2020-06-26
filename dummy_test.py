@@ -1,7 +1,8 @@
 import numpy as np
 import bird_model as bm
 from bird import Shoulder, Elbow, Wrist, Joint
-from RungeKutta import RK2
+from rk_integrator import rk2
+from multiple_shooting import MultipleShooting
 # construct the bird with BirdModel
 
 
@@ -39,4 +40,4 @@ x0 = [16, 0, 0, 0]
 #plt.show()
 #x0 = [16, 0, 0, 0]
 #state_zero = mybird.dynamics(x0, 0)
-solution = RK2(mybird.dynamics, x0, time_array)
+point_distribution = MultipleShooting(x0, mybird).get_jacobian_numerical(x0, 0, 0.25)
