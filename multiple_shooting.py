@@ -11,13 +11,14 @@ class MultipleShooting:
         self.x0 = x0        # first initial guess
         self.model = model
         self.period = 1/(model.frequency)
-        self.time_steps = 100/(self.point_number - 1)
+        self.time_steps = int(100/(self.point_number - 1))
+        self.tau = (self.period)/(self.point_number-1)
 
-    def get_mappedpoint(self,x0, t0, deltat, time_steps):
+    def get_mappedpoint(self,x0, t0, deltat):
 
         t_final = t0 + deltat     # Final time
 
-        time_array = np.linspace(t0, t_final, time_steps)  # Time array for solution
+        time_array = np.linspace(t0, t_final, self.time_steps)  # Time array for solution
         solution = rk.rk2(self.model.dynamics, x0, time_array)
     #    sspSolution = ode.solve_ivp(birdEqn_py, [tInitial, tFinal], ssp0,'LSODA', max_step = deltat/Nt)
     #    sspSolution = (sspSolution.y).T
@@ -27,7 +28,6 @@ class MultipleShooting:
     def get_initial_guess(self):
 
         guessed_points = np.zeros([self.point_number,self.dimension])
-        tau = (self.period)/(self.point_number-1)
 
         # Type here the first guessed point, that will be used to calculate the other (point_number-1) points
 
@@ -36,7 +36,7 @@ class MultipleShooting:
         # Automatic routine to extract the remaining point_number-1 points for the flow.
         # Note this is not always the best way to guess points
         for i in range (1,self.point_number):
-            [guessed_points[i,0:], _] = self.get_mappedpoint(guessed_points[i-1,:], (i-1)*tau, tau, 30)
+            [guessed_points[i,0:], _] = self.get_mappedpoint(guessed_points[i-1,:], (i-1)*self.tau, self.tau)
         return guessed_points
 
 
@@ -155,8 +155,8 @@ class MultipleShooting:
 
             perturbation[j] = perturbation[j] + x0[j]*epsilon
             x0_pert = x0 + perturbation
-            [vel, _] = self.get_mappedpoint(x0, initial_time, integration_time, time_steps)
-            [vel_pert, _] =  self.get_mappedpoint(x0_pert, initial_time, integration_time, time_steps)
+            [vel, _] = self.get_mappedpoint(x0, initial_time, integration_time)
+            [vel_pert, _] =  self.get_mappedpoint(x0_pert, initial_time, integration_time)
             for i in range (self.dimension):
                 jacobian[i,j] = (vel_pert[i] - vel[i])/perturbation[j]
 
@@ -164,7 +164,33 @@ class MultipleShooting:
         print("... jacobian Calculated")
         return jacobian
 
-    def get_ms_scheme(self, x0, tau, **optional):
+    def get_df_vector(self, x0):
+        """
+
+
+        Similar to shootingMatrix(). Only form the difference matrix
+        Parameter: the same as shootingMatrix()
+        return: the different vector
+        """
+        # next line could be omitted and by calling self.dimension and self.point_number.
+        # implement change
+        M, N = x0.shape
+        #xx = states_stack
+        dF = np.zeros(M*N)
+        #self.tau = nstp*dt
+        x_m = x0[-1,:]
+        x_0 = x0[0,:]
+        for j in range(0, M - 1):
+            x_start = x0[j,:]
+            fx_start, complete_solution = self.get_mappedpoint(x_start, j*self.tau, self.tau)
+            x_end = x0[j+1,:]
+            dF[N*j: N*(j+1)] = -(fx_start - x_end)
+
+        dF[-N:] = -(x_m - x_0)
+
+        return dF
+
+    def get_ms_scheme(self, x0):
 
 
         """
@@ -188,8 +214,8 @@ class MultipleShooting:
         for i in range(0, self.point_number - 1):
             x_start = x0[i,:]
             x_end = x0[i+1,:]
-            jacobian = self.get_jacobian_numerical(x_start, i*tau, tau, **optional)
-            fx_start, trajectory_points = self.get_mappedpoint(x_start, i*tau, tau, self.time_steps, **optional)
+            jacobian = self.get_jacobian_analytical(x_start, i*self.tau, self.tau)
+            fx_start, trajectory_points = self.get_mappedpoint(x_start, i*self.tau, self.tau)
             complete_solution.append(trajectory_points)
             DF[(i*self.dimension):self.dimension+(i*self.dimension), (i*self.dimension)+self.dimension:2*self.dimension+(i*self.dimension)] = -np.eye(self.dimension)
             DF[(i*self.dimension):self.dimension+(i*self.dimension), (i*self.dimension):(i*self.dimension)+self.dimension] = jacobian
