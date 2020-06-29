@@ -5,8 +5,8 @@ import time
 
 class MultipleShooting:
 
-    def __init__(self, x0, model = None):
-        self.point_number = 2
+    def __init__(self, x0, M = 2, model = None):
+        self.point_number = M
         self.dimension = 4  # number of states of the ODE system
         self.x0 = x0        # first initial guess
         self.model = model

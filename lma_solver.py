@@ -3,7 +3,7 @@ import time
 from numpy.linalg import norm
 from numpy import inf
 import multiple_shooting as ms
-class lma_solver:
+class Solver:
 
     def __init__(self, tolerance = 1e-5, max_iterations = 100, ms_obj = None):
         self.tolerance = tolerance
