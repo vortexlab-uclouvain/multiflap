@@ -1,6 +1,7 @@
 import numpy as np
 import bird_model as bm
 import rk_integrator as rk
+import time
 
 class MultipleShooting:
 
@@ -11,6 +12,7 @@ class MultipleShooting:
         self.model = model
         self.period = 1/(model.frequency)
         self.time_steps = 100/(self.point_number - 1)
+
     def get_mappedpoint(self,x0, t0, deltat, time_steps):
 
         t_final = t0 + deltat     # Final time
@@ -36,6 +38,85 @@ class MultipleShooting:
         for i in range (1,self.point_number):
             [guessed_points[i,0:], _] = self.get_mappedpoint(guessed_points[i-1,:], (i-1)*tau, tau, 30)
         return guessed_points
+
+
+    def jacobian_ode(self, x0_jacobian, t):
+        """
+        Velocity function for the Jacobian integration
+
+        Inputs:
+        sspJacobian: (d+d^2)x1 dimensional state space vector including both the
+                     state space itself and the tangent space
+        t: Time. Has no effect on the function, we have it as an input so that our
+           ODE would be compatible for use with generic integrators from
+           scipy.integrate
+
+        Outputs:
+        velJ = (d+d^2)x1 dimensional velocity vector
+        """
+
+        # Prendo il vettore sspJacobian (d + d^2) e la parte d la riempio, mentre
+        # la parte d^2 la trasformo nel Jacobiano (d x d)
+        x0 = x0_jacobian[0:self.dimension]  # First three (or d in general) elements form the original state
+                                # space vector
+        J = x0_jacobian[self.dimension:].reshape((self.dimension, self.dimension))  # Last nine elements corresponds to
+                                             # the elements of Jacobian.
+        #We used numpy.reshape function to reshape d^2 self.dimensionensional vector which
+        #hold the elements of Jacobian into a dxd matrix.
+        #See
+        #http://docs.scipy.org/doc/numpy/reference/generated/numpy.reshape.html
+        #for the reference for numpy.reshape function
+
+        velJ = np.zeros(np.size(x0_jacobian))  # Initiate the velocity vector as a
+                                               # vector of same size with
+                                               # x0_jacobian (d + d^2)
+    #    velJ[0:self.dimension] = birdEqn_py(t, ssp)
+        velJ[0:self.dimension] = self.model.dynamics(x0, t)
+
+
+        #Last dxd elements of the velJ are determined by the action of
+        #stability matrix on the current value of the Jacobian:
+
+        velTangent = np.dot(self.model.get_stability_matrix(x0, t), J)  # Velocity matrix (calculated in the ssp
+                                                      # points)  for the tangent space
+
+        velJ[self.dimension:] = np.reshape(velTangent, self.dimension**2)  # Another use of numpy.reshape, here
+                                              # to convert from dxd to d^2
+
+        return velJ
+
+    def get_jacobian_analytical(self, x0, initial_time, integration_time):
+
+        """
+        Jacobian function for the trajectory started on ssp, evolved for time t
+
+        Inputs:
+        ssp: Initial state space point. dx1 NumPy array: ssp = [x, y, z]
+        t: Integration time
+        Outputs:
+        J: Jacobian of trajectory f^t(ssp). dxd NumPy array
+        """
+        #Hint: See the Jacobian calculation in CycleStability.py
+        Jacobian0 = np.identity(self.dimension) #Initial condition for Jacobian matrix
+    #    Jacobian0[0,1] = 0.1
+        sspJacobian0 = np.zeros(self.dimension + self.dimension ** 2)  # Initiate
+        sspJacobian0[0:self.dimension] = x0  # First 3 elemenets
+        sspJacobian0[self.dimension:] = np.reshape(Jacobian0, self.dimension**2)  # Remaining 9 elements
+        #print(sspJacobian0)
+        t_Final = initial_time + integration_time  # Final time
+        Nt = 25  # Number of time points to be used in the integration
+        tArray = np.linspace(initial_time, t_Final, Nt)  # Time array for solution
+        start_jac = time.time()
+    #    sspJacobianSolution = ode.solve_ivp(JacobianVelocity,[t_initial, t_Final], sspJacobian0, 'RK45')
+        sspJacobianSolution = rk.rk2(self.jacobian_ode, sspJacobian0, tArray)
+        end_jac = time.time()
+        print("Jacobian time ", (end_jac-start_jac))
+
+    #    sspJacobianSolution = sspJacobianSolution.y.T
+        #Read the Jacobian for the periodic orbit:
+        J = sspJacobianSolution[-1, self.dimension:].reshape((self.dimension, self.dimension))
+        return J
+
 
     def get_jacobian_numerical(self, x0, initial_time, integration_time):
 
@@ -85,6 +166,7 @@ class MultipleShooting:
 
     def get_ms_scheme(self, x0, tau, **optional):
 
+
         """
         Initialization of DF matrix and dF vector
         """
@@ -106,11 +188,11 @@ class MultipleShooting:
         for i in range(0, self.point_number - 1):
             x_start = x0[i,:]
             x_end = x0[i+1,:]
-            Jacob = self.get_jacobian_numerical(x_start, i*tau, tau, **optional)
+            jacobian = self.get_jacobian_numerical(x_start, i*tau, tau, **optional)
             fx_start, trajectory_points = self.get_mappedpoint(x_start, i*tau, tau, self.time_steps, **optional)
             complete_solution.append(trajectory_points)
             DF[(i*self.dimension):self.dimension+(i*self.dimension), (i*self.dimension)+self.dimension:2*self.dimension+(i*self.dimension)] = -np.eye(self.dimension)
-            DF[(i*self.dimension):self.dimension+(i*self.dimension), (i*self.dimension):(i*self.dimension)+self.dimension] = Jacob
+            DF[(i*self.dimension):self.dimension+(i*self.dimension), (i*self.dimension):(i*self.dimension)+self.dimension] = jacobian
             dF[(i*self.dimension):self.dimension+(i*self.dimension)] = -(fx_start - x_end)
 
         trajectory = np.asanyarray(complete_solution)

@@ -1,6 +1,6 @@
 import numpy as np
 
-def rk4(ode_system, x0, time_array, **optional):
+def rk4(ode_system, x0, time_array):
     """
     Runge-Kutta 4 Integrator.
     Inputs:
@@ -25,17 +25,17 @@ def rk4(ode_system, x0, time_array, **optional):
         #Read time element:
         deltat = time_array[i + 1] - time_array[i]
         #Runge Kutta k's:
-        k1 = deltat * ode_system(solution[i], time_array[i], **optional)
-        k2 = deltat * ode_system(solution[i]+k1/2.0, time_array[i]+deltat/2.0, **optional)
-        k3 = deltat * ode_system(solution[i]+k2/2.0, time_array[i]+deltat/2.0, **optional)
-        k4 = deltat * ode_system(solution[i]+k3, time_array[i]+deltat, **optional)
+        k1 = deltat * ode_system(solution[i], time_array[i])
+        k2 = deltat * ode_system(solution[i]+k1/2.0, time_array[i]+deltat/2.0)
+        k3 = deltat * ode_system(solution[i]+k2/2.0, time_array[i]+deltat/2.0)
+        k4 = deltat * ode_system(solution[i]+k3, time_array[i]+deltat)
         #Next integration step:
         solution[i + 1] = solution[i] + ((k1 +2*k2 + 2*k3 + k4)/6.0)
     return solution
 
-def rk3(ode_system, x0, time_array, **optional):
+def rk3(ode_system, x0, time_array):
     """
-    Runge-Kutta 4 Integrator.
+    Runge-Kutta 3 Integrator.
     Inputs:
     VelocityFunction: Function name to integrate
                       this function must have two inputs namely state space
@@ -59,17 +59,17 @@ def rk3(ode_system, x0, time_array, **optional):
         deltat = time_array[i + 1] - time_array[i]
 
         #Runge Kutta k's:
-        k1 = deltat * ode_system(solution[i], time_array[i], **optional)
-        k2 = deltat * ode_system(solution[i]+k1/2.0, time_array[i]+deltat/2.0, **optional)
-        k3 = deltat * ode_system(solution[i] -k1 + 2*k2, time_array[i]+deltat, **optional)
+        k1 = deltat * ode_system(solution[i], time_array[i])
+        k2 = deltat * ode_system(solution[i]+k1/2.0, time_array[i]+deltat/2.0)
+        k3 = deltat * ode_system(solution[i] -k1 + 2*k2, time_array[i]+deltat)
         #Next integration step:
         solution[i + 1] = solution[i] + ((k1 +4*k2 + k3)/6.0)
 
     return solution
 
-def rk2( ode_system, x0, time_array, **optional):
+def rk2( ode_system, x0, time_array):
     """
-    Runge-Kutta 4 Integrator.
+    Runge-Kutta 2 Integrator.
     Inputs:
     VelocityFunction: Function name to integrate
                       this function must have two inputs namely state space
@@ -92,8 +92,8 @@ def rk2( ode_system, x0, time_array, **optional):
         #Read time element:
         deltat = time_array[i + 1] - time_array[i]
         #Runge Kutta k's:
-        k1 = deltat * ode_system(solution[i], time_array[i], **optional)
-        k2 = deltat * ode_system(solution[i]+k1*(2/3), time_array[i]+deltat*(2./3.), **optional)
+        k1 = deltat * ode_system(solution[i], time_array[i])
+        k2 = deltat * ode_system(solution[i]+k1*(2/3), time_array[i]+deltat*(2./3.))
         #Next integration step:
         solution[i + 1] = solution[i] + (k1/4. + (3./4.)*k2)
 

@@ -8,7 +8,7 @@ from RotationMatrix import RotationMatrix
 from CompMatrix import CompMatrix
 from Plumes import plumes
 from collections import namedtuple
-from bird_dynamics import dynamics, get_aeroforces
+from bird_dynamics import dynamics, get_aeroforces, get_stability_matrix
 
 WingState = namedtuple('WingState',[
     'shoulder_x',
@@ -495,7 +495,7 @@ class BirdModel:
     # calling methods of BirdModel that are defined in other files
     get_aeroforces = get_aeroforces
     dynamics = dynamics
-
+    get_stability_matrix = get_stability_matrix
 bird_shoulder = Shoulder(axis_x=Joint(0.2,0.014,-np.pi/2), 
                          axis_y=Joint(-np.deg2rad(19),np.pi/12,np.pi/2), 
                          axis_z=Joint(0,np.deg2rad(42),np.pi))

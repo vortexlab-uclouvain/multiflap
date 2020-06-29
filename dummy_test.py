@@ -21,7 +21,7 @@ initial_time = 0.
 final_time = 0.25
 time_steps = 100
 time_array = np.linspace(initial_time, final_time, time_steps)
-x0 = [16, 0, 0, 0]
+x0 = [16, 0.4, 0.4, 0.4]
 #lift = []
 #for i in range (len(time_array)):
 #    aeroforces = mybird.get_aeroforces(x0, time_array[i])
@@ -40,4 +40,4 @@ x0 = [16, 0, 0, 0]
 #plt.show()
 #x0 = [16, 0, 0, 0]
 #state_zero = mybird.dynamics(x0, 0)
-point_distribution = MultipleShooting(x0, mybird).get_jacobian_numerical(x0, 0, 0.25)
+point_distribution = MultipleShooting(x0, mybird).get_jacobian_analytical(x0, 0, 0.25)
