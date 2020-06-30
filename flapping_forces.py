@@ -1,5 +1,4 @@
 import numpy as np  # Import NumPy
-from bird_line import bird_line
 from MergeLines import MergeLines
 import circulation
 import TailModels as TailModel
