@@ -1,7 +1,6 @@
 import numpy as np  # Import NumPy
 from smooth_quarterline import smooth_quarterline
-from distance_point2line import distance_point2line
-from distance_line2line import distance_line2line
+from distances_functions import distance_point2line, distance_line2line
 
 
 def improveline_new(line, chord_leadingedge, chord_trailingedge, leadingedge, trailingedge):

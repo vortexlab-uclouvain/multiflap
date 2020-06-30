@@ -47,5 +47,3 @@ class Wrist():
             self.axis_y = axis_y
         if isinstance(axis_z, Joint):
             self.axis_z = axis_z
-            
-

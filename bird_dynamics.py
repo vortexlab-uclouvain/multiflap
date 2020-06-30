@@ -1,5 +1,4 @@
 import numpy as np  # Import NumPy
-import RungeKutta as rk
 from flapping_forces import get_flappingforces
 import settings as settings
 import scipy.integrate as ode

@@ -24,7 +24,7 @@ mybird = bm.BirdModel(shoulder=bird_shoulder, elbow=bird_elbow, wrist=bird_wrist
 x0 = [18., 0.5, 0.1, 0.01]
 
 # generate multiple-shooting object
-ms_obj = ms.MultipleShooting(x0, M = 4, model = mybird)
+ms_obj = ms.MultipleShooting(x0, M = 2, model = mybird)
 
 # call the LMA solver
 mysol = Solver(ms_obj = ms_obj).lma('/Users/gducci/UCL/PROJECT/Simulations/class_test')

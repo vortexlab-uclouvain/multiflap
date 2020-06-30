@@ -11,7 +11,7 @@ class MultipleShooting:
         self.x0 = x0        # first initial guess
         self.model = model
         self.period = 1/(model.frequency)
-        self.time_steps = int(100/(self.point_number - 1))
+        self.time_steps = int(70/(self.point_number - 1))
         self.tau = (self.period)/(self.point_number-1)
 
     def get_mappedpoint(self,x0, t0, deltat):

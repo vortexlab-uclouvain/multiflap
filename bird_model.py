@@ -1,9 +1,6 @@
 import numpy as np
 from bird import Joint, Shoulder, Elbow, Wrist
-from smooth_line import smooth_line
-from smooth_quarterline import smooth_quarterline
-from quarterchord_naive import quarterchord_naive
-from improveline_iteration import improveline_iteration
+from line_functions import smooth_line, smooth_quarterline, quarterchord_naive, improveline_iteration
 from RotationMatrix import RotationMatrix
 from CompMatrix import CompMatrix
 from Plumes import plumes
