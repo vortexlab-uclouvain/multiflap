@@ -1,4 +1,5 @@
 import numpy as np
+import collections
 
 def rk4(ode_system, x0, time_array):
     """
@@ -82,12 +83,14 @@ def rk2( ode_system, x0, time_array):
     solution: Nt x d NumPy array which contains numerical solution of the
                    ODE.
     """
+    
+    rk_sol = collections.namedtuple('rk_sol',['x', 't'])
     #Generate the solution array to fill in:
     solution = np.zeros((np.size(time_array, 0),
                               np.size(x0, 0)))
     #Assign the initial condition to the first element:
     solution[0, :] = x0
-
+    
     for i in range(0, np.size(time_array)-1):
         #Read time element:
         deltat = time_array[i + 1] - time_array[i]
@@ -96,5 +99,6 @@ def rk2( ode_system, x0, time_array):
         k2 = deltat * ode_system(solution[i]+k1*(2./3.), time_array[i]+deltat*(2./3.))
         #Next integration step:
         solution[i + 1] = solution[i] + (k1/4. + (3./4.)*k2)
-
-    return solution
+    
+    sol = rk_sol(solution, time_array)
+    return sol

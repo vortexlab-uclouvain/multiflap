@@ -1,6 +1,7 @@
 import numpy as np
 from .rk_integrator import rk2, rk3, rk4
 import time
+import collections
 
 class MultipleShooting:
 
@@ -10,7 +11,7 @@ class MultipleShooting:
         self.x0 = x0        # first initial guess
         self.model = model
         self.period = 1/(model.frequency)
-        self.time_steps = int(70/(self.point_number - 1))
+        self.time_steps = 25
         self.tau = (self.period)/(self.point_number-1)
 
     def get_mappedpoint(self,x0, t0, deltat):
@@ -25,19 +26,20 @@ class MultipleShooting:
 
         Outputs:
             mapped_point: last element of the time integration
-            solution: complete trajectory traced out from x0(t0) for a t=deltat
+            solution: complete trajectory traced out from x0(t0) for t = deltat
 
 
         """
         t_final = t0 + deltat     # Final time
 
         time_array = np.linspace(t0, t_final, self.time_steps)
-        solution = rk2(self.model.dynamics, x0, time_array)
+        rk_solution = rk2(self.model.dynamics, x0, time_array)
     #    sspSolution = ode.solve_ivp(birdEqn_py, 
                         #[tInitial, tFinal], ssp0,'LSODA', max_step = deltat/Nt)
     #    sspSolution = (sspSolution.y).T
+        solution = rk_solution.x
         mapped_point = solution[-1, :]  # Read the final point to sspdeltat
-        return mapped_point, solution
+        return mapped_point, rk_solution
 
     def get_initial_guess(self):
 
@@ -127,10 +129,10 @@ class MultipleShooting:
 
         Inputs:
             x0 : Initial point of the phase space. len(x0) = dimension
-            initial_time: explicit initial time, as the system is non-autonomous
+            initial_time: initial time needed as the system is non-autonomous
             integration_time: integration time
         Outputs:
-            J: Jacobian (or Monodromy Matrix) of flow from t -> t+integration_time
+            J: Jacobian (Monodromy Matrix) of flow from t -> t+integration_time
         """
 
         # Initial conditions (ic) for Jacobian matrix (see 7.18 Seydel)
@@ -145,7 +147,7 @@ class MultipleShooting:
 
 
         t_Final = initial_time + integration_time
-        Nt = 25  # interval discretization for computing the integration
+        Nt = 5  # interval discretization for computing the integration
 
         tArray = np.linspace(initial_time, t_Final, Nt)
 
@@ -154,11 +156,12 @@ class MultipleShooting:
     #   jac_elements_solution = ode.solve_ivp(jacobian_ode,[t_initial, t_Final],
                                 #jacODE_ic, 'RK45')
 
-        jac_elements_solution = rk2(self.jacobian_ode, jacODE_ic, tArray)
+        rk_jac_elements_solution = rk2(self.jacobian_ode, jacODE_ic, tArray)
 
         end_jac = time.time()
         print("Jacobian time ", (end_jac-start_jac))
-
+        
+        jac_elements_solution = rk_jac_elements_solution.x
     #    jac_elements_solution = jac_elements_solution.y.T
         # Pack back the jacobian in matrix:
         J = jac_elements_solution[-1, self.dim:].reshape((self.dim,
@@ -203,12 +206,20 @@ class MultipleShooting:
             perturbation = np.zeros(self.dim)
 
             perturbation[j] = perturbation[j] + x0[j]*epsilon
+
             x0_pert = x0 + perturbation
-            [vel, _] = self.get_mappedpoint(x0, initial_time, integration_time)
+
+            [vel, _] = self.get_mappedpoint(x0,
+                                            initial_time,
+                                            integration_time)
+
             [vel_pert, _] =  self.get_mappedpoint(x0_pert,
                                                   initial_time,
                                                   integration_time)
+
+
             for i in range (self.dim):
+
                 jacobian[i,j] = (vel_pert[i] - vel[i])/perturbation[j]
 
 
@@ -221,9 +232,13 @@ class MultipleShooting:
         Error vector -(f(x_i) - x_{i+1})
         dim: n x M
 
+        Inputs:
+            x0: array of points of multiple-shooting scheme
+
+        Output:
+            dF: error vector, rhs of the multiple shooting scheme
 
         """
-        # next line could be omitted and by calling self.dim and self.point_number.
         # implement change
         M, N = x0.shape
         #xx = states_stack
@@ -231,17 +246,24 @@ class MultipleShooting:
         #self.tau = nstp*dt
         x_m = x0[-1,:]
         x_0 = x0[0,:]
+        LimitCycle = collections.namedtuple('LimitCycle',['space', 'time'])
+        complete_solution = np.zeros([(self.time_steps*(self.point_number-1)), N])
+        time = np.zeros(self.time_steps*(self.point_number-1))
         for j in range(0, M - 1):
             x_start = x0[j,:]
-            fx_start, complete_solution = self.get_mappedpoint(x_start,
+            fx_start, trajectory_tuple = self.get_mappedpoint(x_start,
                                                                j*self.tau,
                                                                self.tau)
+            trajectory = trajectory_tuple.x
+            relative_time = trajectory_tuple.t
+            complete_solution[j*(self.time_steps):j*(self.time_steps)+(self.time_steps),:] = trajectory[0:,:]
+            time[j*(self.time_steps):j*(self.time_steps)+(self.time_steps)] = relative_time
             x_end = x0[j+1,:]
             dF[N*j: N*(j+1)] = -(fx_start - x_end)
 
         dF[-N:] = -(x_m - x_0)
-
-        return dF, complete_solution
+        solution_tuple = LimitCycle(complete_solution, time)
+        return dF, solution_tuple
 
     def get_ms_scheme(self, x0):
 
@@ -250,39 +272,30 @@ class MultipleShooting:
         Initialization of DF matrix and dF vector
         """
         # The dimension of the MultiShooting matrix is (NxM,NxM)
-        DF = np.zeros([self.dim*self.point_number, self.dim*(self.point_number)])
-
-        # The dimension of the error vector is (self.dimxself.point_number)
-        dF = np.zeros(self.dim*self.point_number)
-
-
-        # Last guessed point x_m
-        x_m = x0[-1,:]
-
-        # starting guessed point x_0
-        x_0 = x0[0,:]
+        DF = np.zeros([self.dim*self.point_number,
+                       self.dim*(self.point_number)])
 
         # Routine to fill the rest of the scheme
-        complete_solution = []
+        #complete_solution = []
         for i in range(0, self.point_number - 1):
             x_start = x0[i,:]
-            x_end = x0[i+1,:]
-            jacobian = self.get_jacobian_analytical(x_start, i*self.tau, self.tau)
-            fx_start, trajectory_points = self.get_mappedpoint(x_start, i*self.tau, self.tau)
-            complete_solution.append(trajectory_points)
+            jacobian = self.get_jacobian_analytical(x_start, i*self.tau,
+                                                    self.tau)
+
+
             DF[(i*self.dim):self.dim+(i*self.dim),
                (i*self.dim)+self.dim:2*self.dim+(i*self.dim)] = -np.eye(self.dim)
+
 
             DF[(i*self.dim):self.dim+(i*self.dim),
                (i*self.dim):(i*self.dim)+self.dim] = jacobian
 
-            dF[(i*self.dim):self.dim+(i*self.dim)] = -(fx_start - x_end)
 
-        trajectory = np.asanyarray(complete_solution)
+        #trajectory = np.asanyarray(complete_solution)
         # Last block of the scheme
         DF[-self.dim:, 0:self.dim] = -np.eye(self.dim)
         DF[-self.dim:, -self.dim:] = np.eye(self.dim)
-        dF[-self.dim:] = -(x_m - x_0)
-    #    print(dF)
+
+        [dF, trajectory_tuple] = self.get_df_vector(x0)
         print("Error vector is", dF)
-        return DF, dF, trajectory
+        return DF, dF, trajectory_tuple

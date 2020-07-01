@@ -74,7 +74,7 @@ class Solver:
                 # Update of the solution
                 for k in range(self.ms_obj.point_number):
                     x[k,:] = x[k,:] + delta_x[k*self.ms_obj.dim:(k+1)*self.ms_obj.dim]
-                dF_new = self.ms_obj.get_df_vector(x)
+                [dF_new,_] = self.ms_obj.get_df_vector(x)
                 if norm(dF_new, inf) < norm(dF, inf):
                     #x = x_new;
                     # tau = tau
