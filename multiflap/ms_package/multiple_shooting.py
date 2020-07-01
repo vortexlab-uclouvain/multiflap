@@ -41,17 +41,23 @@ class MultipleShooting:
 
     def jacobian_ode(self, x0_jacobian, t):
         """
-        Velocity function for the Jacobian integration
+        Set up the additional ODE system (d + d^2) to evaluate analytically the Jacobian matrix.
+        This function is used to unpack the Jacobian elements to solve
 
+        \dot{J} = AJ
+
+        It reshapes Equation (7.18) of Seydel's book "Practical Bifurcation and Stability Analysis"
+        in order get the components of the Jacobian via numerical integration
         Inputs:
-        sspJacobian: (d+d^2)x1 dimensional state space vector including both the
+        x0_jacobian: (d+d^2) initial values
                      state space itself and the tangent space
         t: Time. Has no effect on the function, we have it as an input so that our
            ODE would be compatible for use with generic integrators from
            scipy.integrate
 
         Outputs:
-        velJ = (d+d^2)x1 dimensional velocity vector
+        jac_elements_ODE = (d+d^2) dimensional velocity vector
+
         """
 
         # Prendo il vettore sspJacobian (d + d^2) e la parte d la riempio, mentre
@@ -66,11 +72,11 @@ class MultipleShooting:
         #http://docs.scipy.org/doc/numpy/reference/generated/numpy.reshape.html
         #for the reference for numpy.reshape function
 
-        velJ = np.zeros(np.size(x0_jacobian))  # Initiate the velocity vector as a
+        jac_elements_ODE = np.zeros(np.size(x0_jacobian))  # Initiate the velocity vector as a
                                                # vector of same size with
                                                # x0_jacobian (d + d^2)
     #    velJ[0:self.dimension] = birdEqn_py(t, ssp)
-        velJ[0:self.dimension] = self.model.dynamics(x0, t)
+        jac_elements_ODE[0:self.dimension] = self.model.dynamics(x0, t)
 
 
         #Last dxd elements of the velJ are determined by the action of
@@ -79,41 +85,47 @@ class MultipleShooting:
         velTangent = np.dot(self.model.get_stability_matrix(x0, t), J)  # Velocity matrix (calculated in the ssp
                                                       # points)  for the tangent space
 
-        velJ[self.dimension:] = np.reshape(velTangent, self.dimension**2)  # Another use of numpy.reshape, here
+        jac_elements_ODE[self.dimension:] = np.reshape(velTangent, self.dimension**2)  # Another use of numpy.reshape, here
                                               # to convert from dxd to d^2
 
-        return velJ
+        return jac_elements_ODE
 
     def get_jacobian_analytical(self, x0, initial_time, integration_time):
 
         """
-        Jacobian function for the trajectory started on ssp, evolved for time t
+        Return the Jacobian (or Monodromy Matrix) of the flow, starting from x0
+        and integrated for a time "integration_time".
+
+        It solves numerically the (d + d^2) ODE system.
+
+        Reference: Equation (7.18) Seydel's book "Practical Bifurcation and Stability Analysis".
 
         Inputs:
-        ssp: Initial state space point. dx1 NumPy array: ssp = [x, y, z]
-        t: Integration time
+        x0 : Initial point of the phase space. len(x0) = dimension
+        initial_time: explicit initial time, as the system is non-autonomous
+        integration_time: integration time
         Outputs:
-        J: Jacobian of trajectory f^t(ssp). dxd NumPy array
+        J: Jacobian (or Monodromy Matrix) of trajectory from t -> t+integration_time.
         """
-        #Hint: See the Jacobian calculation in CycleStability.py
-        Jacobian0 = np.identity(self.dimension) #Initial condition for Jacobian matrix
-    #    Jacobian0[0,1] = 0.1
-        sspJacobian0 = np.zeros(self.dimension + self.dimension ** 2)  # Initiate
-        sspJacobian0[0:self.dimension] = x0  # First 3 elemenets
-        sspJacobian0[self.dimension:] = np.reshape(Jacobian0, self.dimension**2)  # Remaining 9 elements
-        #print(sspJacobian0)
+
+        jacobian_inital_conditions = np.identity(self.dimension) # Initial condition for Jacobian matrix (see 7.18 Seydel)
+
+        jacODE_initial_conditions = np.zeros(self.dimension + self.dimension ** 2)  # Initiate
+        jacODE_initial_conditions[0:self.dimension] = x0  # First 3 elemenets
+        jacODE_initial_conditions[self.dimension:] = np.reshape(jacobian_inital_conditions, self.dimension**2)  # Remaining 9 elements
+        #print(jacODE_initial_conditions)
         t_Final = initial_time + integration_time  # Final time
         Nt = 25  # Number of time points to be used in the integration
         tArray = np.linspace(initial_time, t_Final, Nt)  # Time array for solution
         start_jac = time.time()
-    #    sspJacobianSolution = ode.solve_ivp(JacobianVelocity,[t_initial, t_Final], sspJacobian0, 'RK45')
-        sspJacobianSolution = rk2(self.jacobian_ode, sspJacobian0, tArray)
+    #   jac_elements_solution = ode.solve_ivp(JacobianVelocity,[t_initial, t_Final], jacODE_initial_conditions, 'RK45')
+        jac_elements_solution = rk2(self.jacobian_ode, jacODE_initial_conditions, tArray)
         end_jac = time.time()
         print("Jacobian time ", (end_jac-start_jac))
 
-    #    sspJacobianSolution = sspJacobianSolution.y.T
-        #Read the Jacobian for the periodic orbit:
-        J = sspJacobianSolution[-1, self.dimension:].reshape((self.dimension, self.dimension))
+    #    jac_elements_solution = jac_elements_solution.y.T
+        # Pack back the jacobian in matrix:
+        J = jac_elements_solution[-1, self.dimension:].reshape((self.dimension, self.dimension))
         return J
 
 
