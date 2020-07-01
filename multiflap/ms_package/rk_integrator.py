@@ -93,7 +93,7 @@ def rk2( ode_system, x0, time_array):
         deltat = time_array[i + 1] - time_array[i]
         #Runge Kutta k's:
         k1 = deltat * ode_system(solution[i], time_array[i])
-        k2 = deltat * ode_system(solution[i]+k1*(2/3), time_array[i]+deltat*(2./3.))
+        k2 = deltat * ode_system(solution[i]+k1*(2./3.), time_array[i]+deltat*(2./3.))
         #Next integration step:
         solution[i + 1] = solution[i] + (k1/4. + (3./4.)*k2)
 
