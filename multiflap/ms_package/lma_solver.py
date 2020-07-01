@@ -54,13 +54,13 @@ class Solver:
                 print("Calculating Floquet Multipliers")
     #            Jacobian = func.JacobianNumerical(x, 0, (M - 1)*tau)
                 ptlist.append(1*x)
-                Jacobian_semigroup = np.eye(self.ms_obj.dimension)
+                Jacobian_semigroup = np.eye(self.ms_obj.dim)
                 # =============================================================================
                 #    Evaluation of Jacobian, using Semigroup property
                 # =============================================================================
                 for i in range(0, self.ms_obj.point_number- 1):
-                    Jacobian_semigroup = (DF[(i*self.ms_obj.dimension):self.ms_obj.dimension+(i*self.ms_obj.dimension),
-                                             (i*self.ms_obj.dimension):(i*self.ms_obj.dimension)+self.ms_obj.dimension]).dot(Jacobian_semigroup)
+                    Jacobian_semigroup = (DF[(i*self.ms_obj.dim):self.ms_obj.dim+(i*self.ms_obj.dim),
+                                             (i*self.ms_obj.dim):(i*self.ms_obj.dim)+self.ms_obj.dim]).dot(Jacobian_semigroup)
 
                 break
 
@@ -73,7 +73,7 @@ class Solver:
 
                 # Update of the solution
                 for k in range(self.ms_obj.point_number):
-                    x[k,:] = x[k,:] + delta_x[k*self.ms_obj.dimension:(k+1)*self.ms_obj.dimension]
+                    x[k,:] = x[k,:] + delta_x[k*self.ms_obj.dim:(k+1)*self.ms_obj.dim]
                 dF_new = self.ms_obj.get_df_vector(x)
                 if norm(dF_new, inf) < norm(dF, inf):
                     #x = x_new;
