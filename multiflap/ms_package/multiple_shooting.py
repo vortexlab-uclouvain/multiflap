@@ -11,7 +11,7 @@ class MultipleShooting:
         self.x0 = x0        # first initial guess
         self.model = model
         self.period = 1/(model.frequency)
-        self.time_steps = 25
+        self.t_steps = 25
         self.tau = (self.period)/(self.point_number-1)
 
     def get_mappedpoint(self,x0, t0, deltat):
@@ -32,7 +32,7 @@ class MultipleShooting:
         """
         t_final = t0 + deltat     # Final time
 
-        time_array = np.linspace(t0, t_final, self.time_steps)
+        time_array = np.linspace(t0, t_final, self.t_steps)
         rk_solution = rk2(self.model.dynamics, x0, time_array)
     #    sspSolution = ode.solve_ivp(birdEqn_py, 
                         #[tInitial, tFinal], ssp0,'LSODA', max_step = deltat/Nt)
@@ -54,23 +54,24 @@ class MultipleShooting:
             x0: initial value at time t
 
         Output:
-            guessed_points: guessed points spread in the phase space
+            guessed_pts: guessed points spread in the phase space
 
 
         """
-        guessed_points = np.zeros([self.point_number,self.dim])
+        guessed_pts = np.zeros([self.point_number,self.dim])
 
 
-        guessed_points[0,0:] = self.x0
+        guessed_pts[0,0:] = self.x0
 
         # Automatic routine to extract the remaining point_number-1 points
         # Note this is just one simple model to spread points. Other methods
         # may be used.
         for i in range (1,self.point_number):
-            [guessed_points[i,0:], _] = self.get_mappedpoint(guessed_points[i-1,:],
-                                                             (i-1)*self.tau, self.tau)
+            [guessed_pts[i,0:], _] = self.get_mappedpoint(guessed_pts[i-1,:],
+                                                             (i-1)*self.tau,
+                                                             self.tau)
 
-        return guessed_points
+        return guessed_pts
 
 
     def jacobian_ode(self, x0_jacobian, t):
@@ -160,7 +161,7 @@ class MultipleShooting:
 
         end_jac = time.time()
         print("Jacobian time ", (end_jac-start_jac))
-        
+
         jac_elements_solution = rk_jac_elements_solution.x
     #    jac_elements_solution = jac_elements_solution.y.T
         # Pack back the jacobian in matrix:
@@ -226,7 +227,7 @@ class MultipleShooting:
         print("... jacobian Calculated")
         return jacobian
 
-    def get_df_vector(self, x0):
+    def get_error_vector(self, x0):
         """
         Returns the right-hand side of the multiple-shooting scheme
         Error vector -(f(x_i) - x_{i+1})
@@ -236,43 +237,80 @@ class MultipleShooting:
             x0: array of points of multiple-shooting scheme
 
         Output:
-            dF: error vector, rhs of the multiple shooting scheme
+            error: error vector, rhs of the multiple shooting scheme
 
         """
         # implement change
-        M, N = x0.shape
+        m, n = x0.shape
         #xx = states_stack
-        dF = np.zeros(M*N)
+        error = np.zeros(m*n)
         #self.tau = nstp*dt
         x_m = x0[-1,:]
         x_0 = x0[0,:]
         LimitCycle = collections.namedtuple('LimitCycle',['space', 'time'])
-        complete_solution = np.zeros([(self.time_steps*(self.point_number-1)), N])
-        time = np.zeros(self.time_steps*(self.point_number-1))
-        for j in range(0, M - 1):
+        full_trajectory = np.zeros([(self.t_steps*(self.point_number-1)), n])
+        time = np.zeros(self.t_steps*(self.point_number-1))
+        steps = self.t_steps # just to reduce length lines
+        for j in range(0, m - 1):
             x_start = x0[j,:]
             fx_start, trajectory_tuple = self.get_mappedpoint(x_start,
                                                                j*self.tau,
                                                                self.tau)
             trajectory = trajectory_tuple.x
-            relative_time = trajectory_tuple.t
-            complete_solution[j*(self.time_steps):j*(self.time_steps)+(self.time_steps),:] = trajectory[0:,:]
-            time[j*(self.time_steps):j*(self.time_steps)+(self.time_steps)] = relative_time
-            x_end = x0[j+1,:]
-            dF[N*j: N*(j+1)] = -(fx_start - x_end)
+            delta_time = trajectory_tuple.t
 
-        dF[-N:] = -(x_m - x_0)
-        solution_tuple = LimitCycle(complete_solution, time)
-        return dF, solution_tuple
+            full_trajectory[j*(steps):j*(steps)+(steps),:] = trajectory[0:,:]
+
+            time[j*(steps):j*(steps)+(steps)] = delta_time
+            x_end = x0[j+1,:]
+            error[n*j: n*(j+1)] = -(fx_start - x_end)
+
+        error[-n:] = -(x_m - x_0)
+        solution_tuple = LimitCycle(full_trajectory, time)
+        return error, solution_tuple
 
     def get_ms_scheme(self, x0):
 
 
         """
-        Initialization of DF matrix and dF vector
+        Returns the multiple-shooting scheme to set up the equation:
+        MS * DX = E
+
+        Inputs:
+            x0: array of m-points of the multiple-shooting scheme
+
+        Outputs (M = points number, N = dimension):
+            MS = Multiple-Shooting matrix dim(NxM, NxM)
+            error = error vector dim(NxM),
+            trajectory_tuple = trajectory related to the initial value and
+                                time
+        -----------------------------------------------------------------------
+
+        Multiple-Shooting Matrix (MS):
+
+            dim(MS) = ((NxM) x (NxM))
+
+                     [  J(x_0, tau)  -I                                  ]
+                     [              J(x_1, tau)   -I                     ]
+            MS   =   [                .                                  ]
+                     [                 .                                 ]
+                     [                  .                                ]
+                     [                        J(x_{M-1}, tau)       I    ]
+                     [ -I ........................................  I    ]
+
+
+        Unknown Vector:                 Error vector:
+
+        dim(DX) = (NxM)                 dim(E) = (NxM)
+
+                [DX_0]                          [ f(x_0, tau) - x_1 ]
+        DX   =  [DX_1]                  E  =  - [ f(x_1, tau) - x_2 ]
+                [... ]                          [       ...         ]
+                [DX_M]                          [       x_M - x_0   ]
+
         """
         # The dimension of the MultiShooting matrix is (NxM,NxM)
-        DF = np.zeros([self.dim*self.point_number,
+        MS = np.zeros([self.dim*self.point_number,
                        self.dim*(self.point_number)])
 
         # Routine to fill the rest of the scheme
@@ -283,19 +321,19 @@ class MultipleShooting:
                                                     self.tau)
 
 
-            DF[(i*self.dim):self.dim+(i*self.dim),
-               (i*self.dim)+self.dim:2*self.dim+(i*self.dim)] = -np.eye(self.dim)
+            MS[(i*self.dim):self.dim+(i*self.dim),
+               (i*self.dim)+self.dim:2*self.dim+(i*self.dim)]=-np.eye(self.dim)
 
 
-            DF[(i*self.dim):self.dim+(i*self.dim),
+            MS[(i*self.dim):self.dim+(i*self.dim),
                (i*self.dim):(i*self.dim)+self.dim] = jacobian
 
 
         #trajectory = np.asanyarray(complete_solution)
         # Last block of the scheme
-        DF[-self.dim:, 0:self.dim] = -np.eye(self.dim)
-        DF[-self.dim:, -self.dim:] = np.eye(self.dim)
+        MS[-self.dim:, 0:self.dim] = -np.eye(self.dim)
+        MS[-self.dim:, -self.dim:] = np.eye(self.dim)
 
-        [dF, trajectory_tuple] = self.get_df_vector(x0)
-        print("Error vector is", dF)
-        return DF, dF, trajectory_tuple
+        [error, trajectory_tuple] = self.get_error_vector(x0)
+        print("Error vector is", error)
+        return MS, error, trajectory_tuple
