@@ -5,13 +5,13 @@ import collections
 
 class MultipleShooting:
 
-    def __init__(self, x0, M = 2, model = None):
+    def __init__(self, x0, M = 2, period = 0.25, t_steps = 25, model = None):
         self.point_number = M
         self.dim = 4  # number of states of the ODE system
         self.x0 = x0        # first initial guess
         self.model = model
-        self.period = 1/(model.frequency)
-        self.t_steps = 25
+        self.period = period
+        self.t_steps = t_steps
         self.tau = (self.period)/(self.point_number-1)
 
     def get_mappedpoint(self,x0, t0, deltat):
@@ -148,7 +148,7 @@ class MultipleShooting:
 
 
         t_Final = initial_time + integration_time
-        Nt = 15  # interval discretization for computing the integration
+        Nt = 50000  # interval discretization for computing the integration
 
         tArray = np.linspace(initial_time, t_Final, Nt)
 
@@ -317,7 +317,7 @@ class MultipleShooting:
         #complete_solution = []
         for i in range(0, self.point_number - 1):
             x_start = x0[i,:]
-            jacobian = self.get_jacobian_analytical(x_start, i*self.tau,
+            jacobian = self.get_jacobian_numerical(x_start, i*self.tau,
                                                     self.tau)
 
 
