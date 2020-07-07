@@ -11,9 +11,19 @@ class RedoxModel:
         self.e = e
         self.q = q
         self.p = p
-
+        self.dimension = 4
     def dynamics(self, x0, t):
 
+        """ODE system
+        This function will be passed to the numerical integrator
+
+        Inputs:
+            x0: initial values [u, w, q, theta]
+            t: time
+
+        Outputs:
+            x_dot: velocity vector
+        """
         D1, D2, R, A = x0
         dD1_dt = self.p - self.a*A*D1 - self.d*D1
         dD2_dt = self.d*D1 - self.e*D2
@@ -22,3 +32,24 @@ class RedoxModel:
 
         vel_array = np.array([dD1_dt, dD2_dt, dR_dt, dA_dt], float)
         return vel_array
+
+
+
+    def get_stability_matrix(self, x0, t):
+
+        """
+        Stability matrix of the ODE system for the longitudinal plane
+
+        Inputs:
+            x0: initial condition [u_0, w_0, q_0, theta_0]
+        Outputs:
+            A: Stability matrix evaluated at x0. (dxd) dimension
+            A[i, j] = dv[i]/dx[j]
+        """
+        D1, D2, R, A = x0
+        A_matrix = np.array([[-self.d - self.a*A,  0., 0.,-self.a*D1],
+                      [self.d,  -self.e, 0., 0.],
+                      [0., self.e, -self.q, 0.],
+                      [-self.a*A, 0., self.b*(1-A), -self.b*R -self.a*D1]], float)
+
+        return A_matrix

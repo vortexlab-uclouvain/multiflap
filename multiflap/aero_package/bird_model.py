@@ -5,7 +5,7 @@ from .RotationMatrix import RotationMatrix
 from .CompMatrix import CompMatrix
 from .Plumes import plumes
 from collections import namedtuple
-from ms_package.bird_dynamics import dynamics, get_aeroforces, get_stability_matrix
+from odes.bird_dynamics import dynamics, get_aeroforces, get_stability_matrix
 
 WingState = namedtuple('WingState',[
     'shoulder_x',
