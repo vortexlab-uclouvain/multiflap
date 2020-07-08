@@ -12,19 +12,20 @@ class Solver:
         self.ms_obj = ms_obj
 
     def lma(self, period, result_directory):
-        tau = period/(self.ms_obj.point_number-1)
+        tau = period/(self.ms_obj.point_number -1)
         damp = 1.0
         x0 = self.ms_obj.get_initial_guess()
         x = 1*(x0)
         ptlist = [x0]
         error = []
         dim = self.ms_obj.dim
+        x_new = x
         # Start the iterative scheme
         for i in range(self.max_iterations):
 
             start_timing = time.time()
             print("... Iteration i = " + str(i))
-
+            print("tau is:", tau)
             MS, E, complete_solution = self.ms_obj.get_ms_scheme(x, tau)
 
             epsilon = max(np.abs(E))
@@ -65,13 +66,13 @@ class Solver:
                 # Update of the solution
 
                 for k in range(self.ms_obj.point_number):
-                    x[k,:] = x[k,:] + delta_x[k*dim:(k+1)*dim]
-                tau_new = tau + delta_x[-1]/(self.ms_obj.point_number-1)
-                [E_new,_] = self.ms_obj.get_error_vector(x, tau_new)
+                    x_new[k,:] = x[k,:] + delta_x[k*dim:(k+1)*dim]
+                tau_new = tau + delta_x[-1]
+                [E_new,_] = self.ms_obj.get_error_vector(x_new, tau_new)
 
                 if norm(E_new, inf) < norm(E, inf):
                     tau = tau_new
-                    
+                    x = x_new
                     damp = damp / 10.0
                 else :
                     damp = damp * 10.0

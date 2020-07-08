@@ -249,8 +249,8 @@ class MultipleShooting:
         x_m = x0[-1,:]
         x_0 = x0[0,:]
         LimitCycle = collections.namedtuple('LimitCycle',['space', 'time'])
-        full_trajectory = np.zeros([(self.t_steps*(self.point_number-1)), n])
-        time = np.zeros(self.t_steps*(self.point_number-1))
+        full_trajectory = np.zeros([(self.t_steps*(self.point_number -1)), n])
+        time = np.zeros(self.t_steps*(self.point_number -1))
         steps = self.t_steps # just to reduce length lines
         for j in range(0, m - 1):
             x_start = x0[j,:]
@@ -311,50 +311,33 @@ class MultipleShooting:
 
         """
         # The dimension of the MultiShooting matrix is (NxM,NxM)
-        N = self.dim
+        # The dimension of the MultiShooting matrix is (NxM,NxM)
         MS = np.zeros([self.dim*self.point_number,
                        self.dim*(self.point_number) + 1])
-        dF = np.zeros(N*self.point_number)
 
         # Routine to fill the rest of the scheme
         #complete_solution = []
-            
-        for i in range(1, self.point_number):
-            # input your implementation here
-            x_start = x0[i-1,:]
-            x_end = x0[i,:]
+        for i in range(0, self.point_number - 1):
+            x_start = x0[i,:]
             jacobian = self.get_jacobian_analytical(x_start, i*tau,
                                                     tau)
-            
-            [fx_start,_] = self.get_mappedpoint(x_start, i*tau, tau)
-            MS[(i*N):N+(i*N), (i*N):N+(i*N)] = np.eye(N)
-            MS[(i*N):N+(i*N), (i*N)-N:(i*N)] = -jacobian
-            MS[(i*N):N+(i*N), -1] = - self.model.dynamics(fx_start, None)
-            dF[(i*N):N+(i*N)] = - (x_end - fx_start)
-            
-            
+
+            MS[(i*self.dim):self.dim+(i*self.dim),
+               (i*self.dim)+self.dim:2*self.dim+(i*self.dim)]=-np.eye(self.dim)
 
 
+            MS[(i*self.dim):self.dim+(i*self.dim),
+               (i*self.dim):(i*self.dim)+self.dim] = jacobian
 
-        x_start = x0[-1,:]
-        x_end = x0[0,:]
-        [fx_start,_] = self.get_mappedpoint(x_start, 0., tau)
-        MS[0:N, 0:N] = np.eye(N)
-        jacobian = self.get_jacobian_analytical(x_start, 0.,
-                                                    tau)
-        MS[0:N, -N-1:-1] = -jacobian 
-        
-        MS[0:N, -1] = - self.model.dynamics(fx_start, None)
-        dF[0:N] = - (x_end - fx_start)
 
-#        #trajectory = np.asanyarray(complete_solution)
-#        # Last block of the scheme
-#        MS[-self.dim:, 0:self.dim] = -np.eye(self.dim)
-#        MS[-self.dim:, -self.dim:] = np.eye(self.dim)
-#        [f_x_last, _] = self.get_mappedpoint(x0[-1,:],tau*(self.point_number-2) , tau*(self.point_number-1))
-#        last =  self.model.dynamics(f_x_last,None)
-#        MS[-self.dim:, -1] = -last
-
+            [mapped_point, complete_solution] = self.get_mappedpoint(x_start, i*tau, tau)
+            last_time = complete_solution.t[-1]
+            velocity = self.model.dynamics(mapped_point,last_time) 
+            MS[(i*self.dim):self.dim+(i*self.dim), -1] = velocity
+        #trajectory = np.asanyarray(complete_solution)
+        # Last block of the scheme
+        MS[-self.dim:, 0:self.dim] = -np.eye(self.dim)
+        MS[-self.dim:, -self.dim-1:-1] = np.eye(self.dim)
         [error, trajectory_tuple] = self.get_error_vector(x0, tau)
         print("Error vector is", error)
-        return MS, dF, trajectory_tuple
+        return MS, error, trajectory_tuple

@@ -11,9 +11,9 @@ x = [0.5, 0.5, 0.6, 0.2]
 time_array = np.linspace(0, 180, 90000)
 mymodel = RedoxModel()
 
-ms_obj =  MultipleShooting(x, M=2, period_guess= 24, t_steps=50000, model=mymodel)
+ms_obj =  MultipleShooting(x, M=2, period_guess= 23., t_steps=50000, model=mymodel)
 
-mysol = Solver(ms_obj = ms_obj).lma(24, '/Users/gducci/UCL/PROJECT/Simulations/class_test')
+mysol = Solver(ms_obj = ms_obj).lma(23., '/Users/gducci/UCL/PROJECT/Simulations/class_test')
 
 jac = mysol[4]
 
