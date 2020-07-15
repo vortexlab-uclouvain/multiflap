@@ -7,7 +7,7 @@ class MultipleShooting:
 
     def __init__(self, x0, M = 2, period_guess = None, t_steps = 25, model = None):
         self.point_number = M
-        self.dim = 4  # number of states of the ODE system
+        self.dim = model.dimension  # number of states of the ODE system
         self.x0 = x0        # first initial guess
         self.model = model
         self.t_steps = t_steps

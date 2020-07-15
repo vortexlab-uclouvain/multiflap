@@ -11,7 +11,7 @@ class Solver:
         self.max_iterations = max_iterations
         self.ms_obj = ms_obj
 
-    def lma(self, period, result_directory):
+    def lma(self, period):
         tau = period/(self.ms_obj.point_number -1)
         damp = 1.0
         x0 = self.ms_obj.get_initial_guess()
@@ -31,8 +31,8 @@ class Solver:
             epsilon = max(np.abs(E))
             error.append(epsilon)
             end_timing = time.time()
-            print("... Iteration " + str(i) + " time: " + str(end_timing - start_timing))
-            print("... Iteration number i = " + str(i) + " has error: " + str(norm(E, inf)))
+            print("Iteration " + str(i) + " time: " + str(end_timing - start_timing))
+            print("Iteration number i = " + str(i) + " has error: " + str(norm(E, inf)))
 
     #        np.save(data_sim_history+"/Checkpoint_Iteration_"+str(i), x)
     #        np.save(data_sim_history+"/Error_History", error)

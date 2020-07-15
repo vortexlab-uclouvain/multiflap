@@ -11,7 +11,7 @@ class Solver:
         self.max_iterations = max_iterations
         self.ms_obj = ms_obj
 
-    def lma(self, result_directory):
+    def lma(self):
 
         damp = 1.0
         x0 = self.ms_obj.get_initial_guess()
@@ -35,7 +35,6 @@ class Solver:
 
     #        np.save(data_sim_history+"/Checkpoint_Iteration_"+str(i), x)
     #        np.save(data_sim_history+"/Error_History", error)
-
 
             if epsilon < self.tolerance:
                 print("Iteration terminates at error : " + str(norm(E, inf)))
