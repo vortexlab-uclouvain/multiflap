@@ -8,7 +8,6 @@ This toolbox is optimised to study the limit cycle of flapping wings dynamics, b
 ## Installation and getting started
 
 `multiflap` runs on Python 3 and Python 2.  
-It is optional but highly recommended to use HSL linear solvers as a plugin with IPOPT.
 
 1.   Get a local copy of `multiflap`:
 
