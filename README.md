@@ -1,4 +1,4 @@
 # multiflap
 
-'multiflap' is a Python toolbox for finding periodic orbit of nonlinear systems
+`multiflap` is a Python toolbox for finding periodic orbit of nonlinear systems
 of ODEs.
