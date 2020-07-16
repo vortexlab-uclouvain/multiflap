@@ -11,12 +11,16 @@ This toolbox is optimised to study the limit cycle of flapping wings dynamics, b
 
 1.   Get a local copy of `multiflap`:
 
-     ```
-     git@git.immc.ucl.ac.be:gducci/multishooting_flapping.git 
-     ```
+```
+git@git.immc.ucl.ac.be:gducci/multishooting_flapping.git 
+```
 2. Add multiflap to the PYTHONPATH environment variable
 
 ```
 bash set_evironment_variable
 ```
+3. To run one of the examples, from the multiflap root directory:
 
+```
+python3 examples/rossler_system.py
+```
