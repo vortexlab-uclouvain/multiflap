@@ -49,12 +49,12 @@ mymodel = MyOdeClass()
 ```
 2. Call the multiple-shooting scheme. It take as arguments:
 
-* *x*: state space points guess
-* *M*: int, number of multiple-shooting points
-* *period_guess*: first guess of the periodic orbit period
-* *t_steps*: time steps from two consecutive points
-* *model*: ODE class
-* *option_jacobian*: 'numerical' or 'analytical' (if not specified, analytical is the default)
+* **x**: state space points guess
+* **M**: int, number of multiple-shooting points
+* **period_guess**: first guess of the periodic orbit period
+* **t_steps**: time steps from two consecutive points
+* **model**: ODE class
+* **option_jacobian**: 'numerical' or 'analytical' (if not specified, analytical is the default)
 
 ```
 ms_obj = MultipleShootingPeriod(x, M=2, period_guess= 23.,
