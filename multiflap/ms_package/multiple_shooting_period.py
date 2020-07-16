@@ -5,11 +5,13 @@ import collections
 from scipy.integrate import odeint
 class MultipleShootingPeriod:
 
-    def __init__(self, x0, M = 2, period_guess = None, t_steps = 25, model = None):
+    def __init__(self, x0, M = 2, period_guess = None,
+                 t_steps = 25, model = None, option_jacobian = 'analytical'):
         self.point_number = M
         self.dim = model.dimension  # number of states of the ODE system
         self.x0 = x0        # first initial guess
         self.model = model
+        self.option_jacobian = option_jacobian
         self.t_steps = t_steps
         self.period_guess = period_guess
 
@@ -319,8 +321,12 @@ class MultipleShootingPeriod:
         #complete_solution = []
         for i in range(0, self.point_number - 1):
             x_start = x0[i,:]
-            jacobian = self.get_jacobian_analytical(x_start, i*tau,
-                                                    tau)
+            if self.option_jacobian == 'analytical':
+                jacobian = self.get_jacobian_analytical(x_start, i*tau,
+                                                        tau)
+            if self.option_jacobian == 'numerical':
+                jacobian = self.get_jacobian_numerical(x_start, i*tau,
+                                                        tau)
 
             MS[(i*self.dim):self.dim+(i*self.dim),
                (i*self.dim)+self.dim:2*self.dim+(i*self.dim)]=-np.eye(self.dim)

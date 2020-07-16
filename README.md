@@ -32,5 +32,4 @@ multiflap/odes
 ```
 
 Examples of input file can be found [here](multiflap/odes).
-The name of the class is arbitrary, while the names of the methods (`dynamics` and `get_stability_matrix`) cannot be changed because this is the interface that communicates with the multiple-shooting kernel. If the stability matrix of the system is hard to hand-code, the user can run the code by setting the computation of the Jacobian matrix.
-
+The name of the class is arbitrary, while the names of the methods (`dynamics` and `get_stability_matrix`) cannot be changed because this is the interface that communicates with the multiple-shooting kernel. If the stability matrix of the system is hard to hand-code, the user can run the code by setting the numerical computation from the aguments of `MultipleShooting` and `MultipleShootingPeriod` classes, as shown in the [example](examples/redox_oscillator.py).
