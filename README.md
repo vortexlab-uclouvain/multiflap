@@ -26,7 +26,13 @@ python3 examples/rossler_system.py
 ```
 ## Input files
 
-The input file is the file containing the set of ODEs. The name of the class is arbitrary, while the names of the methods cannot be changed because this is the interface that communicates with the multiple-shooting kernel.
+The input file is the file containing the set of ODEs, and saved within the directory
+```
+multiflap/odes
+```
+
+Examples of input file can be found [here](multiflap/odes).
+The name of the class is arbitrary, while the names of the methods cannot be changed because this is the interface that communicates with the multiple-shooting kernel.
 
 ```
 class 'MyClass'
