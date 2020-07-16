@@ -47,7 +47,7 @@ For periodic orbits with unknown periods, the code relies on the modules `multip
 
 1. Build the model object. The model is created by calling the Class previously defined within [odes](multiflap/odes) directory.
 
-```
+```python
 mymodel = MyOdeClass()
 ```
 2. Call the multiple-shooting scheme. It take as arguments:
@@ -59,39 +59,39 @@ mymodel = MyOdeClass()
 * **model**: ODE class
 * **option_jacobian**: 'numerical' or 'analytical' (if not specified, analytical is the default)
 
-```
+```python
 ms_obj = MultipleShootingPeriod(x, M=2, period_guess= 23.,
 		t_steps=50000, model=mymodel, option_jacobian = 'analytical')
 ```
 3. Call the multiple-shooting solver.
-```
+```python
 mysolution = SolverPeriod(ms_obj = ms_obj).lma()
 ```
 
 #### Known period 
 
 
-For periodic orbits with unknown periods, the code relies on the modules `multiple_shooting_period.py` and `lma_solver_period.py`.
+For periodic orbits with unknown periods, the code relies on the modules `multiple_shooting.py` and `lma_solver.py`.
 
 1. Build the model object. The model is created by calling the Class previously defined within [odes](multiflap/odes) directory.
 
-```
+```python
 mymodel = MyOdeClass()
 ```
 2. Call the multiple-shooting scheme. It take as arguments:
 
 * **x**: state space points guess
 * **M**: int, number of multiple-shooting points
-* **period_guess**: first guess of the periodic orbit period
+* **period**: periodic orbit period
 * **t_steps**: time steps from two consecutive points
 * **model**: ODE class
 * **option_jacobian**: 'numerical' or 'analytical' (if not specified, analytical is the default)
 
-```
-ms_obj = MultipleShootingPeriod(x, M=2, period_guess= 23.,
-		t_steps=50000, model=mymodel, option_jacobian = 'analytical')
+```python
+ms_obj = MultipleShooting(x, M=2, period= 0.25,
+		t_steps=50, model=mymodel, option_jacobian = 'analytical')
 ```
 3. Call the multiple-shooting solver.
-```
-mysolution = SolverPeriod(ms_obj = ms_obj).lma()
+```python
+mysolution = Solver(ms_obj = ms_obj).lma()
 ```
