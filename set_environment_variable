@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+my_root_path=$(pwd)
+
+export PYTHONPATH=$my_root_path:$PYTHONPATH
+
+echo "environment path set in $my_root_path"

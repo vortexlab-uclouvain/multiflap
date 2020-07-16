@@ -3,7 +3,7 @@ from .rk_integrator import rk2, rk3, rk4
 import time
 import collections
 from scipy.integrate import odeint
-class MultipleShooting:
+class MultipleShootingPeriod:
 
     def __init__(self, x0, M = 2, period_guess = None, t_steps = 25, model = None):
         self.point_number = M

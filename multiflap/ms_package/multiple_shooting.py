@@ -150,7 +150,7 @@ class MultipleShooting:
 
 
         t_Final = initial_time + integration_time
-        Nt = 90000 #50000  # interval discretization for computing the integration
+        Nt = 30 #50000  # interval discretization for computing the integration
 
         tArray = np.linspace(initial_time, t_Final, Nt)
 
@@ -159,7 +159,7 @@ class MultipleShooting:
     #   jac_elements_solution = ode.solve_ivp(jacobian_ode,[t_initial, t_Final],
                                 #jacODE_ic, 'RK45')
 
-        rk_jac_elements_solution = rk4(self.jacobian_ode, jacODE_ic, tArray)
+        rk_jac_elements_solution = rk2(self.jacobian_ode, jacODE_ic, tArray)
 
         end_jac = time.time()
         print("Jacobian time ", (end_jac-start_jac))

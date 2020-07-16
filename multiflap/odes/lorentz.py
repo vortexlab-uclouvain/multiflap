@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class MyModel:
+class Lorentz:
     def __init__(self, a=None, b=None, c=None, d=None, e=None, q=None, p=None):
 
         self.a = a
