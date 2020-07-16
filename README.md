@@ -32,29 +32,5 @@ multiflap/odes
 ```
 
 Examples of input file can be found [here](multiflap/odes).
-The name of the class is arbitrary, while the names of the methods cannot be changed because this is the interface that communicates with the multiple-shooting kernel.
+The name of the class is arbitrary, while the names of the methods (`dynamics` and `get_stability_matrix`) cannot be changed because this is the interface that communicates with the multiple-shooting kernel. If the stability matrix of the system is hard to hand-code, the user can run the code by setting the computation of the Jacobian matrix.
 
-```
-class 'MyClass'
-	def __init__(self, a=None, b=None, c=None, d=None, e=None, q=None, p=None):
-
-		self.a = a
-		self.b = b
-		self.c = c
-		self.d = d
-		self.e = e
-		self.q = q
-		self.p = p
-	
-	def 'dynamics'(self, x0, t):
-
-		# type here ODEs
-		return vel_array
-	
-	def 'get_stability_matrix'(self, x0, t):
-
-		# type here the stability matrix
-
-		return A_matrix
-
-```
