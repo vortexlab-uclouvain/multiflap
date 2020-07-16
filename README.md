@@ -104,5 +104,21 @@ Lust, Kurt\
 International Journal of Bifurcation and Chaos, vol. 11, pp. 2389--2410, 2001
 
 ChaosBook, Chaos: Classical and Quantum \
-P. Cvitanovi\'c and R. Artuso and R. Mainieri and G. Tanner and G. Vattay \
+P. Cvitanovi\'c, R. Artuso, R. Mainieri, G. Tanner and G. Vattay \
 Niels Bohr Institute, Copenhagen 2016
+
+#### Example cases and validation
+
+###### Rossler's system
+Optimized shooting method for finding periodic orbits of nonlinear dynamical systems \
+Dednam, W and Botha, Andre E \
+Engineering with Computers, vol. 31, num. 4, pp. 749--762, 2015, Springer
+
+Contruction of Poincaré Return Maps for Rössler Flow \
+A. Basu \
+Tech. Report, School of Engineering, Georgia Institute of Technology, 2007 
+
+###### Redox oscillator ([odes](multiflap/odes/redox_oscillation.py))
+A Robust Model for Circadian Redox Oscillations \
+del Olmo, M.; Kramer, A.; Herzel, H.
+*Int. J. Mol. Sci.*, **2019**, 20, 2368
