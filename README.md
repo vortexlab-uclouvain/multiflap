@@ -95,3 +95,14 @@ ms_obj = MultipleShooting(x, M=2, period= 0.25,
 ```python
 mysolution = Solver(ms_obj = ms_obj).lma()
 ```
+## Literature
+
+#### Multiple shooting scheme 
+
+Improved numerical Floquet multipliers \
+Lust, Kurt\
+International Journal of Bifurcation and Chaos, vol. 11, pp. 2389--2410, 2001
+
+ChaosBook, Chaos: Classical and Quantum \
+P. Cvitanovi\'c and R. Artuso and R. Mainieri and G. Tanner and G. Vattay \
+Niels Bohr Institute, Copenhagen 2016
