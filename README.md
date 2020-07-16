@@ -60,4 +60,9 @@ mymodel = MyOdeClass()
 ms_obj = MultipleShootingPeriod(x, M=2, period_guess= 23.,
 		t_steps=50000, model=mymodel, option_jacobian = 'analytical')
 ```
+3. Call the multiple-shooting solver.
+```
+mysolution = SolverPeriod(ms_obj = ms_obj).lma()
+```
+
 

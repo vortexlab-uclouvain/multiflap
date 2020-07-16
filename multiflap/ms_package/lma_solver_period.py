@@ -11,8 +11,8 @@ class SolverPeriod:
         self.max_iterations = max_iterations
         self.ms_obj = ms_obj
 
-    def lma(self, period):
-        tau = period/(self.ms_obj.point_number -1)
+    def lma(self):
+        tau = self.ms_obj.period_guess/(self.ms_obj.point_number -1)
         damp = 1.0
         x0 = self.ms_obj.get_initial_guess()
         x = 1*(x0)
