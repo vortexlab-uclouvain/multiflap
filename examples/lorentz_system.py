@@ -7,7 +7,7 @@ x = [10., 10., 3.6]
 
 mymodel = mf.Lorentz(a=10, b=28, c=8/3)
 
-ms_obj =  mf.MultipleShootingPeriod(x, M=2, period_guess= 10., t_steps=50000, model=mymodel)
+ms_obj =  mf.MultipleShootingPeriod(x, M=2, period_guess= 10., t_steps=50000, model=mymodel, option_jacobian='numerical')
 
 odes = mymodel.dynamics
 

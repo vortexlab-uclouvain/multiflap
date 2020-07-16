@@ -8,7 +8,7 @@ time_array = np.linspace(0, 180, 90000)
 mymodel = mf.RedoxModel()
 
 ms_obj =  mf.MultipleShootingPeriod(x, M=2, period_guess= 23.,
-                                    t_steps=50000, model=mymodel, option_jacobian='numerical')
+                                    t_steps=50000, model=mymodel)
 
 mysol = mf.SolverPeriod(ms_obj = ms_obj).lma(23.)
 
