@@ -7,7 +7,7 @@ This toolbox is optimised to study the limit cycle of flapping wings dynamics, b
 
 In order to run the code for a particular dynamical system, two files have to be created:
 * **Input file**: The input file contains the system of differential equations, and the related staility matrix.
-* **Main file**: The main file is the python module that will e executed. More detailes on the format of the main file will be provided later.
+* **Main file**: The main file is the python module that will e executed. More detailes on the format of the main file will be provided later. **NOTE** despite of example cases, the main file has to be inside `multiflap` directory.
 ## Installation and getting started
 
 `multiflap` runs on Python 3 and Python 2.  
@@ -45,10 +45,11 @@ Two different classes should be called, depending if the period of the periodic 
 
 For periodic orbits with unknown periods, the code relies on the modules `multiple_shooting_period.py` and `lma_solver_period.py`.
 
-1. Build the model object. The model is created by calling the Class previously defined within [odes](multiflap/odes) directory.
+1. Import the model module `your_model.py` and create the model object. The model is created by calling the Class previously defined within [odes](multiflap/odes) directory.
 
 ```python
-mymodel = MyOdeClass()
+from odes.your_model import YourOdeClass
+your_model = YourOdeClass() 	# takes eventual arguments (parameters) if needed
 ```
 2. Call the multiple-shooting scheme. It take as arguments:
 
@@ -61,7 +62,7 @@ mymodel = MyOdeClass()
 
 ```python
 ms_obj = MultipleShootingPeriod(x, M=2, period_guess= 23.,
-		t_steps=50000, model=mymodel, option_jacobian = 'analytical')
+		t_steps=50000, model=your_model, option_jacobian = 'analytical')
 ```
 3. Call the multiple-shooting solver.
 ```python
