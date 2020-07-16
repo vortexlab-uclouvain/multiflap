@@ -45,10 +45,12 @@ Two different classes should be called, depending if the period of the periodic 
 
 For periodic orbits with unknown periods, the code relies on the modules `multiple_shooting_period.py` and `lma_solver_period.py`.
 
-1. Import the model module `your_model.py` and create the model object. The model is created by calling the Class previously defined within [odes](multiflap/odes) directory.
+1. Import the model module `your_model.py`, and the other modules needed to run and solve the multiple shooting problem. Then create the model object. The model is created by calling the Class previously defined within [odes](multiflap/odes) directory.
 
 ```python
 from odes.your_model import YourOdeClass
+from ms_package.multiple_shooting_period import MultipleShootingPeriod
+from ms_package.lma_solver_period import SolverPeriod
 your_model = YourOdeClass() 	# takes eventual arguments (parameters) if needed
 ```
 2. Call the multiple-shooting scheme. It take as arguments:
