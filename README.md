@@ -12,7 +12,7 @@ This toolbox is optimised to study the limit cycle of flapping wings dynamics, b
 1.   Get a local copy of `multiflap`:
 
 ```
-git@git.immc.ucl.ac.be:gducci/multishooting_flapping.git 
+git clone git@git.immc.ucl.ac.be:gducci/multishooting_flapping.git 
 ```
 2. Add multiflap to the PYTHONPATH environment variable
 
@@ -23,4 +23,32 @@ bash set_evironment_variable
 
 ```
 python3 examples/rossler_system.py
+```
+## Input files
+
+The input file is the file containing the set of ODEs. The name of the class is arbitrary, while the names of the methods cannot be changed because this is the interface that communicates with the multiple-shooting kernel.
+
+```
+class 'MyClass'
+	def __init__(self, a=None, b=None, c=None, d=None, e=None, q=None, p=None):
+
+		self.a = a
+		self.b = b
+		self.c = c
+		self.d = d
+		self.e = e
+		self.q = q
+		self.p = p
+	
+	def 'dynamics'(self, x0, t):
+
+		# type here ODEs
+		return vel_array
+	
+	def 'get_stability_matrix'(self, x0, t):
+
+		# type here the stability matrix
+
+		return A_matrix
+
 ```
