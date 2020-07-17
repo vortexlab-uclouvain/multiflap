@@ -128,3 +128,7 @@ Tech. Report, School of Engineering, Georgia Institute of Technology, 2007
 A Robust Model for Circadian Redox Oscillations \
 del Olmo, M.; Kramer, A.; Herzel, H.
 *Int. J. Mol. Sci.*, **2019**, 20, 2368
+
+###### Forced Van der Pol oscillator
+Practical Bifurcation and Stability Analysis, pp. 347--349 \ 
+Seydel, R., 2009

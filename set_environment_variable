@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-export PYTHONPATH=$PWD:$PYTHONPATH
-
-echo "environment path set in $(pwd)"
