@@ -1,4 +1,5 @@
 *.pyc
 *.html
 multiflap/TODO
-./postprocessing
+postprocessing
+__pycache__
