@@ -12,13 +12,14 @@ class Lorentz:
         self.q = q
         self.p = p
         self.dimension = 3
+
     def dynamics(self, x0, t):
 
         """ODE system
         This function will be passed to the numerical integrator
 
         Inputs:
-            x0: initial values [u, w, q, theta]
+            x0: initial values
             t: time
 
         Outputs:
@@ -27,11 +28,9 @@ class Lorentz:
         x, y, z = x0
         dxdt = self.a*(y-x)
         dydt = x*(self.b-z)-y
-        dzdt = x*y - self.c*z 
+        dzdt = x*y - self.c*z
         vel_array = np.array([dxdt, dydt, dzdt], float)
         return vel_array
-
-
 
     def get_stability_matrix(self, x0, t):
 
@@ -39,7 +38,7 @@ class Lorentz:
         Stability matrix of the ODE system for the longitudinal plane
 
         Inputs:
-            x0: initial condition [u_0, w_0, q_0, theta_0]
+            x0: initial condition
         Outputs:
             A: Stability matrix evaluated at x0. (dxd) dimension
             A[i, j] = dv[i]/dx[j]

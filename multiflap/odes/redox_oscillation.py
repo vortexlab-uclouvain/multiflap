@@ -27,7 +27,7 @@ class RedoxModel:
         This function will be passed to the numerical integrator
 
         Inputs:
-            x0: initial values [u, w, q, theta]
+            x0: initial values
             t: time
 
         Outputs:
@@ -50,7 +50,7 @@ class RedoxModel:
         Stability matrix of the ODE system for the longitudinal plane
 
         Inputs:
-            x0: initial condition [u_0, w_0, q_0, theta_0]
+            x0: initial condition
         Outputs:
             A: Stability matrix evaluated at x0. (dxd) dimension
             A[i, j] = dv[i]/dx[j]

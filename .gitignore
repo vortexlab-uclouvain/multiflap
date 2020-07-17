@@ -1,1 +1,13 @@
 *.pyc
+DataFile_writing.py
+FlappingForces_Gust.py
+LimitCycleForces.py
+Main_MS.py
+SaveFile.py
+floquet_equations.py
+gust_perturbation.py
+main_LevelFlight.py
+main_LevelFlight_v2.py
+main_aero.py
+postprocessing.py
+lorentz_main.py

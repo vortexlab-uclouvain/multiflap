@@ -1,5 +1,13 @@
 import numpy as np
 
+"""
+Case adopted from:
+
+    Optimized shooting method for finding periodic orbits of nonlinear dynamical systems
+    Dednam, W and Botha, Andre E
+    https://arxiv.org/abs/1405.5347
+
+"""
 
 class Rossler:
     def __init__(self, a=None, b=None, c=None, d=None, e=None, q=None, p=None):
@@ -18,7 +26,7 @@ class Rossler:
         This function will be passed to the numerical integrator
 
         Inputs:
-            x0: initial values [u, w, q, theta]
+            x0: initial values
             t: time
 
         Outputs:
@@ -39,7 +47,7 @@ class Rossler:
         Stability matrix of the ODE system for the longitudinal plane
 
         Inputs:
-            x0: initial condition [u_0, w_0, q_0, theta_0]
+            x0: initial condition 
         Outputs:
             A: Stability matrix evaluated at x0. (dxd) dimension
             A[i, j] = dv[i]/dx[j]
