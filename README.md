@@ -74,7 +74,7 @@ mysolution = SolverPeriod(ms_obj = ms_obj).lma()
 #### Known period 
 
 
-For periodic orbits with unknown periods, the code relies on the modules `multiple_shooting.py` and `lma_solver.py`.
+For periodic orbits with known periods, the code relies on the modules `multiple_shooting.py` and `lma_solver.py`.
 
 1. Build the model object. The model is created by calling the Class previously defined within [odes](multiflap/odes) directory.
 
