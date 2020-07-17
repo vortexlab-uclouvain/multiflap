@@ -105,7 +105,7 @@ mysolution = Solver(ms_obj = ms_obj).lma()
 
 #### Multiple shooting scheme 
 
-Improved numerical Floquet multipliers [pdf](pdfs/lust2001.pdf)\
+Improved numerical Floquet multipliers \[[pdf](pdfs/lust2001.pdf)\]\
 Lust, Kurt\
 International Journal of Bifurcation and Chaos, vol. 11, pp. 2389--2410, 2001
 
@@ -115,20 +115,20 @@ Niels Bohr Institute, Copenhagen 2016
 
 #### Example cases and validation
 
-###### Rossler's system ([odes](multiflap/odes/rossler.py))
-Optimized shooting method for finding periodic orbits of nonlinear dynamical systems [pdf](pdfs/dednam2015.pdf)\
+###### Rossler's system \[[odes](multiflap/odes/rossler.py)\]
+Optimized shooting method for finding periodic orbits of nonlinear dynamical systems \[[pdf](pdfs/dednam2015.pdf)\]\
 Dednam, W and Botha, Andre E \
 Engineering with Computers, vol. 31, num. 4, pp. 749--762, 2015, Springer
 
-Contruction of Poincaré Return Maps for Rössler Flow [pdf](pdfs/basu2007.pdf)\
+Contruction of Poincaré Return Maps for Rössler Flow \[[pdf](pdfs/basu2007.pdf)\] \
 A. Basu \
 Tech. Report, School of Engineering, Georgia Institute of Technology, 2007 
 
-###### Redox oscillator ([odes](multiflap/odes/redox_oscillation.py))
-A Robust Model for Circadian Redox Oscillations [pdf](pdfs/delolmo2019.pdf)\
+###### Redox oscillator \[[odes](multiflap/odes/redox_oscillation.py)\]
+A Robust Model for Circadian Redox Oscillations \[[pdf](pdfs/delolmo2019.pdf)\]\
 del Olmo, M.; Kramer, A.; Herzel, H.
 *Int. J. Mol. Sci.*, **2019**, 20, 2368
 
-###### Forced Van der Pol oscillator ([odes](multiflap/odes/forced_vdp.py))
+###### Forced Van der Pol oscillator \[[odes](multiflap/odes/forced_vdp.py)\]
 Practical Bifurcation and Stability Analysis, pp. 347--349 \ 
 Seydel, R., 2009
