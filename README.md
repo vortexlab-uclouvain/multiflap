@@ -115,7 +115,7 @@ Niels Bohr Institute, Copenhagen 2016
 
 #### Example cases and validation
 
-###### Rossler's system
+###### Rossler's system ([odes](multiflap/odes/rossler.py))
 Optimized shooting method for finding periodic orbits of nonlinear dynamical systems \
 Dednam, W and Botha, Andre E \
 Engineering with Computers, vol. 31, num. 4, pp. 749--762, 2015, Springer
@@ -129,6 +129,6 @@ A Robust Model for Circadian Redox Oscillations \
 del Olmo, M.; Kramer, A.; Herzel, H.
 *Int. J. Mol. Sci.*, **2019**, 20, 2368
 
-###### Forced Van der Pol oscillator
+###### Forced Van der Pol oscillator ([odes](multiflap/odes/forced_vdp.py))
 Practical Bifurcation and Stability Analysis, pp. 347--349 \ 
 Seydel, R., 2009
