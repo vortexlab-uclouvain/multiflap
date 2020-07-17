@@ -17,10 +17,10 @@ In order to run the code for a particular dynamical system, two files have to be
 ```
 git clone git@git.immc.ucl.ac.be:gducci/multishooting_flapping.git 
 ```
-2. Add multiflap to the PYTHONPATH environment variable
+2. Add multiflap to the PYTHONPATH environment variable (`pwd` to get the path you need)
 
-```
-bash set_evironment_variable
+```bash
+export PYTHONPATH=my/path/from/root/to/folder:$PYTHONPATH
 ```
 3. To run one of the examples, from the multiflap root directory:
 
@@ -79,7 +79,10 @@ For periodic orbits with unknown periods, the code relies on the modules `multip
 1. Build the model object. The model is created by calling the Class previously defined within [odes](multiflap/odes) directory.
 
 ```python
-mymodel = MyOdeClass()
+from odes.your_model import YourOdeClass
+from ms_package.multipleshooting import MultipleShooting
+from ms_package.lma_solver import Solver
+your_model = YourOdeClass()
 ```
 2. Call the multiple-shooting scheme. It take as arguments:
 
@@ -92,7 +95,7 @@ mymodel = MyOdeClass()
 
 ```python
 ms_obj = MultipleShooting(x, M=2, period= 0.25,
-		t_steps=50, model=mymodel, option_jacobian = 'analytical')
+		t_steps=50, model=your_model, option_jacobian = 'analytical')
 ```
 3. Call the multiple-shooting solver.
 ```python

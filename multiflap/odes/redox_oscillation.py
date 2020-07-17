@@ -1,5 +1,14 @@
 import numpy as np
 
+"""
+Example case adopted from:
+
+    A Robust Model for Circadian Redox Oscillations,
+    del Olmo, M.; Kramer, A.; Herzel, H., Int. J. Mol. Sci., 2019, 20, 2368
+    https://www.mdpi.com/1422-0067/20/9/2368
+
+"""
+
 
 class RedoxModel:
     def __init__(self, a=1000, b=2, c=10000, d=0.2, e=0.1, q=0.1, p=1):

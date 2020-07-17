@@ -15,7 +15,7 @@ bird_shoulder = Shoulder(axis_x=Joint(0.2,0.014,-np.pi/2),
 bird_elbow = Elbow(axis_x=Joint(0.,np.pi/6,-np.pi/2),
                    axis_y=Joint(np.pi/6,np.pi/6,-np.pi/2))
 
-bird_wrist = Wrist(axis_y=Joint(-np.pi/6,np.pi/6,np.pi/2),
+bird_wrist = Wrist(axis_y=Joint(-np.pi/9,np.pi/6,np.pi/2),
                    axis_z=Joint(0.,0.,0.))
 
 mybird = BirdModel(shoulder=bird_shoulder, elbow=bird_elbow, wrist=bird_wrist)
@@ -24,7 +24,7 @@ mybird = BirdModel(shoulder=bird_shoulder, elbow=bird_elbow, wrist=bird_wrist)
 x0 = [18., 0.5, 0.1, 0.01]
 
 # generate multiple-shooting object
-ms_obj = MultipleShooting(x0, M = 2, model = mybird)
+ms_obj = MultipleShooting(x0, M = 4, period=0.25, t_steps=20, model = mybird)
 
 # call the LMA solver
 mysol = Solver(ms_obj = ms_obj).lma()

@@ -22,6 +22,7 @@ class BirdModel:
     def __init__(self, shoulder=None, elbow=None, wrist=None):
 
         #Parameters:
+        self.dimensions = 4
         self.g = 9.81
         self.mass = 1.2
         self.frequency = 4

@@ -6,7 +6,7 @@ from scipy.integrate import odeint
 class MultipleShootingPeriod:
 
     def __init__(self, x0, M = 2, period_guess = None,
-                 t_steps = 25, model = None, option_jacobian = 'analytical'):
+                 t_steps = 40, model = None, option_jacobian = 'analytical'):
         self.point_number = M
         self.dim = model.dimension  # number of states of the ODE system
         self.x0 = x0        # first initial guess
@@ -34,7 +34,7 @@ class MultipleShootingPeriod:
         t_final = t0 + deltat     # Final time
 
         time_array = np.linspace(t0, t_final, self.t_steps)
-        rk_solution = rk2(self.model.dynamics, x0, time_array)
+        rk_solution = rk4(self.model.dynamics, x0, time_array)
     #    sspSolution = ode.solve_ivp(birdEqn_py, 
                         #[tInitial, tFinal], ssp0,'LSODA', max_step = deltat/Nt)
     #    sspSolution = (sspSolution.y).T
@@ -151,7 +151,7 @@ class MultipleShootingPeriod:
 
 
         t_Final = initial_time + integration_time
-        Nt = 90000 #50000  # interval discretization for computing the integration
+        Nt = 40 #90000 #50000  # interval discretization for computing the integration
 
         tArray = np.linspace(initial_time, t_Final, Nt)
 
@@ -187,7 +187,7 @@ class MultipleShootingPeriod:
 
         epsilon = value of the perturbation
         """
-        time_steps = 50
+        time_steps = 1000
         # ---------------------------------------------------------------------
         #  Initialization of the Jacobian Matrix
         # ---------------------------------------------------------------------

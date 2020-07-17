@@ -5,4 +5,5 @@ from .ms_package.lma_solver import Solver
 from .odes.redox_oscillation import RedoxModel
 from .odes.rossler import Rossler
 from .odes.lorentz import Lorentz
+from .odes.forced_vdp import ForcedVanDerPol
 from .ms_package.rk_integrator import rk2, rk3, rk4
