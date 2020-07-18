@@ -52,5 +52,4 @@ ax.plot(sol_array[:, 0],
         sol_array[:, 1],
         sol_array[:, 2],color = 'b', alpha=.3)
 plt.legend()
-plt.savefig('../img/isothermal_reaction.png')
 plt.show()
