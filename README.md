@@ -252,5 +252,8 @@ del Olmo, M.; Kramer, A.; Herzel, H.
 *Int. J. Mol. Sci.*, **2019**, 20, 2368
 
 ###### Forced Van der Pol oscillator \[[odes](multiflap/odes/forced_vdp.py)\]
-Practical Bifurcation and Stability Analysis, pp. 347--349 \ 
+Practical Bifurcation and Stability Analysis, pp. 347--349  
+Seydel, R., 2009
+###### Isothermal reaction \[[odes](multiflap/odes/isothermal_reaction.py)\]
+Practical Bifurcation and Stability Analysis, pp. 325--327  
 Seydel, R., 2009
