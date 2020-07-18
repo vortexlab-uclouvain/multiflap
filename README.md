@@ -220,7 +220,9 @@ plt.show()
 ```
 python3 main_isothermal.py
 ```
-the output will look like ![](img/isothermal_reaction.png)
+the output will look like 
+
+![](img/isothermal_reaction.png)
 ## Literature
 
 #### Multiple shooting scheme 
