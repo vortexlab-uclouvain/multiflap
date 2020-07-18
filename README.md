@@ -105,11 +105,9 @@ mysolution = Solver(ms_obj = ms_obj).lma()
 ## Guided example to create a new study case
 Within this tutorial, a new study case will be created and run. 
 
-1. Generate the input file containing the ODEs, inside `multiflap/odes`:
+1. Generate the input file containing the ODEs, inside `multiflap/odes/isothermal_reaction.py`:
 
 ```python
-
-
 import numpy as np
 
 """
@@ -125,7 +123,7 @@ Example case adopted from:
 class IsothermalReaction:
     def __init__(self, lam=1.8):
         self.lam = lam
-        self.dimension=2        # specify the dimension of the problem
+        self.dimension=3        # specify the dimension of the problem
     def dynamics(self, x0, t):
 
         """ODE system
@@ -150,7 +148,7 @@ class IsothermalReaction:
     def get_stability_matrix(self, x0, t):
 
         """
-        Stability matrix of the ODE system for the longitudinal plane
+        Stability matrix of the ODE system
 
         Inputs:
             x0: initial condition
@@ -164,6 +162,59 @@ class IsothermalReaction:
                             [-y3, 0., 16.5 - y1 - y3]], float)
 
         return A_matrix
+```
+2. Generate the main file to run in the directory `multiflap/main_isothermal.py`
+```python
+import numpy as np
+from  odes.isothermal_reaction import IsothermalReaction
+from ms_package.multiple_shooting_period import MultipleShootingPeriod
+import matplotlib.pyplot as plt
+from ms_package.lma_solver_period import SolverPeriod
+from mpl_toolkits.mplot3d import Axes3D
+
+# generate the ODEs object
+
+mymodel = IsothermalReaction(lam=11.)
+
+
+# initial condition
+x = [40., 20., 20.]
+
+# generate the multiple shooting object
+ms_obj = MultipleShootingPeriod(x, M=20, period_guess=.5,
+                                t_steps=200, model=mymodel)
+
+# just to plot the initial guess distribution. No need to call this
+initial_guess = ms_obj.get_initial_guess()
+
+# call the solver for the multiple-shooting algorithm
+mysolution = SolverPeriod(ms_obj=ms_obj).lma()
+
+jacobian = mysolution[4]
+
+# Floquet multipliers
+eigenvalues, eigenvectors = np.linalg.eig(jacobian)
+
+# ODE limit cycle solution
+sol_array = mysolution[3].space
+sol_time = mysolution[3].time
+period = sol_time[-1]
+
+# plot the phase portrait of the limit cycle
+fig1 = plt.figure(1)
+ax = fig1.gca(projection='3d')
+ax.set_xlabel('$x$')
+ax.set_ylabel('$y$')
+ax.set_zlabel('$z$')
+ax.scatter(initial_guess[:,0],
+           initial_guess[:,1],
+           initial_guess[:,2], color='red', label='initial guess')
+ax.plot(sol_array[:, 0],
+        sol_array[:, 1],
+        sol_array[:, 2],color = 'b')
+plt.legend()
+plt.show()
+
 ```
 ## Literature
 

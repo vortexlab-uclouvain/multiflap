@@ -1,19 +1,19 @@
 import numpy as np
 from  odes.redox_oscillation import RedoxModel
 from ms_package.rk_integrator import rk4
-from ms_package.multiple_shooting_period import MultipleShooting
+from ms_package.multiple_shooting_period import MultipleShootingPeriod
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
-from ms_package.lma_solver_period import Solver
+from ms_package.lma_solver_period import SolverPeriod
 
 x = [0.5, 0.5, 0.6, 0.2]
 
 time_array = np.linspace(0, 180, 90000)
 mymodel = RedoxModel()
 
-ms_obj =  MultipleShooting(x, M=2, period_guess= 23., t_steps=50000, model=mymodel)
+ms_obj =  MultipleShootingPeriod(x, M=2, period_guess= 23., t_steps=50000, model=mymodel)
 
-mysol = Solver(ms_obj = ms_obj).lma(23.)
+mysol = SolverPeriod(ms_obj = ms_obj).lma()
 
 jac = mysol[4]
 

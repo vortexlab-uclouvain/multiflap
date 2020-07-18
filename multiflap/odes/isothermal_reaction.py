@@ -13,7 +13,7 @@ Example case adopted from:
 class IsothermalReaction:
     def __init__(self, lam=1.8):
         self.lam = lam
-        self.dimension=2        # specify the dimension of the problem
+        self.dimension=3        # specify the dimension of the problem
     def dynamics(self, x0, t):
 
         """ODE system
@@ -38,7 +38,7 @@ class IsothermalReaction:
     def get_stability_matrix(self, x0, t):
 
         """
-        Stability matrix of the ODE system for the longitudinal plane
+        Stability matrix of the ODE system
 
         Inputs:
             x0: initial condition
@@ -47,7 +47,7 @@ class IsothermalReaction:
             A[i, j] = dv[i]/dx[j]
         """
         y1, y2, y3 = x0
-        A_matrix = np.array([[30 - 0.5*y1 -y2 -y3, y1 + 2*0.001*y2, -y1],
+        A_matrix = np.array([[30 - 0.5*y1 -y2 -y3, -y1 + 2*0.001*y2, -y1],
                             [y2, y1 - 2*0.001*y2 -self.lam, 0.],
                             [-y3, 0., 16.5 - y1 - y3]], float)
 

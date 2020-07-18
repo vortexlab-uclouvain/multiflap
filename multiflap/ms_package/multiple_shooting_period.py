@@ -151,7 +151,7 @@ class MultipleShootingPeriod:
 
 
         t_Final = initial_time + integration_time
-        Nt = 40 #90000 #50000  # interval discretization for computing the integration
+        Nt = 900 #50000  # interval discretization for computing the integration
 
         tArray = np.linspace(initial_time, t_Final, Nt)
 
@@ -187,7 +187,7 @@ class MultipleShootingPeriod:
 
         epsilon = value of the perturbation
         """
-        time_steps = 1000
+        time_steps = 5000
         # ---------------------------------------------------------------------
         #  Initialization of the Jacobian Matrix
         # ---------------------------------------------------------------------
