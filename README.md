@@ -216,6 +216,11 @@ plt.legend()
 plt.show()
 
 ```
+3. Run the main file inside `multiflap` directory
+```
+python3 main_isothermal.py
+```
+the output will look like ![](img/isothermal_reaction.png)
 ## Literature
 
 #### Multiple shooting scheme 
