@@ -47,7 +47,7 @@ class RedoxModel:
     def get_stability_matrix(self, x0, t):
 
         """
-        Stability matrix of the ODE system for the longitudinal plane
+        Stability matrix of the ODE system
 
         Inputs:
             x0: initial condition

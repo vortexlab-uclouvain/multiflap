@@ -6,7 +6,9 @@ from scipy.integrate import odeint
 class MultipleShootingPeriod:
 
     def __init__(self, x0, M = 2, period_guess = None,
-                 t_steps = 40, model = None, option_jacobian = 'analytical'):
+                 t_steps = 40, model = None,
+                 option_jacobian = 'analytical', integrator='rk'):
+
         self.point_number = M
         self.dim = model.dimension  # number of states of the ODE system
         self.x0 = x0        # first initial guess
@@ -14,7 +16,7 @@ class MultipleShootingPeriod:
         self.option_jacobian = option_jacobian
         self.t_steps = t_steps
         self.period_guess = period_guess
-
+        self.integrator = integrator
     def get_mappedpoint(self,x0, t0, deltat):
         """
         Returns the last element of the time integration. It outputs where a
@@ -34,13 +36,19 @@ class MultipleShootingPeriod:
         t_final = t0 + deltat     # Final time
 
         time_array = np.linspace(t0, t_final, self.t_steps)
-        rk_solution = rk4(self.model.dynamics, x0, time_array)
-    #    sspSolution = ode.solve_ivp(birdEqn_py, 
-                        #[tInitial, tFinal], ssp0,'LSODA', max_step = deltat/Nt)
-    #    sspSolution = (sspSolution.y).T
-        solution = rk_solution.x
-        mapped_point = solution[-1, :]  # Read the final point to sspdeltat
-        return mapped_point, rk_solution
+        if self.integrator=='rk':
+            tuple_solution = rk4(self.model.dynamics, x0, time_array)
+        #    sspSolution = ode.solve_ivp(birdEqn_py, 
+                            #[tInitial, tFinal], ssp0,'LSODA', max_step = deltat/Nt)
+        #    sspSolution = (sspSolution.y).T
+            solution = tuple_solution.x
+            mapped_point = solution[-1, :]  # Read the final point to sspdeltat
+        if self.integrator=='odeint':
+            solution = odeint(self.model.dynamics, x0, time_array)
+            mapped_point = solution[-1, :]
+            odesol = collections.namedtuple('odesol',['x', 't'])
+            tuple_solution = odesol(solution, time_array)
+        return mapped_point, tuple_solution
 
     def get_initial_guess(self):
 
@@ -151,7 +159,7 @@ class MultipleShootingPeriod:
 
 
         t_Final = initial_time + integration_time
-        Nt = 900 #50000  # interval discretization for computing the integration
+        Nt = 50000 #50000  # interval discretization for computing the integration
 
         tArray = np.linspace(initial_time, t_Final, Nt)
 
@@ -159,18 +167,21 @@ class MultipleShootingPeriod:
 
     #   jac_elements_solution = ode.solve_ivp(jacobian_ode,[t_initial, t_Final],
                                 #jacODE_ic, 'RK45')
+        if self.integrator=='rk':
+            rk_jac_elements_solution = rk2(self.jacobian_ode, jacODE_ic, tArray)
 
-        rk_jac_elements_solution = rk2(self.jacobian_ode, jacODE_ic, tArray)
+            end_jac = time.time()
+            print("Jacobian time ", (end_jac-start_jac))
 
-        end_jac = time.time()
-        print("Jacobian time ", (end_jac-start_jac))
-
-        jac_elements_solution = rk_jac_elements_solution.x
-    #    jac_elements_solution = jac_elements_solution.y.T
-        # Pack back the jacobian in matrix:
-        J = jac_elements_solution[-1, self.dim:].reshape((self.dim,
+            jac_elements_solution = rk_jac_elements_solution.x
+        #    jac_elements_solution = jac_elements_solution.y.T
+            # Pack back the jacobian in matrix:
+            J = jac_elements_solution[-1, self.dim:].reshape((self.dim,
                                                                 self.dim))
-
+        if self.integrator=='odeint':
+            jac_elements_solution = odeint(self.jacobian_ode, jacODE_ic, tArray)
+            J = jac_elements_solution[-1, self.dim:].reshape((self.dim,
+                                                              self.dim))
         return J
 
 
@@ -187,7 +198,7 @@ class MultipleShootingPeriod:
 
         epsilon = value of the perturbation
         """
-        time_steps = 5000
+        time_steps = 50000
         # ---------------------------------------------------------------------
         #  Initialization of the Jacobian Matrix
         # ---------------------------------------------------------------------

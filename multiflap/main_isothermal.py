@@ -15,7 +15,7 @@ x = [40., 20., 20.]
 
 # generate the multiple shooting object
 ms_obj = MultipleShootingPeriod(x, M=20, period_guess=.5,
-                                t_steps=200, model=mymodel)
+                                t_steps=200, model=mymodel, integrator='odeint')
 
 # just to plot the initial guess distribution. No need to call this
 initial_guess = ms_obj.get_initial_guess()
