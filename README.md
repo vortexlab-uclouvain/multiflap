@@ -226,8 +226,8 @@ the output will look like
 
 ## Generate a phase portrait animation
 
-A script that allows to produce phase portrait animation using `Matplotlib` is provided within the directory `multiflap/utils`. In the default template the system of ODE is given, however is highly recommended to use this script as mere post-processing and load data from simulations as arrays.
-Outputs of the scripts, as examples, are within ['anim'](anim) directory.
+A script that allows to produce phase portrait animation using `Matplotlib` is provided within the [utilities](multiflap/utils) directory. In the default template the system of ODE is given, however is highly recommended to use this script as mere post-processing and load data from simulations as arrays.
+Outputs of the scripts, as examples, are within `anim` [directory](anim).
 ## Literature
 
 #### Multiple shooting scheme 
