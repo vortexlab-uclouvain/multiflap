@@ -230,7 +230,11 @@ A script that allows to produce phase portrait animation using `Matplotlib` is p
 Outputs of the scripts, as examples, are within `anim` [directory](anim).
 
 <figure class="video_container">
-  <iframe src="https://www.youtube.com/watch?v=Th3Ygkkhslw" frameborder="0" allowfullscreen="true"> </iframe>
+  <video controls="true" allowfullscreen="true" poster="path/to/poster_image.png">
+    <source src="anim/phase_animation_2D.mp4" type="video/mp4">
+    <source src="anim/phase_animation_2D.ogg" type="video/ogg">
+    <source src="anim/phase_animation_2D.webm" type="video/webm">
+  </video>
 </figure>
 
 ## Literature
