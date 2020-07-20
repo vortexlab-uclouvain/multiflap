@@ -1,4 +1,13 @@
 # multiflap
+<div class="panel panel-info">
+**Note**
+{: .panel-heading}
+<div class="panel-body">
+
+NOTE DESCRIPTION
+
+</div>
+</div>
 
 `multiflap` is a Python toolbox for finding periodic orbit of nonlinear systems
 of ODEs. The code relies on the multiple-shooting algorithm, and simoultaneously allows to study the stability of the system via the Floquet multipliers.
@@ -228,10 +237,6 @@ the output will look like
 
 A script that allows to produce phase portrait animation using `Matplotlib` is provided within the [utilities](multiflap/utils) directory. In the default template the system of ODE is given, however is highly recommended to use this script as mere post-processing and load data from simulations as arrays.
 Outputs of the scripts, as examples, are within `anim` [directory](anim).
-
-<figure class="video_container">
-  <iframe src="https://www.youtube.com/embed/enMumwvLAug" frameborder="0" allowfullscreen="true"> </iframe>
-</figure>
 
 ## Literature
 
