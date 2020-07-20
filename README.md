@@ -1,4 +1,4 @@
-# multiflap
+
 <div class="panel panel-info">
 **Note**
 {: .panel-heading}
@@ -8,6 +8,7 @@ NOTE DESCRIPTION
 
 </div>
 </div>
+# multiflap
 
 `multiflap` is a Python toolbox for finding periodic orbit of nonlinear systems
 of ODEs. The code relies on the multiple-shooting algorithm, and simoultaneously allows to study the stability of the system via the Floquet multipliers.
