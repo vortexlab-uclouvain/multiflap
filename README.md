@@ -17,10 +17,10 @@ In order to run the code for a particular dynamical system, two files have to be
 ```
 git clone git@git.immc.ucl.ac.be:gducci/multishooting_flapping.git 
 ```
-2. Add multiflap to the PYTHONPATH environment variable (`pwd` to get the path you need)
+2. Add multiflap to the PYTHONPATH by sourcing the `set_evniroment` bash script
 
 ```bash
-export PYTHONPATH=my/path/from/root/to/folder:$PYTHONPATH
+source set_evniroment
 ```
 3. To run one of the examples, from the multiflap root directory:
 
