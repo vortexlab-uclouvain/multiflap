@@ -5,7 +5,7 @@ import collections
 
 class MultipleShooting:
 
-    def __init__(self, x0, M = 2, period = 0.25, 
+    def __init__(self, x0, M = 2, period = 0.25,
                  t_steps = 70, model = None, option_jacobian = 'analytical'):
         self.point_number = M
         self.dim = model.dimension  # number of states of the ODE system
@@ -337,7 +337,6 @@ class MultipleShooting:
                (i*self.dim):(i*self.dim)+self.dim] = jacobian
 
 
-        #trajectory = np.asanyarray(complete_solution)
         # Last block of the scheme
         MS[-self.dim:, 0:self.dim] = -np.eye(self.dim)
         MS[-self.dim:, -self.dim:] = np.eye(self.dim)
