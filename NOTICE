@@ -1,0 +1,32 @@
+multiflap Licensing
+============================================
+
+This file includes all licenses that apply within multiflap (this program) source tree, in particular any that are supposed to be exposed to the end user for credit requirements for instance. 
+
+Copyright (C) <2020> <Universite catholique de Louvain (UCLouvain), Belgique>
+	
+The contributors to the development of FLUPS are (all authors are or were affiliate to the Universite catholique de Louvain, UCLouvain, when they developed multiflap):
+	Gianmarco Ducci - multiple shooting algorithm implementation and dynamics-aerodynamics coupling
+	Victor Colognesi - Quasi steady lifting line aerodynamic model, applied to a multi-articulated flapping wing
+
+
+Website:
+   https://github.com/vortexlab_uclouvain/flups
+
+Contact:
+   Gianmarco Ducci         gianmarco.ducci@uclouvain.be
+   Victor Colognesi   	   victor.colognesi@uclouvain.be
+
+-----------------------------------------
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
