@@ -5,7 +5,7 @@ This file includes all licenses that apply within multiflap (this program) sourc
 
 Copyright (C) <2020> <Universite catholique de Louvain (UCLouvain), Belgique>
 	
-The contributors to the development of FLUPS are (all authors are or were affiliate to the Universite catholique de Louvain, UCLouvain, when they developed multiflap):
+The contributors to the development of multiflap are (all authors are or were affiliate to the Universite catholique de Louvain, UCLouvain, when they developed multiflap):
 	Gianmarco Ducci - multiple shooting algorithm implementation and dynamics-aerodynamics coupling
 	Victor Colognesi - Quasi steady lifting line aerodynamic model, applied to a multi-articulated flapping wing
 

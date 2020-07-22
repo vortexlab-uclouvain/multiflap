@@ -15,7 +15,7 @@ In order to run the code for a particular dynamical system, two files have to be
 1.   Get a local copy of `multiflap`:
 
 ```
-git clone git@git.immc.ucl.ac.be:gducci/multishooting_flapping.git 
+git clone https://github.com/vortexlab-uclouvain/multiflap.git
 ```
 2. Add multiflap to the PYTHONPATH by sourcing the `set_environment` bash script.
 This allows to keep the custom packages without installing them in the global default location.
