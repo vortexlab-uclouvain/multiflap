@@ -1,30 +1,26 @@
-"""
-Phase space animation scritp
+'''
+file phase_animation_2D.py
+@author Gianmarco Ducci
+@copyright Copyright © UCLouvain 2020
 
-Script below is a template for creating an animation in the state-space domain
-of a trjectory obtained by numerical integration. Rossler's system has been
-encoded highlighting the unstable behaviour.
+multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.
 
-Copyright (C) <2019> <Université catholique de Louvain (UCL), Belgique>
+Copyright <2020> <Université catholique de Louvain (UCLouvain), Belgique>
 
-The contributor to the development of this code is Gianmarco Ducci.
-
-Website: https://sites.uclouvain.be/RevealFlight/gducci
-Contact: gianmarco.ducci@uclouvain.be
+List of the contributors to the development of multiflap, Description and complete License: see LICENSE and NOTICE files.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*************************************************************************
-"""
+'''
 
 import numpy as np
 import matplotlib.pyplot as plt
