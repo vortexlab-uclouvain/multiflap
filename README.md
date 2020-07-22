@@ -17,7 +17,8 @@ In order to run the code for a particular dynamical system, two files have to be
 ```
 git clone git@git.immc.ucl.ac.be:gducci/multishooting_flapping.git 
 ```
-2. Add multiflap to the PYTHONPATH by sourcing the `set_environment` bash script
+2. Add multiflap to the PYTHONPATH by sourcing the `set_environment` bash script.
+This allows to keep the custom packages without installing them in the global default location.
 
 ```bash
 source set_environment 
