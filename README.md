@@ -19,7 +19,7 @@ git clone https://github.com/vortexlab-uclouvain/multiflap.git
 ```
 2. Add multiflap to the PYTHONPATH by sourcing the `set_environment` bash script.
 This allows to keep the custom packages without installing them in the global default location.
-
+To source it, be sure to be inside the directory you just cloned `cd multiflap`
 ```bash
 source set_environment 
 ```
