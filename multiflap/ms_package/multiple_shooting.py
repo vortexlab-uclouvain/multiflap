@@ -31,7 +31,7 @@ class MultipleShooting:
     def __init__(self, x0, M = 2, period = 0.25,
                  t_steps = 70, model = None, option_jacobian = 'analytical'):
         self.point_number = M
-        self.dim = model.dimension  # number of states of the ODE system
+        self.dim = 4  # number of states of the ODE system
         self.x0 = x0        # first initial guess
 #        if not isinstance(model, Model):
  #           raise TypeError("Model missing!")
