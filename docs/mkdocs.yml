@@ -1,0 +1,18 @@
+site_name:        multiflap
+repo_url:         https://https://github.com/vortexlab-uclouvain/multiflap
+edit_uri:         https://github.com/vortexlab-uclouvain/multiflap/tree/master/docs
+site_description: Periodic orbit detection
+site_author:      G. Ducci
+
+theme: readthedocs
+
+extra_css:
+  - assets/style.css
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML
+
+docs_dir: 'build'
+
+pages:
+  - Home: index.md
