@@ -3,3 +3,6 @@
 multiflap/TODO
 /postprocessing
 /__pycache__
+./build
+./dist
+./multiflap.egg-info
