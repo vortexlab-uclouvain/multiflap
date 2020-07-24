@@ -1,3 +1,4 @@
+HEAD
 # Where things are
 source              : .
 destination         : ./_site
@@ -76,3 +77,7 @@ kramdown:
   footnote_nr       : 1
   show_warnings     : false
 
+
+theme: jekyll-theme-cayman
+title: Welcome here
+29e92eb4a77e2db65b5667bdcf1295d9b2f88026
