@@ -1,5 +1,5 @@
 theme: jekyll-theme-cayman
 title: Welcome here
-baseurl: "/multiflap/docs"
+baseurl: "/multiflap"
 url: "https://https://github.com/vortexlab-uclouvain.github.io/"
 katex: true
