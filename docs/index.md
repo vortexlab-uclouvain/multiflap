@@ -4,7 +4,7 @@ Syntax highlighted code block
 ## Header 2
 ### Header 3
 
-- Bulleted ciao 
+- Bulleted $$\sqrt{\pi}$$ 
 - List
 
 1. Numbered
