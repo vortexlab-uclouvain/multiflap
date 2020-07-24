@@ -1,8 +1,10 @@
 *.pyc
+__pycache__
+
+*.egg-info
+build
+dist
+
 *.html
 multiflap/TODO
-/postprocessing
-/__pycache__
-./build
-./dist
-./multiflap.egg-info
+postprocessing
