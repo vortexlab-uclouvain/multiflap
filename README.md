@@ -17,11 +17,9 @@ In order to run the code for a particular dynamical system, two files have to be
 ```
 git clone https://github.com/vortexlab-uclouvain/multiflap.git
 ```
-2. Add multiflap to the PYTHONPATH by sourcing the `set_environment` bash script.
-This allows to keep the custom packages without installing them in the global default location.
-To source it, be sure to be inside the directory you just cloned `cd multiflap`
+2. Install the packages:
 ```bash
-source set_environment 
+python setup.py install
 ```
 3. To run one of the examples, from the multiflap root directory:
 
