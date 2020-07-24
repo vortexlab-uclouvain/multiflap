@@ -26,7 +26,7 @@ setup(
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
-        'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',
+        'License :: Apache License, Version 2.0, January 2004',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',
         'Topic :: Scientific/Engineering'
