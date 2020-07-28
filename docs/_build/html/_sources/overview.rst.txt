@@ -6,9 +6,12 @@ Overview
 This toolbox is optimised to study the limit cycle of flapping wings dynamics, but the modular architecture allows the user to use the kernel with any set of ODEs.
 
 In order to run the code for a particular dynamical system, two files have to be created:
+
 * **Input file**: The input file contains the system of differential equations, and the related staility matrix.
+
 * **Main file**: The main file is the python module that will e executed. More detailes on the format of the main file will be provided later. **NOTE** despite of example cases, the main file has to be inside `multiflap` directory.
-## Installation and getting started
+
+**Installation and getting started**
 
 `multiflap` runs on Python 3 and Python 2.  
 

@@ -10,6 +10,7 @@ Section explaining stuff knvaldn
    :maxdepth: 2
 
    overview
+   tutorial
    license
 
 
