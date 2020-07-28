@@ -8,7 +8,9 @@ Welcome to multiflapp's documentation!
 
 .. toctree::
    :maxdepth: 2
+   :glob:
 
+   *
 
 
 Indices and tables
