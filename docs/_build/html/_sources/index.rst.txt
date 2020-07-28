@@ -9,6 +9,7 @@ Section explaining stuff
 .. toctree::
    :maxdepth: 2
 
+   overview
    license
 
 
