@@ -103,68 +103,66 @@
 </div>
 </li>
 <li><p>Generate the main file to run in the directory <cite>multiflap/main_isothermal.py</cite>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>import numpy as np
-from  odes.isothermal_reaction import IsothermalReaction
-from ms_package.multiple_shooting_period import MultipleShootingPeriod
-import matplotlib.pyplot as plt
-from ms_package.lma_solver_period import SolverPeriod
-from mpl_toolkits.mplot3d import Axes3D
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span>  <span class="nn">odes.isothermal_reaction</span> <span class="kn">import</span> <span class="n">IsothermalReaction</span>
+<span class="kn">from</span> <span class="nn">ms_package.multiple_shooting_period</span> <span class="kn">import</span> <span class="n">MultipleShootingPeriod</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">ms_package.lma_solver_period</span> <span class="kn">import</span> <span class="n">SolverPeriod</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
 
-# generate the ODEs object
+<span class="c1"># generate the ODEs object</span>
 
-mymodel = IsothermalReaction(lam=11.)
+<span class="n">mymodel</span> <span class="o">=</span> <span class="n">IsothermalReaction</span><span class="p">(</span><span class="n">lam</span><span class="o">=</span><span class="mf">11.</span><span class="p">)</span>
 
 
-# initial condition
-x = [40., 20., 20.]
+<span class="c1"># initial condition</span>
+<span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">40.</span><span class="p">,</span> <span class="mf">20.</span><span class="p">,</span> <span class="mf">20.</span><span class="p">]</span>
 
-# generate the multiple shooting object
-ms_obj = MultipleShootingPeriod(x, M=20, period_guess=.5,
-                                t_steps=200, model=mymodel)
+<span class="c1"># generate the multiple shooting object</span>
+<span class="n">ms_obj</span> <span class="o">=</span> <span class="n">MultipleShootingPeriod</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">period_guess</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span>
+                                <span class="n">t_steps</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">mymodel</span><span class="p">)</span>
 
-# just to plot the initial guess distribution. No need to call this
-initial_guess = ms_obj.get_initial_guess()
+<span class="c1"># just to plot the initial guess distribution. No need to call this</span>
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="n">ms_obj</span><span class="o">.</span><span class="n">get_initial_guess</span><span class="p">()</span>
 
-# call the solver for the multiple-shooting algorithm
-mysolution = SolverPeriod(ms_obj=ms_obj).lma()
+<span class="c1"># call the solver for the multiple-shooting algorithm</span>
+<span class="n">mysolution</span> <span class="o">=</span> <span class="n">SolverPeriod</span><span class="p">(</span><span class="n">ms_obj</span><span class="o">=</span><span class="n">ms_obj</span><span class="p">)</span><span class="o">.</span><span class="n">lma</span><span class="p">()</span>
 
-jacobian = mysolution[4]
+<span class="n">jacobian</span> <span class="o">=</span> <span class="n">mysolution</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
 
-# Floquet multipliers
-eigenvalues, eigenvectors = np.linalg.eig(jacobian)
+<span class="c1"># Floquet multipliers</span>
+<span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">jacobian</span><span class="p">)</span>
 
-# ODE limit cycle solution
-sol_array = mysolution[3].space
-sol_time = mysolution[3].time
-period = sol_time[-1]
+<span class="c1"># ODE limit cycle solution</span>
+<span class="n">sol_array</span> <span class="o">=</span> <span class="n">mysolution</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">space</span>
+<span class="n">sol_time</span> <span class="o">=</span> <span class="n">mysolution</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">time</span>
+<span class="n">period</span> <span class="o">=</span> <span class="n">sol_time</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-# plot the phase portrait of the limit cycle
-fig1 = plt.figure(1)
-ax = fig1.gca(projection=&#39;3d&#39;)
-ax.set_xlabel(&#39;$x$&#39;)
-ax.set_ylabel(&#39;$y$&#39;)
-ax.set_zlabel(&#39;$z$&#39;)
-ax.scatter(initial_guess[:,0],
-           initial_guess[:,1],
-           initial_guess[:,2], color=&#39;red&#39;, label=&#39;initial guess&#39;)
-ax.plot(sol_array[:, 0],
-        sol_array[:, 1],
-        sol_array[:, 2],color = &#39;b&#39;)
-plt.legend()
-plt.show()
-
-```
-3. Run the main file inside `multiflap` directory
-```
-python3 main_isothermal.py
-```
-the output will look like
-
-![](img/isothermal_reaction.png)
+<span class="c1"># plot the phase portrait of the limit cycle</span>
+<span class="n">fig1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig1</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$x$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$y$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;$z$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">initial_guess</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span>
+           <span class="n">initial_guess</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span>
+           <span class="n">initial_guess</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;initial guess&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sol_array</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="n">sol_array</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">sol_array</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span><span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p>Run the main file inside <cite>multiflap</cite> directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="n">main_isothermal</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
 </li>
 </ol>
+<p>the output will look like
+![](img/isothermal_reaction.png)</p>
 </div>
 
 

@@ -114,11 +114,9 @@ Within this tutorial, a new study case will be created and run.
         plt.legend()
         plt.show()
 
-        ```
-        3. Run the main file inside `multiflap` directory
-        ```
-        python3 main_isothermal.py
-        ```
-        the output will look like 
+3. Run the main file inside `multiflap` directory::
 
-        ![](img/isothermal_reaction.png)
+        python3 main_isothermal.py
+        
+the output will look like 
+![](img/isothermal_reaction.png)
