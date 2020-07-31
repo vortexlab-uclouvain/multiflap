@@ -9,7 +9,7 @@ Section explaining stuff knvaldn
 .. toctree::
    :maxdepth: 2
 
-   overview
+   user_guide
    tutorial
    license
 
