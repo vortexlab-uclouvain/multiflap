@@ -1,13 +1,8 @@
 Welcome to multiflapp's documentation!
 ======================================
 
-Another section
-===============
-
-Section explaining stuff knvaldn
-
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    user_guide
    tutorial
