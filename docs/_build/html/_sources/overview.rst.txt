@@ -1,5 +1,5 @@
-Overview
-========
+Introduction
+============
 
 `multiflap` is a Python toolbox for finding periodic orbit of nonlinear systems of ODEs. The code relies on the multiple-shooting algorithm, and simoultaneously allows to study the stability of the system via the Floquet multipliers.
 
@@ -29,3 +29,20 @@ python setup.py install
 ```
 python3 examples/rossler_system.py
 ```
+
+Limit cycle stability
+=====================
+
+Limit cycle stability here
+
+Multiple-shooting algorith
+==========================
+
+Unknown period
+--------------
+
+Known period
+------------
+
+Jacobian computation
+====================
