@@ -4,15 +4,20 @@ Stability of cycles
 Given the generic system of ordinary differential equations of the form:
 
 .. math:: 
-   :nowrap:
  
-   \begin{equation}
    \dot{\mathbf{x}} = \mathbf{v}(\mathbf{x}, t)
-   \label{eqn:odena}
-   \end{equation}
+   :label: odes
 
 we want to find a particular solution such that
 
+.. math:: 
+   :nowrap:
+ 
+   \begin{equation}
+   \dot{\mathbf{x}}(t) = \dot{\mathbf{x}}(t + T)
+   \end{equation}
+
+where :math:`T > 0` is the period of the cycle.
 
 .. figure:: ../../img/limit_cycle_stability.png
    :alt: Limit cycle stability.
