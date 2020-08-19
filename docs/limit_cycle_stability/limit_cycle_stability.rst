@@ -14,7 +14,7 @@ we want to find a particular solution such that
    :nowrap:
  
    \begin{equation}
-   \dot{\mathbf{x}}(t) = \dot{\mathbf{x}}(t + T)
+   \mathbf{x}(t) = \mathbf{x}(t + T)
    \end{equation}
 
 where :math:`T > 0` is the period of the cycle.
