@@ -49,10 +49,7 @@ pygments_style = 'sphinx'
 # a list of builtin themes.
 
 #
-#import sphinx_pdj_theme
-html_theme = 'sphinx_pdj_theme'
-#htm_theme_path = [sphinx_pdj_theme.get_html_theme_path()]
-#html_theme = 'default'
+html_theme = 'default'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
