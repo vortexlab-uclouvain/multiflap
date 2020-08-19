@@ -119,4 +119,8 @@ Within this tutorial, a new study case will be created and run.
         python3 main_isothermal.py
         
 the output will look like 
-![](img/isothermal_reaction.png)
+
+.. figure:: ../img/isothermal_reaction.png
+   :alt: Limit cycle stability.
+   :width: 50%
+
