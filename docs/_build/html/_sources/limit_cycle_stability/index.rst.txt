@@ -1,7 +1,7 @@
 Limit cycle stability
 =====================
 
-.. figure:: ../../img/limit_cycle_stability.pdf
-   :alt: Limit cycle stability.
-   :width: 50%
+.. toctree::
+   :maxdepth: 2
 
+   limit_cycle_stability.rst
