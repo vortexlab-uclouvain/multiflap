@@ -36,19 +36,3 @@ Installation and getting started
    $ python3 examples/rossler_system.py
 
 
-Limit cycle stability
-=====================
-
-Limit cycle stability here
-
-Multiple-shooting algorith
-==========================
-
-Unknown period
---------------
-
-Known period
-------------
-
-Jacobian computation
-====================
