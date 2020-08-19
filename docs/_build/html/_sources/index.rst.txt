@@ -4,7 +4,7 @@ Welcome to multiflapp's documentation!
 .. toctree::
    :maxdepth: 1
 
-   user_guide
+   getting_started/index.rst
    limit_cycle_stability
    multiple_shooting
    tutorial
