@@ -1,3 +1,6 @@
+Multiple-shooting algorithm
+===========================
+
 .. toctree::
    :maxdepth: 2
 
