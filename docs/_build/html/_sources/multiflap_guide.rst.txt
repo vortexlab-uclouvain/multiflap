@@ -11,24 +11,30 @@ In order to run the code for a particular dynamical system, two files have to be
 
 * **Main file**: The main file is the python module that will e executed. More detailes on the format of the main file will be provided later. **NOTE** despite of example cases, the main file has to be inside `multiflap` directory.
 
-**Installation and getting started**
+Installation and getting started
+================================
 
 `multiflap` runs on Python 3 and Python 2.  
 
+
 1.   Get a local copy of `multiflap`:
 
-```
-git clone https://github.com/vortexlab-uclouvain/multiflap.git
-```
+.. code-block:: bash
+
+   $ git clone https://github.com/vortexlab-uclouvain/multiflap.git
+   
 2. Install the packages:
-```bash
-python setup.py install
-```
+
+.. code-block:: bash
+
+   $ python setup.py install
+
 3. To run one of the examples, from the multiflap root directory:
 
-```
-python3 examples/rossler_system.py
-```
+.. code-block:: bash
+
+   $ python3 examples/rossler_system.py
+
 
 Limit cycle stability
 =====================

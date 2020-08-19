@@ -50,22 +50,28 @@
 <li><p><strong>Input file</strong>: The input file contains the system of differential equations, and the related staility matrix.</p></li>
 <li><p><strong>Main file</strong>: The main file is the python module that will e executed. More detailes on the format of the main file will be provided later. <strong>NOTE</strong> despite of example cases, the main file has to be inside <cite>multiflap</cite> directory.</p></li>
 </ul>
-<p><strong>Installation and getting started</strong></p>
+</div>
+<div class="section" id="installation-and-getting-started">
+<h1>Installation and getting started<a class="headerlink" href="#installation-and-getting-started" title="Permalink to this headline">¶</a></h1>
 <p><cite>multiflap</cite> runs on Python 3 and Python 2.</p>
 <ol class="arabic simple">
 <li><p>Get a local copy of <cite>multiflap</cite>:</p></li>
 </ol>
-<p><code class="docutils literal notranslate"><span class="pre">`</span>
-<span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/vortexlab-uclouvain/multiflap.git</span>
-<span class="pre">`</span></code>
-2. Install the packages:
-<code class="docutils literal notranslate"><span class="pre">`bash</span>
-<span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span>
-<span class="pre">`</span></code>
-3. To run one of the examples, from the multiflap root directory:</p>
-<p><code class="docutils literal notranslate"><span class="pre">`</span>
-<span class="pre">python3</span> <span class="pre">examples/rossler_system.py</span>
-<span class="pre">`</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/vortexlab-uclouvain/multiflap.git
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Install the packages:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python setup.py install
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>To run one of the examples, from the multiflap root directory:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python3 examples/rossler_system.py
+</pre></div>
+</div>
 </div>
 <div class="section" id="limit-cycle-stability">
 <h1>Limit cycle stability<a class="headerlink" href="#limit-cycle-stability" title="Permalink to this headline">¶</a></h1>
@@ -93,6 +99,7 @@
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Introduction</a></li>
+<li><a class="reference internal" href="#installation-and-getting-started">Installation and getting started</a></li>
 <li><a class="reference internal" href="#limit-cycle-stability">Limit cycle stability</a></li>
 <li><a class="reference internal" href="#multiple-shooting-algorith">Multiple-shooting algorith</a><ul>
 <li><a class="reference internal" href="#unknown-period">Unknown period</a></li>
