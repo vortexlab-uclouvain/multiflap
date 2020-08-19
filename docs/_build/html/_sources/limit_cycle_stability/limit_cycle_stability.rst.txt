@@ -3,7 +3,7 @@ Stability of cycles
 
 Given the generic system of ordinary differential equations of the form:
 
-.. math:: \dot{\mathbf{x}} = \mathbf{v}(\mathbf{x}, t)
+.. eq:: \dot{\mathbf{x}} = \mathbf{v}(\mathbf{x}, t)
    :label: odes
 
 we want to find a particular solution such that

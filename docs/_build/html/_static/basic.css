@@ -728,7 +728,7 @@ div.viewcode-block:target {
 /* -- math display ---------------------------------------------------------- */
 
 img.math {
-    vertical-align: middle;
+    vertical-align: right;
 }
 
 div.body div.math p {
@@ -740,7 +740,7 @@ span.eqno {
 }
 
 span.eqno a.headerlink {
-    position: relative;
+    position: right;
     left: 0px;
     z-index: 1;
 }
