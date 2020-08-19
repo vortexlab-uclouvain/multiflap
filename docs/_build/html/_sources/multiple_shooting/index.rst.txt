@@ -1,11 +1,4 @@
-Multiple-shooting algorith
-==========================
+.. toctree::
+   :maxdepth: 2
 
-Unknown period
---------------
-
-Known period
-------------
-
-Jacobian computation
-====================
+   multiple_shooting_algorithm.rst
