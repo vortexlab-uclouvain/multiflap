@@ -3,8 +3,13 @@ Stability of cycles
 
 Given the generic system of ordinary differential equations of the form:
 
-.. math:: \dot{\mathbf{x}} = \mathbf{v}(\mathbf{x}, t)
-   :label: ode_system
+.. math:: 
+   :nowrap:
+ 
+   \begin{equation}
+   \dot{\mathbf{x}} = \mathbf{v}(\mathbf{x}, t)
+   \label{eqn:odena}
+   \end{equation}
 
 we want to find a particular solution such that
 
