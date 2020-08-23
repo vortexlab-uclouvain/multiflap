@@ -86,7 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="getting_started/index.html">User guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="limit_cycle_stability/index.html">Limit cycle stability</a></li>
 <li class="toctree-l1"><a class="reference internal" href="multiple_shooting/index.html">Multiple-shooting algorithm</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/index.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">LICENSE</a></li>
 </ul>
 
@@ -155,12 +155,33 @@
             
   <div class="section" id="welcome-to-multiflapp-s-documentation">
 <h1>Welcome to multiflapp’s documentation!<a class="headerlink" href="#welcome-to-multiflapp-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Multiflapp is a <code class="docutils literal notranslate"><span class="pre">python</span></code> toolbox optimised to assess the cycle stability of flapping fliers. The kernel of this framework relies on the <strong>multiple-shooting</strong> algorithm, which is a numerical method to detect iteratively limit cycles, and assess their stability via the Floquet multipliers.</p>
+<p>The object-oriented structure of this code, allows the user to couple the multiple-shooting scheme with any system of ordinary differential equations.</p>
+<p>The documentation is organized as follows:</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="getting_started/index.html">User guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="limit_cycle_stability/index.html">Limit cycle stability</a></li>
-<li class="toctree-l1"><a class="reference internal" href="multiple_shooting/index.html">Multiple-shooting algorithm</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started/index.html">User guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/multiflap_guide.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/multiflap_guide.html#installation-and-getting-started">Installation and getting started</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="limit_cycle_stability/index.html">Limit cycle stability</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="limit_cycle_stability/limit_cycle_stability.html">Stability of cycles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multiple_shooting/index.html">Multiple-shooting algorithm</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="multiple_shooting/numerical_scheme.html">Numerical scheme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiple_shooting/jacobian_computation.html">Jacobian computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiple_shooting/floquet_multipliers.html">Floquet multipliers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/index.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/isothermal_reaction.html">Isothermal reaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/redox_oscillation.html">Redox oscillation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/rossler.html">Rossler’s system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/bird_dynamics.html">Bird model dynamics</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">LICENSE</a></li>
 </ul>
 </div>

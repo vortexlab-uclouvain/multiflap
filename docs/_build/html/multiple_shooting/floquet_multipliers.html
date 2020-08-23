@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Limit cycle stability &mdash; multiflapp 0.1 documentation</title>
+  <title>Floquet multipliers &mdash; multiflapp 0.1 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Stability of cycles" href="limit_cycle_stability.html" />
-    <link rel="prev" title="Introduction" href="../getting_started/multiflap_guide.html" /> 
+    <link rel="next" title="Tutorial" href="../tutorial/index.html" />
+    <link rel="prev" title="Jacobian computation" href="jacobian_computation.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -85,11 +85,13 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">User guide</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Limit cycle stability</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="limit_cycle_stability.html">Stability of cycles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../limit_cycle_stability/index.html">Limit cycle stability</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Multiple-shooting algorithm</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="numerical_scheme.html">Numerical scheme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jacobian_computation.html">Jacobian computation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Floquet multipliers</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../multiple_shooting/index.html">Multiple-shooting algorithm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
 </ul>
@@ -138,13 +140,15 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Limit cycle stability</li>
+          <li><a href="index.html">Multiple-shooting algorithm</a> &raquo;</li>
+        
+      <li>Floquet multipliers</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/limit_cycle_stability/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/multiple_shooting/floquet_multipliers.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -157,15 +161,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="limit-cycle-stability">
-<h1>Limit cycle stability<a class="headerlink" href="#limit-cycle-stability" title="Permalink to this headline">¶</a></h1>
-<p>This section briefly aims to recall the basic theory about cycle stability, providing the user the mathematical notations on which the code builds upon.
-Such notation is strongly inspired by ChaosBook [cite here].</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="limit_cycle_stability.html">Stability of cycles</a></li>
-</ul>
-</div>
+  <div class="section" id="floquet-multipliers">
+<h1>Floquet multipliers<a class="headerlink" href="#floquet-multipliers" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -176,10 +173,10 @@ Such notation is strongly inspired by ChaosBook [cite here].</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="limit_cycle_stability.html" class="btn btn-neutral float-right" title="Stability of cycles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../tutorial/index.html" class="btn btn-neutral float-right" title="Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../getting_started/multiflap_guide.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="jacobian_computation.html" class="btn btn-neutral float-left" title="Jacobian computation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

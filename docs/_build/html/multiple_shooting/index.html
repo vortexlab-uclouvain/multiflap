@@ -37,7 +37,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Multiple-shooting algorithm" href="multiple_shooting_algorithm.html" />
+    <link rel="next" title="Numerical scheme" href="numerical_scheme.html" />
     <link rel="prev" title="Stability of cycles" href="../limit_cycle_stability/limit_cycle_stability.html" /> 
 </head>
 
@@ -87,10 +87,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">User guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../limit_cycle_stability/index.html">Limit cycle stability</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Multiple-shooting algorithm</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="multiple_shooting_algorithm.html">Multiple-shooting algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numerical_scheme.html">Numerical scheme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jacobian_computation.html">Jacobian computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="floquet_multipliers.html">Floquet multipliers</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
 </ul>
 
@@ -159,9 +161,17 @@
             
   <div class="section" id="multiple-shooting-algorithm">
 <h1>Multiple-shooting algorithm<a class="headerlink" href="#multiple-shooting-algorithm" title="Permalink to this headline">¶</a></h1>
+<p>What follows is the description of the <strong>multiple-shooting</strong> algorithm. Two functions are implemented, depending whther the orbit period is known a priori (i.e. for non-autonomous systems) or not (i.e. most of the autonomous systems).</p>
+<p>Both methods are adaptations of the algorithms described by Lust [cite here].</p>
+<p>Two methods to compute the Jacobian (or Monodromy matrix) are also described.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="multiple_shooting_algorithm.html">Multiple-shooting algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="numerical_scheme.html">Numerical scheme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jacobian_computation.html">Jacobian computation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jacobian_computation.html#analytical-computation">Analytical computation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="floquet_multipliers.html">Floquet multipliers</a></li>
 </ul>
 </div>
 </div>
@@ -174,7 +184,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="multiple_shooting_algorithm.html" class="btn btn-neutral float-right" title="Multiple-shooting algorithm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="numerical_scheme.html" class="btn btn-neutral float-right" title="Numerical scheme" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../limit_cycle_stability/limit_cycle_stability.html" class="btn btn-neutral float-left" title="Stability of cycles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

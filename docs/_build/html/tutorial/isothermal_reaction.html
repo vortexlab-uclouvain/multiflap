@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Isothermal reaction &mdash; multiflapp 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Redox oscillation" href="redox_oscillation.html" />
+    <link rel="prev" title="Tutorial" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> multiflapp
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../limit_cycle_stability/index.html">Limit cycle stability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multiple_shooting/index.html">Multiple-shooting algorithm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Isothermal reaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="redox_oscillation.html">Redox oscillation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rossler.html">Rossler’s system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bird_dynamics.html">Bird model dynamics</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">multiflapp</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Tutorial</a> &raquo;</li>
+        
+      <li>Isothermal reaction</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tutorial/isothermal_reaction.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="isothermal-reaction">
+<h1>Isothermal reaction<a class="headerlink" href="#isothermal-reaction" title="Permalink to this headline">¶</a></h1>
+<p>An isothermal reaction is described by a set of ODEs of the form:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{aligned}
+\dot{y_1} &amp;= y_{1}(30 - 0.25y_{1} -y_{2} -y_{3}) + 0.001y_{2}^{2} + 0.1 \\
+\dot{y_{2}} &amp;= y_{2}(y_{1} - 0.001y_{2} - \lambda) + 0.1 \\
+\dot{y_{3}} &amp;= y_{3}(16.5 - y_{1} -0.5y_{3}) + 0.1
+\end{aligned}
+\end{equation}\end{split}\]</div>
+<p>and the relative <strong>stability matrix</strong> is therefore:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\mathbb{A}(\mathbf{x}(t), t) =
+\begin{pmatrix}
+30 - 0.5y_{1} -y_{2} -y_{3} &amp; y_{1} + 2*0.001y_{2} &amp; -y_{1}\\
+y_{2}&amp; y_{1} - 2*0.001y_{2} - \lambda &amp; 0\\
+-y_{3} &amp; 0 &amp; 16.5 - y_{1} - y_{3}
+\end{pmatrix}
+\end{equation}\end{split}\]</div>
+<ol class="arabic">
+<li><p>Generate the input file containing the ODE system and the hard code the stability matrix, inside <code class="docutils literal notranslate"><span class="pre">multiflap/odes/isothermal_reaction.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Example case adopted from:</span>
+
+<span class="sd">    Practical Bifurcation and Stability Analysis, page 325</span>
+<span class="sd">    Seydel R.</span>
+<span class="sd">    Eq. (7.15) - Isothermal chemical reaction dynamics</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="k">class</span> <span class="nc">IsothermalReaction</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">1.8</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lam</span> <span class="o">=</span> <span class="n">lam</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="o">=</span><span class="mi">3</span>        <span class="c1"># specify the dimension of the problem</span>
+    <span class="k">def</span> <span class="nf">dynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;ODE system</span>
+<span class="sd">        This function will be passed to the numerical integrator</span>
+
+<span class="sd">        Inputs:</span>
+<span class="sd">            x0: initial values</span>
+<span class="sd">            t: time</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">            x_dot: velocity vector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="n">x0</span>
+        <span class="n">dy1_dt</span> <span class="o">=</span> <span class="n">y1</span><span class="o">*</span><span class="p">(</span><span class="mi">30</span> <span class="o">-</span> <span class="mf">0.25</span><span class="o">*</span><span class="n">y1</span> <span class="o">-</span><span class="n">y2</span> <span class="o">-</span><span class="n">y3</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.001</span><span class="o">*</span><span class="n">y2</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">0.1</span>
+        <span class="n">dy2_dt</span> <span class="o">=</span> <span class="n">y2</span><span class="o">*</span><span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="mf">0.001</span><span class="o">*</span><span class="n">y2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lam</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.1</span>
+        <span class="n">dy3_dt</span> <span class="o">=</span> <span class="n">y3</span><span class="o">*</span><span class="p">(</span><span class="mf">16.5</span> <span class="o">-</span> <span class="n">y1</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">y3</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.1</span>
+
+        <span class="n">vel_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dy1_dt</span><span class="p">,</span> <span class="n">dy2_dt</span><span class="p">,</span> <span class="n">dy3_dt</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vel_array</span>
+
+
+    <span class="k">def</span> <span class="nf">get_stability_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Stability matrix of the ODE system</span>
+
+<span class="sd">        Inputs:</span>
+<span class="sd">            x0: initial condition</span>
+<span class="sd">        Outputs:</span>
+<span class="sd">            A: Stability matrix evaluated at x0. (dxd) dimension</span>
+<span class="sd">            A[i, j] = dv[i]/dx[j]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="n">x0</span>
+        <span class="n">A_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">30</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">y1</span> <span class="o">-</span><span class="n">y2</span> <span class="o">-</span><span class="n">y3</span><span class="p">,</span> <span class="n">y1</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="mf">0.001</span><span class="o">*</span><span class="n">y2</span><span class="p">,</span> <span class="o">-</span><span class="n">y1</span><span class="p">],</span>
+                            <span class="p">[</span><span class="n">y2</span><span class="p">,</span> <span class="n">y1</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="mf">0.001</span><span class="o">*</span><span class="n">y2</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">lam</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+                            <span class="p">[</span><span class="o">-</span><span class="n">y3</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">16.5</span> <span class="o">-</span> <span class="n">y1</span> <span class="o">-</span> <span class="n">y3</span><span class="p">]],</span> <span class="nb">float</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">A_matrix</span>
+</pre></div>
+</div>
+</li>
+<li><p>Generate the main file to run in the directory <code class="docutils literal notranslate"><span class="pre">multiflap/main_isothermal.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span>  <span class="nn">odes.isothermal_reaction</span> <span class="kn">import</span> <span class="n">IsothermalReaction</span>
+<span class="kn">from</span> <span class="nn">ms_package.multiple_shooting_period</span> <span class="kn">import</span> <span class="n">MultipleShootingPeriod</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">ms_package.lma_solver_period</span> <span class="kn">import</span> <span class="n">SolverPeriod</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+
+<span class="c1"># generate the ODEs object</span>
+
+<span class="n">mymodel</span> <span class="o">=</span> <span class="n">IsothermalReaction</span><span class="p">(</span><span class="n">lam</span><span class="o">=</span><span class="mf">11.</span><span class="p">)</span>
+
+
+<span class="c1"># initial condition</span>
+<span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">40.</span><span class="p">,</span> <span class="mf">20.</span><span class="p">,</span> <span class="mf">20.</span><span class="p">]</span>
+
+<span class="c1"># generate the multiple shooting object</span>
+<span class="n">ms_obj</span> <span class="o">=</span> <span class="n">MultipleShootingPeriod</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">period_guess</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span>
+                                <span class="n">t_steps</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">mymodel</span><span class="p">)</span>
+
+<span class="c1"># just to plot the initial guess distribution. No need to call this</span>
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="n">ms_obj</span><span class="o">.</span><span class="n">get_initial_guess</span><span class="p">()</span>
+
+<span class="c1"># call the solver for the multiple-shooting algorithm</span>
+<span class="n">mysolution</span> <span class="o">=</span> <span class="n">SolverPeriod</span><span class="p">(</span><span class="n">ms_obj</span><span class="o">=</span><span class="n">ms_obj</span><span class="p">)</span><span class="o">.</span><span class="n">lma</span><span class="p">()</span>
+
+<span class="n">jacobian</span> <span class="o">=</span> <span class="n">mysolution</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+
+<span class="c1"># Floquet multipliers</span>
+<span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">jacobian</span><span class="p">)</span>
+
+<span class="c1"># ODE limit cycle solution</span>
+<span class="n">sol_array</span> <span class="o">=</span> <span class="n">mysolution</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">space</span>
+<span class="n">sol_time</span> <span class="o">=</span> <span class="n">mysolution</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">time</span>
+<span class="n">period</span> <span class="o">=</span> <span class="n">sol_time</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># plot the phase portrait of the limit cycle</span>
+<span class="n">fig1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig1</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$x$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$y$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;$z$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">initial_guess</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span>
+           <span class="n">initial_guess</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span>
+           <span class="n">initial_guess</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;initial guess&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sol_array</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="n">sol_array</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">sol_array</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span><span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p>Run the main file inside <code class="docutils literal notranslate"><span class="pre">multiflap</span></code> directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="n">main_isothermal</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>the output will look like</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/isothermal_reaction.png"><img alt="Limit cycle stability." src="../_images/isothermal_reaction.png" style="width: 80%;" /></a>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="redox_oscillation.html" class="btn btn-neutral float-right" title="Redox oscillation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Gianmarco Ducci
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

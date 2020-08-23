@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Limit cycle stability &mdash; multiflapp 0.1 documentation</title>
+  <title>Jacobian computation &mdash; multiflapp 0.1 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Stability of cycles" href="limit_cycle_stability.html" />
-    <link rel="prev" title="Introduction" href="../getting_started/multiflap_guide.html" /> 
+    <link rel="next" title="Floquet multipliers" href="floquet_multipliers.html" />
+    <link rel="prev" title="Numerical scheme" href="numerical_scheme.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -85,11 +85,16 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">User guide</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Limit cycle stability</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="limit_cycle_stability.html">Stability of cycles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../limit_cycle_stability/index.html">Limit cycle stability</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Multiple-shooting algorithm</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="numerical_scheme.html">Numerical scheme</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Jacobian computation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#analytical-computation">Analytical computation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../multiple_shooting/index.html">Multiple-shooting algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="floquet_multipliers.html">Floquet multipliers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
 </ul>
@@ -138,13 +143,15 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Limit cycle stability</li>
+          <li><a href="index.html">Multiple-shooting algorithm</a> &raquo;</li>
+        
+      <li>Jacobian computation</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/limit_cycle_stability/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/multiple_shooting/jacobian_computation.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -157,14 +164,20 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="limit-cycle-stability">
-<h1>Limit cycle stability<a class="headerlink" href="#limit-cycle-stability" title="Permalink to this headline">¶</a></h1>
-<p>This section briefly aims to recall the basic theory about cycle stability, providing the user the mathematical notations on which the code builds upon.
-Such notation is strongly inspired by ChaosBook [cite here].</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="limit_cycle_stability.html">Stability of cycles</a></li>
-</ul>
+  <div class="section" id="jacobian-computation">
+<h1>Jacobian computation<a class="headerlink" href="#jacobian-computation" title="Permalink to this headline">¶</a></h1>
+<p>Two methods are implemented to calculate the Jacobian matrix and build the diagonal blocks of the multiple-shooting matrix <span class="math notranslate nohighlight">\(\textbf{M}\)</span>.</p>
+<div class="section" id="analytical-computation">
+<h2>Analytical computation<a class="headerlink" href="#analytical-computation" title="Permalink to this headline">¶</a></h2>
+<p>The analytical computation solves the Equation:</p>
+<div class="math notranslate nohighlight" id="equation-jac-an">
+<span class="eqno">(1)<a class="headerlink" href="#equation-jac-an" title="Permalink to this equation">¶</a></span>\[\begin{split}\frac{d\mathbb{J}}{dt}(\mathbf{x}_0) \Big \rvert_{t_0}^{t}&amp;= \mathbb{A}(\mathbf{x}, t) \mathbb{J}(\mathbf{x}_0) \Big \rvert_{t_0}^{t}\\
+\mathbb{J} (\mathbf{x}_0)\Big \rvert_{t_0}^{t_0} &amp;= \mathbb{I}\end{split}\]</div>
+<p>This means solving a <span class="math notranslate nohighlight">\((n+n^{2})\)</span> system of differential equations.</p>
+<p>The system is therefore accordingly re-shaped.</p>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">/../multiflap/ms_package/multiple_shooting.MultipleShooting.get_jacobian_analytical()</span></code>
+Numerical computation
+<strong>*****************</strong></p>
 </div>
 </div>
 
@@ -176,10 +189,10 @@ Such notation is strongly inspired by ChaosBook [cite here].</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="limit_cycle_stability.html" class="btn btn-neutral float-right" title="Stability of cycles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="floquet_multipliers.html" class="btn btn-neutral float-right" title="Floquet multipliers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../getting_started/multiflap_guide.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="numerical_scheme.html" class="btn btn-neutral float-left" title="Numerical scheme" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
