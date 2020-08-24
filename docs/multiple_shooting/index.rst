@@ -11,5 +11,6 @@ Two methods to compute the Jacobian (or Monodromy matrix) are also described.
    :maxdepth: 2
 
    numerical_scheme.rst
+   numerical_scheme_period.rst
    jacobian_computation.rst
    floquet_multipliers.rst

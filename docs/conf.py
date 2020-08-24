@@ -51,9 +51,10 @@ pygments_style = 'sphinx'
 #
 html_theme = 'sphinx_rtd_theme'
 
-if html_theme != 'sphinx_rtd_theme':
-    def setup(app):
-        app.add_stylesheet('custom.css')
+extensions = ['sphinxcontrib.contentui']
+#if html_theme != 'sphinx_rtd_theme':
+ #   def setup(app):
+  #      app.add_stylesheet('custom.css')
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
@@ -79,6 +80,9 @@ latex_documents = [
   ('index', 'ReadtheDocsTemplate.tex', u'Read the Docs Template Documentation',
    u'Read the Docs', 'manual'),
 ]
+
+def setup(app):
+    app.add_css_file('my_width.css')
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.

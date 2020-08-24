@@ -19,6 +19,6 @@ This means solving a :math:`(n+n^{2})` system of differential equations.
 
 The system is therefore accordingly re-shaped.
 
-:py:meth:`../../multiflap/ms_package/multiple_shooting.MultipleShooting.get_jacobian_analytical`
+.. py:method::
 Numerical computation
 *********************
