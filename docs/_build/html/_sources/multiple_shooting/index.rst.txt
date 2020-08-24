@@ -13,4 +13,5 @@ Two methods to compute the Jacobian (or Monodromy matrix) are also described.
    numerical_scheme.rst
    numerical_scheme_period.rst
    jacobian_computation.rst
+   ms_solver.rst
    floquet_multipliers.rst

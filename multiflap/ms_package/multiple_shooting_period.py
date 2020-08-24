@@ -142,11 +142,11 @@ class MultipleShootingPeriod:
         #Last dxd elements of the velJ are determined by the action of
         #stability matrix on the current value of the Jacobian:
 
-        velTangent = np.dot(self.model.get_stability_matrix(x0, t), J)
+        velocity_vector = np.dot(self.model.get_stability_matrix(x0, t), J)
 
         # shape a back a (dxd) array in a d^2 matrix
 
-        jac_elements_ODE[self.dim:] = np.reshape(velTangent,
+        jac_elements_ODE[self.dim:] = np.reshape(velocity_vector,
                                                        self.dim**2)
 
         return jac_elements_ODE

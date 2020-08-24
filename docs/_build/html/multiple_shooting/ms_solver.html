@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Multiple-shooting solver &mdash; multiflapp 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/my_width.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/contentui.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/contentui.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Floquet multipliers" href="floquet_multipliers.html" />
+    <link rel="prev" title="Jacobian computation" href="jacobian_computation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> multiflapp
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../limit_cycle_stability/index.html">Limit cycle stability</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Multiple-shooting algorithm</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="numerical_scheme.html">Numerical scheme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numerical_scheme_period.html">Numerical scheme (unknown period)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jacobian_computation.html">Jacobian computation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Multiple-shooting solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="floquet_multipliers.html">Floquet multipliers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">multiflapp</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Multiple-shooting algorithm</a> &raquo;</li>
+        
+      <li>Multiple-shooting solver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/multiple_shooting/ms_solver.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="multiple-shooting-solver">
+<h1>Multiple-shooting solver<a class="headerlink" href="#multiple-shooting-solver" title="Permalink to this headline">¶</a></h1>
+<p>The compact form of the multiple-shooting scheme can be written in the form:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{M}(\mathbf{x}_i) \mathbf{\Delta \mathbf{x}} = \mathbf{E}(\mathbf{x}_i)\]</div>
+<p>Finding the solution of this Equation, means finding the <span class="math notranslate nohighlight">\(\mathbf{x}^{*}_i \in \rm I\!R^{n}\)</span> such that <span class="math notranslate nohighlight">\(\mathbf{E}(\mathbf{x}_i^*) = \mathbf{0}\)</span>.</p>
+<p>This is solve iteratively using the Levenberg-Marquardt Algorithm (LMA).</p>
+<p>The estimation of the unknown vector <span class="math notranslate nohighlight">\(\delta \mathbf{x}\)</span>, used to update the state variables at the generic iteration step <span class="math notranslate nohighlight">\(k\)</span>, is computed as follows</p>
+<div class="math notranslate nohighlight" id="equation-lma">
+<span class="eqno">(1)<a class="headerlink" href="#equation-lma" title="Permalink to this equation">¶</a></span>\[\left[ \mathbf{M}^{T}\mathbf{M} + \lambda \text{diag}(\mathbf{M}^{T}\mathbf{M}) \right]\mathbf{\delta \mathbf{x}} =  \mathbf{M}^{T} \mathbf{E}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda\)</span> is a non-negative, adaptive damping parameter.</p>
+<div class="content-tabs docutils container">
+<div class="tab-content docutils container" id="tab-tab1">
+<p class="tab-title">LMA code - period</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solver</span><span class="p">:</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="n">max_iterations</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">ms_obj</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tolerance</span> <span class="o">=</span> <span class="n">tolerance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_iterations</span> <span class="o">=</span> <span class="n">max_iterations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ms_obj</span> <span class="o">=</span> <span class="n">ms_obj</span>
+
+    <span class="k">def</span> <span class="nf">lma</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">damp</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ms_obj</span><span class="o">.</span><span class="n">get_initial_guess</span><span class="p">()</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+        <span class="n">ptlist</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">]</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ms_obj</span><span class="o">.</span><span class="n">dim</span>
+        <span class="c1"># Start the iterative scheme</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_iterations</span><span class="p">):</span>
+
+            <span class="n">start_timing</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;... Iteration i = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+            <span class="n">MS</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">complete_solution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ms_obj</span><span class="o">.</span><span class="n">get_ms_scheme</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+            <span class="n">epsilon</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">E</span><span class="p">))</span>
+            <span class="n">error</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+            <span class="n">end_timing</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;... Iteration &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; time: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">end_timing</span> <span class="o">-</span> <span class="n">start_timing</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;... Iteration number i = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; has error: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">inf</span><span class="p">)))</span>
+
+    <span class="c1">#        np.save(data_sim_history+&quot;/Checkpoint_Iteration_&quot;+str(i), x)</span>
+    <span class="c1">#        np.save(data_sim_history+&quot;/Error_History&quot;, error)</span>
+
+            <span class="k">if</span> <span class="n">epsilon</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerance</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Iteration terminates at error : &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">inf</span><span class="p">)))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calculating Floquet Multipliers&quot;</span><span class="p">)</span>
+
+                <span class="n">ptlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+                <span class="c1"># jac_sg: jacobian semigroup (from one point to the next one)</span>
+                <span class="n">jac_sg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+
+                <span class="c1"># Evaluation of Jacobian, using Semigroup (transition) property</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ms_obj</span><span class="o">.</span><span class="n">point_number</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">jac_sg</span> <span class="o">=</span> <span class="p">(</span><span class="n">MS</span><span class="p">[(</span><span class="n">i</span><span class="o">*</span><span class="n">dim</span><span class="p">):</span><span class="n">dim</span><span class="o">+</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">dim</span><span class="p">),</span>
+                                <span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">dim</span><span class="p">):(</span><span class="n">i</span><span class="o">*</span><span class="n">dim</span><span class="p">)</span><span class="o">+</span><span class="n">dim</span><span class="p">])</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">jac_sg</span><span class="p">)</span>
+
+                <span class="k">break</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="c1"># setting up LM equation</span>
+                <span class="c1"># [(MS.T)MS + lambda*diag((MS.T)MS)]*delta_x = (MS.T)E</span>
+                <span class="c1"># put the Eq. in the form A*delta_x = B</span>
+
+                <span class="n">A_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">MS</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>  <span class="n">MS</span><span class="p">)</span>
+                <span class="n">A</span> <span class="o">=</span> <span class="n">A_0</span> <span class="o">+</span> <span class="n">damp</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">A_0</span><span class="p">))</span>
+                <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">MS</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span>
+                <span class="n">delta_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+                <span class="c1"># Update of the solution</span>
+
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ms_obj</span><span class="o">.</span><span class="n">point_number</span><span class="p">):</span>
+                    <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">,:]</span> <span class="o">+</span> <span class="n">delta_x</span><span class="p">[</span><span class="n">k</span><span class="o">*</span><span class="n">dim</span><span class="p">:(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">dim</span><span class="p">]</span>
+                <span class="p">[</span><span class="n">E_new</span><span class="p">,</span><span class="n">_</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ms_obj</span><span class="o">.</span><span class="n">get_error_vector</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">norm</span><span class="p">(</span><span class="n">E_new</span><span class="p">,</span> <span class="n">inf</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">norm</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">inf</span><span class="p">):</span>
+                    <span class="n">damp</span> <span class="o">=</span> <span class="n">damp</span> <span class="o">/</span> <span class="mf">10.0</span>
+                <span class="k">else</span> <span class="p">:</span>
+                    <span class="n">damp</span> <span class="o">=</span> <span class="n">damp</span> <span class="o">*</span> <span class="mf">10.0</span>
+                <span class="n">ptlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">ptlist</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">complete_solution</span><span class="p">,</span> <span class="n">jac_sg</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="tab-content docutils container" id="tab-tab2">
+<p class="tab-title">LMA code - period unknown</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SolverPeriod</span><span class="p">:</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="n">max_iterations</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">ms_obj</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tolerance</span> <span class="o">=</span> <span class="n">tolerance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_iterations</span> <span class="o">=</span> <span class="n">max_iterations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ms_obj</span> <span class="o">=</span> <span class="n">ms_obj</span>
+
+    <span class="k">def</span> <span class="nf">lma</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">tau</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ms_obj</span><span class="o">.</span><span class="n">period_guess</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ms_obj</span><span class="o">.</span><span class="n">point_number</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">damp</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ms_obj</span><span class="o">.</span><span class="n">get_initial_guess</span><span class="p">()</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+        <span class="n">ptlist</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">]</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ms_obj</span><span class="o">.</span><span class="n">dim</span>
+        <span class="n">x_new</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="c1"># Start the iterative scheme</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_iterations</span><span class="p">):</span>
+
+            <span class="n">start_timing</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;... Iteration i = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;tau is:&quot;</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
+            <span class="n">MS</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">complete_solution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ms_obj</span><span class="o">.</span><span class="n">get_ms_scheme</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
+
+            <span class="n">epsilon</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">E</span><span class="p">))</span>
+            <span class="n">error</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+            <span class="n">end_timing</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Iteration &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; time: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">end_timing</span> <span class="o">-</span> <span class="n">start_timing</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Iteration number i = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; has error: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">inf</span><span class="p">)))</span>
+
+    <span class="c1">#        np.save(data_sim_history+&quot;/Checkpoint_Iteration_&quot;+str(i), x)</span>
+    <span class="c1">#        np.save(data_sim_history+&quot;/Error_History&quot;, error)</span>
+
+
+            <span class="k">if</span> <span class="n">epsilon</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerance</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Iteration terminates at error : &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">inf</span><span class="p">)))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calculating Floquet Multipliers&quot;</span><span class="p">)</span>
+
+                <span class="n">ptlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+                <span class="c1"># jac_sg: jacobian semigroup (from one point to the next one)</span>
+                <span class="n">jac_sg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+
+                <span class="c1"># Evaluation of Jacobian, using Semigroup (transition) property</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ms_obj</span><span class="o">.</span><span class="n">point_number</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">jac_sg</span> <span class="o">=</span> <span class="p">(</span><span class="n">MS</span><span class="p">[(</span><span class="n">i</span><span class="o">*</span><span class="n">dim</span><span class="p">):</span><span class="n">dim</span><span class="o">+</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">dim</span><span class="p">),</span>
+                                <span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">dim</span><span class="p">):(</span><span class="n">i</span><span class="o">*</span><span class="n">dim</span><span class="p">)</span><span class="o">+</span><span class="n">dim</span><span class="p">])</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">jac_sg</span><span class="p">)</span>
+
+                <span class="k">break</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="c1"># setting up LM equation</span>
+                <span class="c1"># [(MS.T)MS + lambda*diag((MS.T)MS)]*delta_x = (MS.T)E</span>
+                <span class="c1"># put the Eq. in the form A*delta_x = B</span>
+
+                <span class="n">A_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">MS</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>  <span class="n">MS</span><span class="p">)</span>
+                <span class="n">A</span> <span class="o">=</span> <span class="n">A_0</span> <span class="o">+</span> <span class="n">damp</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">A_0</span><span class="p">))</span>
+                <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">MS</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span>
+                <span class="n">delta_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+                <span class="c1"># Update of the solution</span>
+
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ms_obj</span><span class="o">.</span><span class="n">point_number</span><span class="p">):</span>
+                    <span class="n">x_new</span><span class="p">[</span><span class="n">k</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">,:]</span> <span class="o">+</span> <span class="n">delta_x</span><span class="p">[</span><span class="n">k</span><span class="o">*</span><span class="n">dim</span><span class="p">:(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">dim</span><span class="p">]</span>
+                <span class="n">tau_new</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">+</span> <span class="n">delta_x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="p">[</span><span class="n">E_new</span><span class="p">,</span><span class="n">_</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ms_obj</span><span class="o">.</span><span class="n">get_error_vector</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="n">tau_new</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">norm</span><span class="p">(</span><span class="n">E_new</span><span class="p">,</span> <span class="n">inf</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">norm</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">inf</span><span class="p">):</span>
+                    <span class="n">tau</span> <span class="o">=</span> <span class="n">tau_new</span>
+                    <span class="n">x</span> <span class="o">=</span> <span class="n">x_new</span>
+                    <span class="n">damp</span> <span class="o">=</span> <span class="n">damp</span> <span class="o">/</span> <span class="mf">10.0</span>
+                <span class="k">else</span> <span class="p">:</span>
+                    <span class="n">damp</span> <span class="o">=</span> <span class="n">damp</span> <span class="o">*</span> <span class="mf">10.0</span>
+                <span class="n">ptlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">ptlist</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">complete_solution</span><span class="p">,</span> <span class="n">jac_sg</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="floquet_multipliers.html" class="btn btn-neutral float-right" title="Floquet multipliers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="jacobian_computation.html" class="btn btn-neutral float-left" title="Jacobian computation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Gianmarco Ducci
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

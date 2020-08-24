@@ -41,7 +41,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Tutorial" href="../tutorial/index.html" />
-    <link rel="prev" title="Jacobian computation" href="jacobian_computation.html" /> 
+    <link rel="prev" title="Multiple-shooting solver" href="ms_solver.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -93,6 +93,7 @@
 <li class="toctree-l2"><a class="reference internal" href="numerical_scheme.html">Numerical scheme</a></li>
 <li class="toctree-l2"><a class="reference internal" href="numerical_scheme_period.html">Numerical scheme (unknown period)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="jacobian_computation.html">Jacobian computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ms_solver.html">Multiple-shooting solver</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Floquet multipliers</a></li>
 </ul>
 </li>
@@ -167,6 +168,11 @@
             
   <div class="section" id="floquet-multipliers">
 <h1>Floquet multipliers<a class="headerlink" href="#floquet-multipliers" title="Permalink to this headline">¶</a></h1>
+<p>Once the convergence is reached the Floquet multipliers can be automatically exctracted from the output of LMA solver.</p>
+<p>The global Jacobian over one period is calculated considering the semi-group property:</p>
+<div class="math notranslate nohighlight" id="equation-jacobian-period">
+<span class="eqno">(1)<a class="headerlink" href="#equation-jacobian-period" title="Permalink to this equation">¶</a></span>\[\mathbb{J} (\mathbf{x}_0) \Big \rvert_{0}^{T} =    \mathbb{J} (\mathbf{x}_{m-1}) \Big \rvert_{t_{m-1}}^{T} \cdots  \mathbb{J} (\mathbf{x}_1) \Big \rvert_{t_{1}}^{t_{1}+\tau}\cdot \mathbb{J} (\mathbf{x}_0) \Big \rvert_{0}^{\tau}\]</div>
+<p>Eigenvalues (Floquet multipliers) and eigenvectors, are then calculated with <code class="docutils literal notranslate"><span class="pre">python</span></code> builtin functions from <code class="docutils literal notranslate"><span class="pre">linalg</span></code>.</p>
 </div>
 
 
@@ -180,7 +186,7 @@
         <a href="../tutorial/index.html" class="btn btn-neutral float-right" title="Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="jacobian_computation.html" class="btn btn-neutral float-left" title="Jacobian computation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="ms_solver.html" class="btn btn-neutral float-left" title="Multiple-shooting solver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
