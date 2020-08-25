@@ -22,7 +22,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 '''
 import numpy as np
-from .bird import Joint, Shoulder, Elbow, Wrist
+from .kinematics_constructor import Joint, Shoulder, Elbow, Wrist
 from .line_functions import smooth_line, smooth_quarterline, quarterchord_naive, improveline_iteration
 from .RotationMatrix import RotationMatrix
 from .CompMatrix import CompMatrix

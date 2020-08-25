@@ -21,7 +21,7 @@ Installation and getting started
 
 .. code-block:: bash
 
-   $ git clone https://github.com/vortexlab-uclouvain/multiflap.git
+   $ git clone https://github.com/vortexlab-uclouvain/multiflap.git && cd multiflap
    
 2. Install the packages:
 

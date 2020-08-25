@@ -24,14 +24,14 @@ limitations under the License.
 import numpy as np
 from  ms_package.multiple_shooting import MultipleShooting
 from aero_package.bird_model import BirdModel
-from aero_package.bird import Shoulder, Elbow, Wrist, Joint
+from aero_package.kinematics_constructor import Shoulder, Elbow, Wrist, Joint
 import time
 from numpy.linalg import norm
 from numpy import inf
 from ms_package.lma_solver import Solver
 
 
-# generate bird kinematics by calling "bird" module
+# generate bird kinematics by calling "kinematics_constructor" module
 bird_shoulder = Shoulder(axis_x=Joint(0.2,0.014,-np.pi/2),
                          axis_y=Joint(-np.deg2rad(19),np.deg2rad(20),np.pi/2),
                          axis_z=Joint(0,np.deg2rad(42),np.pi))
