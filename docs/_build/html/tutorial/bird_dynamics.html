@@ -1,0 +1,1016 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Bird model dynamics &mdash; multiflapp 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/my_width.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/contentui.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/contentui.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="LICENSE" href="../license.html" />
+    <link rel="prev" title="Rossler’s system" href="rossler.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> multiflapp
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../limit_cycle_stability/index.html">Limit cycle stability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multiple_shooting/index.html">Multiple-shooting algorithm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="isothermal_reaction.html">Isothermal reaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="redox_oscillation.html">Redox oscillation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rossler.html">Rossler’s system</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Bird model dynamics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#imposing-the-bird-kinematics">Imposing the bird kinematics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-bird-object">The bird object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#input-file">Input file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-main-file">The main file</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">multiflapp</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Tutorial</a> &raquo;</li>
+        
+      <li>Bird model dynamics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tutorial/bird_dynamics.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="bird-model-dynamics">
+<h1>Bird model dynamics<a class="headerlink" href="#bird-model-dynamics" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial reproduces step-by-step the results obtained analysing the bird dynamics.</p>
+<div class="section" id="imposing-the-bird-kinematics">
+<h2>Imposing the bird kinematics<a class="headerlink" href="#imposing-the-bird-kinematics" title="Permalink to this headline">¶</a></h2>
+<p>The bird wing is a poliarticulated rigid body, with three joints: shoulder, elbow and wrist. Each joint motion is governed by a periodic function of the form:</p>
+<div class="math notranslate nohighlight" id="equation-joint-kinematics">
+<span class="eqno">(1)<a class="headerlink" href="#equation-joint-kinematics" title="Permalink to this equation">¶</a></span>\[q_i(t) = q_{0,i} + A_i \sin\left(\omega t + \phi_{0,i}\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(q_{i}\)</span> is the rotation of the joint with respect to the generic axis <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>The module <code class="docutils literal notranslate"><span class="pre">multiflap/aero_package/kinematics_constructor.py</span></code> allows to impose the kinamatics on each wing joint.</p>
+<div class="toggle-header docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">kinematics_constructor.py</span></code> <strong>Show code</strong></p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">math</span> <span class="k">as</span> <span class="nn">m</span>
+
+<span class="n">frequency</span>  <span class="o">=</span> <span class="mi">4</span>
+<span class="n">omega</span> <span class="o">=</span> <span class="n">frequency</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
+<span class="k">class</span> <span class="nc">Joint</span><span class="p">:</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="n">frequency</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span> <span class="o">=</span> <span class="n">amplitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phase</span> <span class="o">=</span> <span class="n">phase</span>
+
+    <span class="k">def</span> <span class="nf">motion_joint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+
+        <span class="n">motion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">motion</span>
+
+<span class="k">class</span> <span class="nc">Shoulder</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis_x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis_z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">axis_x</span>  <span class="o">=</span> <span class="n">Joint</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">axis_y</span>  <span class="o">=</span> <span class="n">Joint</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">axis_z</span>  <span class="o">=</span> <span class="n">Joint</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis_x</span><span class="p">,</span> <span class="n">Joint</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">axis_x</span> <span class="o">=</span> <span class="n">axis_x</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis_y</span><span class="p">,</span> <span class="n">Joint</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">axis_y</span> <span class="o">=</span> <span class="n">axis_y</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis_z</span><span class="p">,</span> <span class="n">Joint</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">axis_z</span> <span class="o">=</span> <span class="n">axis_z</span>
+
+<span class="k">class</span> <span class="nc">Elbow</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis_x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis_y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">axis_x</span>  <span class="o">=</span> <span class="n">Joint</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">axis_y</span>  <span class="o">=</span> <span class="n">Joint</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis_x</span><span class="p">,</span> <span class="n">Joint</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">axis_x</span> <span class="o">=</span> <span class="n">axis_x</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis_y</span><span class="p">,</span> <span class="n">Joint</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">axis_y</span> <span class="o">=</span> <span class="n">axis_y</span>
+
+<span class="k">class</span> <span class="nc">Wrist</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis_z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">axis_y</span>  <span class="o">=</span> <span class="n">Joint</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">axis_z</span>  <span class="o">=</span> <span class="n">Joint</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis_y</span><span class="p">,</span> <span class="n">Joint</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">axis_y</span> <span class="o">=</span> <span class="n">axis_y</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis_z</span><span class="p">,</span> <span class="n">Joint</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">axis_z</span> <span class="o">=</span> <span class="n">axis_z</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="the-bird-object">
+<h2>The bird object<a class="headerlink" href="#the-bird-object" title="Permalink to this headline">¶</a></h2>
+<p>Once the kinematics is imposes, the object <strong>bird</strong> can be crated. This object is the input for the aerodynamic solver because it takes the kinematics of each joint, and exctracts the wing envelope and subsequently the lifting line at each time step.</p>
+<p>The bird object takes as arguments the kinematics previously generated. The module is reported below.</p>
+<div class="toggle-header docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">bird_model.py</span></code> <strong>Show code</strong></p>
+</div>
+<div class="toggle-content docutils container">
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.kinematics_constructor</span> <span class="kn">import</span> <span class="n">Joint</span><span class="p">,</span> <span class="n">Shoulder</span><span class="p">,</span> <span class="n">Elbow</span><span class="p">,</span> <span class="n">Wrist</span>
+<span class="kn">from</span> <span class="nn">.line_functions</span> <span class="kn">import</span> <span class="n">smooth_line</span><span class="p">,</span> <span class="n">smooth_quarterline</span><span class="p">,</span> <span class="n">quarterchord_naive</span><span class="p">,</span> <span class="n">improveline_iteration</span>
+<span class="kn">from</span> <span class="nn">.RotationMatrix</span> <span class="kn">import</span> <span class="n">RotationMatrix</span>
+<span class="kn">from</span> <span class="nn">.CompMatrix</span> <span class="kn">import</span> <span class="n">CompMatrix</span>
+<span class="kn">from</span> <span class="nn">.Plumes</span> <span class="kn">import</span> <span class="n">plumes</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">odes.bird_dynamics</span> <span class="kn">import</span> <span class="n">dynamics</span><span class="p">,</span> <span class="n">get_aeroforces</span><span class="p">,</span> <span class="n">get_stability_matrix</span>
+
+
+<span class="k">class</span> <span class="nc">BirdModel</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shoulder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">elbow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wrist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="c1">#Parameters:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dimensions</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="mf">9.81</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mass</span> <span class="o">=</span> <span class="mf">1.2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frequency</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wingframe_position</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.05</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wingframe_position_tail</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.</span><span class="p">,</span> <span class="o">.</span><span class="mi">3</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tail_length</span> <span class="o">=</span> <span class="mf">0.25</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tail_chord</span> <span class="o">=</span> <span class="mf">0.15</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tail_opening</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shoulder</span> <span class="o">=</span> <span class="n">Shoulder</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wrist</span> <span class="o">=</span> <span class="n">Wrist</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elbow</span> <span class="o">=</span> <span class="n">Elbow</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shoulder</span><span class="p">,</span> <span class="n">Shoulder</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shoulder</span> <span class="o">=</span> <span class="n">shoulder</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wrist</span><span class="p">,</span> <span class="n">Wrist</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wrist</span> <span class="o">=</span> <span class="n">wrist</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elbow</span><span class="p">,</span> <span class="n">Elbow</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">elbow</span> <span class="o">=</span> <span class="n">elbow</span>
+
+
+    <span class="k">def</span> <span class="nf">get_wingstate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+
+        <span class="n">state_shoulder_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shoulder</span><span class="o">.</span><span class="n">axis_x</span><span class="o">.</span><span class="n">motion_joint</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">state_shoulder_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shoulder</span><span class="o">.</span><span class="n">axis_y</span><span class="o">.</span><span class="n">motion_joint</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">state_shoulder_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shoulder</span><span class="o">.</span><span class="n">axis_z</span><span class="o">.</span><span class="n">motion_joint</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="c1"># Elbow motion</span>
+        <span class="n">state_elbow_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elbow</span><span class="o">.</span><span class="n">axis_x</span><span class="o">.</span><span class="n">motion_joint</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">state_elbow_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elbow</span><span class="o">.</span><span class="n">axis_y</span><span class="o">.</span><span class="n">motion_joint</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="c1"># Wrist motion</span>
+        <span class="n">state_wrist_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrist</span><span class="o">.</span><span class="n">axis_y</span><span class="o">.</span><span class="n">motion_joint</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">state_wrist_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrist</span><span class="o">.</span><span class="n">axis_z</span><span class="o">.</span><span class="n">motion_joint</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+        <span class="n">wing_state</span> <span class="o">=</span> <span class="p">[</span><span class="n">state_shoulder_x</span><span class="p">,</span> <span class="n">state_shoulder_z</span><span class="p">,</span> <span class="n">state_shoulder_y</span><span class="p">,</span> <span class="n">state_elbow_y</span><span class="p">,</span> <span class="n">state_elbow_x</span><span class="p">,</span> <span class="n">state_wrist_y</span><span class="p">,</span> <span class="n">state_wrist_z</span><span class="p">]</span>
+        <span class="c1">#return ws</span>
+        <span class="k">return</span> <span class="n">wing_state</span>
+
+    <span class="k">def</span> <span class="nf">get_wingenvelope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wing_state</span><span class="p">):</span>
+        <span class="n">shoulder_x</span><span class="p">,</span> <span class="n">shoulder_z</span><span class="p">,</span> <span class="n">shoulder_y</span><span class="p">,</span> <span class="n">elbow_y</span><span class="p">,</span> <span class="n">elbow_x</span><span class="p">,</span> <span class="n">wrist_y</span><span class="p">,</span> <span class="n">wrist_z</span> <span class="o">=</span> <span class="n">wing_state</span>
+        <span class="p">[</span><span class="n">plumesrot</span><span class="p">,</span> <span class="n">plumesvec</span><span class="p">]</span> <span class="o">=</span> <span class="n">plumes</span><span class="p">()</span>
+        <span class="n">dim_plumesrot0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">plumesrot</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Assignment of the dimensions of the skeleton and the frame position</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Versor along y axis</span>
+        <span class="n">ey</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Lenght of the first part of the wing skeleton</span>
+        <span class="n">l1</span> <span class="o">=</span> <span class="o">.</span><span class="mi">134</span>
+
+        <span class="c1"># Lenght of the second part of the wing skeleton</span>
+        <span class="n">l2</span> <span class="o">=</span> <span class="o">.</span><span class="mi">162</span>
+
+        <span class="c1"># Lenght of the second third of the wing skeleton (l3 is used to connect l1 and l2)</span>
+        <span class="n">l4</span> <span class="o">=</span> <span class="o">.</span><span class="mi">084</span>
+
+        <span class="c1"># Origin of the reference frame</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Respective position of the end of the three parts of the skeleton</span>
+        <span class="n">end1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">l1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">end2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">l2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">end4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">l4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">vec30</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">end1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">end2</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span> <span class="c1"># Probably unused</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Assignment of the points over the three parts of the skeleton, arm, forearm, hand respoectively</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Number of points over the arm</span>
+        <span class="n">npoints_arm</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># Number of points over the forearm</span>
+        <span class="n">npoints_forearm</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># Number of points over the hand</span>
+        <span class="n">npoints_hand</span> <span class="o">=</span> <span class="mi">2</span>
+
+        <span class="c1"># Total number of point</span>
+        <span class="n">nslice</span> <span class="o">=</span> <span class="n">npoints_arm</span> <span class="o">+</span> <span class="n">npoints_forearm</span> <span class="o">+</span> <span class="n">npoints_hand</span>
+
+        <span class="c1"># Distances from point to point for each part of the skeleton</span>
+        <span class="n">delta_arm</span> <span class="o">=</span> <span class="n">l1</span><span class="o">/</span><span class="n">npoints_arm</span>
+        <span class="n">delta_forearm</span> <span class="o">=</span> <span class="n">l2</span><span class="o">/</span><span class="n">npoints_forearm</span>
+        <span class="n">delta_hand</span> <span class="o">=</span> <span class="n">l4</span><span class="o">/</span><span class="p">(</span><span class="n">npoints_hand</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+
+        <span class="c1"># Routine for the xslice vector (values checked with Matlab code). Maybe write a function!</span>
+        <span class="n">xslice</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nslice</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">npoints_arm</span><span class="p">):</span>
+            <span class="n">xslice</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">delta_arm</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">npoints_forearm</span><span class="p">):</span>
+            <span class="n">xslice</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">npoints_arm</span><span class="p">]</span> <span class="o">=</span> <span class="n">l1</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">delta_forearm</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">npoints_hand</span><span class="p">):</span>
+            <span class="n">xslice</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">npoints_arm</span> <span class="o">+</span> <span class="n">npoints_forearm</span><span class="p">]</span> <span class="o">=</span> <span class="n">l1</span> <span class="o">+</span> <span class="n">l2</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">delta_hand</span><span class="p">)</span>
+
+        <span class="c1"># Index of feathers starting point (ask it for a more clear comment). CHECKED!</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+        <span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">xslice</span><span class="p">)</span>
+        <span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">xslice</span><span class="o">&gt;=</span><span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="o">+</span><span class="n">l4</span><span class="o">/</span><span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">index</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">xslice</span><span class="o">&gt;=</span><span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">index</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">xslice</span><span class="o">&gt;=</span><span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="o">/</span><span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">index</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">xslice</span><span class="o">&gt;=</span><span class="n">l1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">index</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">xslice</span><span class="o">&gt;=</span><span class="n">l1</span><span class="o">/</span><span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">index</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">number_ellipses</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="n">number_ellipses</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">number_ellipses</span><span class="p">]</span>
+        <span class="n">skz</span> <span class="o">=</span> <span class="o">.</span><span class="mi">01</span>
+        <span class="n">sky</span> <span class="o">=</span> <span class="o">.</span><span class="mi">01</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">skz</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">sky</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span> <span class="p">,</span> <span class="n">nslice</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">))</span>
+
+        <span class="n">w1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nslice</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">)</span>
+        <span class="n">w2a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nslice</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">)</span>
+        <span class="n">w2b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nslice</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">)</span>
+        <span class="n">w3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nslice</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">)</span>
+        <span class="n">w4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nslice</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nslice</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">xslice</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">l1</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_ellipses</span><span class="p">):</span>
+                    <span class="n">points</span><span class="p">[:,(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="o">+</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">xslice</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span>
+
+                <span class="n">facb</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="n">skz</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+                <span class="n">lrefcd</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span><span class="n">l2</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">xslice</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">l1</span><span class="o">-</span><span class="n">lrefcd</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                    <span class="n">faccd1</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">faccd1</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">xslice</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">-</span><span class="n">l1</span><span class="p">)</span><span class="o">/</span><span class="n">lrefcd</span><span class="p">))</span>
+
+                <span class="n">faccd2</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">faccd1</span>
+                <span class="n">fac2a</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">fac2b</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">w1</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]</span> <span class="o">=</span> <span class="n">facb</span><span class="o">*</span><span class="n">faccd1</span>
+                <span class="n">w2a</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]</span> <span class="o">=</span> <span class="n">facb</span><span class="o">*</span><span class="n">faccd2</span><span class="o">*</span><span class="n">fac2a</span>
+                <span class="n">w2b</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]</span> <span class="o">=</span> <span class="n">facb</span><span class="o">*</span><span class="n">faccd2</span><span class="o">*</span><span class="n">fac2b</span>
+                <span class="n">w3</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">facb</span><span class="p">)</span>
+                <span class="n">w4</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="k">elif</span> <span class="n">xslice</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">l1</span> <span class="o">+</span> <span class="n">l2</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_ellipses</span><span class="p">):</span>
+                    <span class="n">points</span><span class="p">[:,(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="o">+</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">xslice</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span>
+
+                <span class="n">facb</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="n">skz</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+                <span class="n">lrefcd</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span><span class="n">l2</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">xslice</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">l1</span><span class="o">+</span><span class="n">lrefcd</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                    <span class="n">faccd2</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">xslice</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">-</span><span class="n">l1</span><span class="p">)</span><span class="o">/</span><span class="n">lrefcd</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">faccd2</span> <span class="o">=</span> <span class="mi">1</span>
+
+                <span class="n">faccd1</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">faccd2</span>
+                <span class="n">fac2b</span> <span class="o">=</span> <span class="p">(</span><span class="n">xslice</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">-</span><span class="n">l1</span><span class="p">)</span><span class="o">/</span><span class="n">l2</span>
+                <span class="n">fac2a</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">fac2b</span>
+                <span class="n">lrefpg</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">l2</span><span class="p">,</span><span class="n">l4</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">xslice</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="o">-</span><span class="n">lrefpg</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                    <span class="n">facpg2</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">facpg2</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">xslice</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="p">))</span><span class="o">/</span><span class="n">lrefpg</span><span class="p">))</span>
+
+                <span class="n">facpg4</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">facpg2</span>
+
+                <span class="n">w1</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]</span> <span class="o">=</span> <span class="n">facb</span><span class="o">*</span><span class="n">faccd1</span><span class="o">*</span><span class="n">facpg2</span>
+                <span class="n">w2a</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]</span> <span class="o">=</span> <span class="n">facb</span><span class="o">*</span><span class="n">faccd2</span><span class="o">*</span><span class="n">fac2a</span><span class="o">*</span><span class="n">facpg2</span>
+                <span class="n">w2b</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]</span> <span class="o">=</span> <span class="n">facb</span><span class="o">*</span><span class="n">faccd2</span><span class="o">*</span><span class="n">fac2b</span><span class="o">*</span><span class="n">facpg2</span>
+                <span class="n">w3</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">facb</span><span class="p">)</span><span class="o">*</span><span class="n">facpg2</span>
+                <span class="n">w4</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]</span> <span class="o">=</span> <span class="n">facpg4</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_ellipses</span><span class="p">):</span>
+                    <span class="n">points</span><span class="p">[:,(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="o">+</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">xslice</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span>
+
+                <span class="n">facb</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="n">skz</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+                <span class="n">fac2a</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">fac2b</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">lrefpg</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">l2</span><span class="p">,</span><span class="n">l4</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">xslice</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="o">+</span><span class="n">lrefpg</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+                    <span class="n">facpg4</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">xslice</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="p">))</span><span class="o">/</span><span class="n">lrefpg</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">facpg4</span> <span class="o">=</span> <span class="mi">1</span>
+
+                <span class="n">facpg2</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">facpg4</span>
+
+                <span class="n">w1</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">w2a</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]</span> <span class="o">=</span> <span class="n">facb</span><span class="o">*</span><span class="n">facpg2</span><span class="o">*</span><span class="n">fac2a</span>
+                <span class="n">w2b</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]</span> <span class="o">=</span> <span class="n">facb</span><span class="o">*</span><span class="n">facpg2</span><span class="o">*</span><span class="n">fac2b</span>
+                <span class="n">w3</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">facb</span><span class="p">)</span><span class="o">*</span><span class="n">facpg2</span>
+                <span class="n">w4</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">:(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]</span> <span class="o">=</span> <span class="n">facpg4</span>
+
+
+
+        <span class="n">npts</span> <span class="o">=</span> <span class="n">nslice</span><span class="o">*</span><span class="n">number_ellipses</span>
+
+        <span class="n">pts</span> <span class="o">=</span> <span class="n">points</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Rotation routine for the three parts of the skeleton (shoulder, elbow, hand)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rot1X</span> <span class="o">=</span> <span class="n">RotationMatrix</span><span class="p">(</span><span class="n">shoulder_x</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+        <span class="n">rot1Z</span> <span class="o">=</span> <span class="n">RotationMatrix</span><span class="p">(</span><span class="n">shoulder_z</span><span class="p">,</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
+        <span class="n">rot1Y</span> <span class="o">=</span> <span class="n">RotationMatrix</span><span class="p">(</span><span class="n">shoulder_y</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+        <span class="n">rot1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rot1X</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rot1Z</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rot1Y</span><span class="p">))</span>
+        <span class="n">ey1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rot1</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ey</span><span class="p">))</span>
+
+        <span class="n">rot2relY</span> <span class="o">=</span> <span class="n">RotationMatrix</span><span class="p">(</span><span class="n">elbow_y</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+        <span class="n">rot2relX</span> <span class="o">=</span> <span class="n">RotationMatrix</span><span class="p">(</span><span class="n">elbow_x</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+        <span class="n">rot2b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rot1</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rot2relY</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rot2relX</span><span class="p">))</span>
+        <span class="n">rot2a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rot1</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rot2relY</span><span class="p">))</span>
+
+        <span class="n">rot4relY</span> <span class="o">=</span> <span class="n">RotationMatrix</span><span class="p">(</span><span class="n">wrist_y</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+        <span class="n">rot4relZ</span> <span class="o">=</span> <span class="n">RotationMatrix</span><span class="p">(</span><span class="n">wrist_z</span><span class="p">,</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
+        <span class="n">rot4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rot2b</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rot4relY</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rot4relZ</span><span class="p">))</span>
+
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluation of the bones position</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endd1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rot1</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">end1</span><span class="p">))</span>
+        <span class="n">endd2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rot2a</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">end2</span><span class="p">))</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">endd1</span><span class="p">)</span>
+        <span class="n">endd4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rot4</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">end4</span><span class="p">))</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">endd2</span><span class="p">)</span>
+        <span class="n">vec3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">endd2</span><span class="p">)</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+
+        <span class="n">ex3</span> <span class="o">=</span> <span class="n">vec3</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vec3</span><span class="p">)</span>
+        <span class="n">ey3</span> <span class="o">=</span> <span class="n">ey1</span>
+        <span class="n">ez3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ex3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">ey3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">ex3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">ey3</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ex3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">ey3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">ex3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">ey3</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">ex3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">ey3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">ex3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">ey3</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="n">rot3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ex3</span><span class="p">,</span><span class="n">ey3</span><span class="p">,</span><span class="n">ez3</span><span class="p">])</span>
+        <span class="n">rot3</span> <span class="o">=</span> <span class="n">rot3</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+        <span class="n">kx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vec3</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vec30</span><span class="p">)</span>
+        <span class="n">comp3</span> <span class="o">=</span> <span class="n">CompMatrix</span><span class="p">(</span><span class="n">kx</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Routine to find skin points</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">npts</span><span class="p">):</span>
+            <span class="n">pt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">pt1</span> <span class="o">=</span> <span class="n">rot1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span>
+            <span class="n">pt2a</span> <span class="o">=</span> <span class="n">rot2a</span><span class="o">.</span><span class="n">dot</span><span class="p">((</span><span class="n">pt</span><span class="o">-</span><span class="n">end1</span><span class="p">))</span> <span class="o">+</span> <span class="n">endd1</span>
+            <span class="n">pt2b</span> <span class="o">=</span> <span class="n">rot2b</span><span class="o">.</span><span class="n">dot</span><span class="p">((</span><span class="n">pt</span><span class="o">-</span><span class="n">end1</span><span class="p">))</span> <span class="o">+</span> <span class="n">endd1</span>
+            <span class="n">pt3</span> <span class="o">=</span> <span class="n">rot3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">comp3</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span>
+            <span class="n">pt4</span> <span class="o">=</span> <span class="n">rot4</span><span class="o">.</span><span class="n">dot</span><span class="p">((</span><span class="n">pt</span><span class="o">-</span><span class="p">(</span><span class="n">end1</span><span class="o">+</span><span class="n">end2</span><span class="p">)))</span> <span class="o">+</span> <span class="n">endd2</span>
+
+            <span class="n">pts</span><span class="p">[:,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">pt1</span><span class="o">*</span><span class="n">w1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">pt2a</span><span class="o">*</span><span class="n">w2a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">pt2b</span><span class="o">*</span><span class="n">w2b</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">pt3</span><span class="o">*</span><span class="n">w3</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">pt4</span><span class="o">*</span><span class="n">w4</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Routine to find main feathers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vecpss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="n">dim_plumesrot0</span><span class="p">))</span>
+        <span class="n">startp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">plumesrot</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">plumesrot</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">prerot</span> <span class="o">=</span> <span class="n">rot4</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">prerot</span> <span class="o">=</span> <span class="n">rot4</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">RotationMatrix</span><span class="p">(</span><span class="n">wrist_z</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">prerot</span> <span class="o">=</span> <span class="n">rot2b</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">RotationMatrix</span><span class="p">(</span><span class="n">wrist_y</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">RotationMatrix</span><span class="p">(</span><span class="o">-</span><span class="n">wrist_z</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">prerot</span> <span class="o">=</span> <span class="n">rot2a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">RotationMatrix</span><span class="p">(</span><span class="n">elbow_x</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">RotationMatrix</span><span class="p">(</span><span class="n">wrist_y</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">RotationMatrix</span><span class="p">(</span><span class="o">-</span><span class="n">wrist_z</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">prerot</span> <span class="o">=</span> <span class="n">rot1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">RotationMatrix</span><span class="p">(</span><span class="n">elbow_y</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="n">prerot</span> <span class="o">=</span> <span class="n">rot1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">RotationMatrix</span><span class="p">(</span><span class="n">elbow_y</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+                <span class="n">prerot</span> <span class="o">=</span> <span class="n">rot1</span>
+
+            <span class="n">rY</span> <span class="o">=</span> <span class="n">RotationMatrix</span><span class="p">(</span><span class="n">plumesrot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">],</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+            <span class="n">rX</span> <span class="o">=</span> <span class="n">RotationMatrix</span><span class="p">(</span><span class="n">plumesrot</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="p">],</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+            <span class="n">rot</span> <span class="o">=</span> <span class="n">prerot</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rY</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rX</span><span class="p">)</span>
+            <span class="n">vecpss</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rot</span><span class="p">,</span><span class="n">plumesvec</span><span class="p">[:,</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">column</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">number_ellipses</span><span class="p">))</span>
+            <span class="n">startp</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">column</span><span class="p">]</span>
+            <span class="n">startp</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">column</span><span class="p">]</span>
+            <span class="n">startp</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pts</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">column</span><span class="p">]</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Interpolation Routine</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">main1</span> <span class="o">=</span> <span class="p">((</span><span class="n">xslice</span><span class="p">[</span><span class="n">xslice</span> <span class="o">&gt;=</span> <span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="o">+</span><span class="n">l4</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="o">+</span><span class="n">l4</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">l4</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">main1</span> <span class="o">=</span> <span class="n">main1</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">main2</span> <span class="o">=</span> <span class="p">((</span><span class="n">xslice</span><span class="p">[(</span><span class="n">xslice</span> <span class="o">&gt;=</span> <span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">xslice</span> <span class="o">&lt;</span> <span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="o">+</span><span class="n">l4</span><span class="o">/</span><span class="mi">2</span><span class="p">)]</span><span class="o">-</span><span class="p">(</span><span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">l4</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">main2</span> <span class="o">=</span> <span class="n">main2</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">abras1</span> <span class="o">=</span> <span class="p">((</span><span class="n">xslice</span><span class="p">[(</span><span class="n">xslice</span> <span class="o">&gt;=</span><span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">xslice</span> <span class="o">&lt;</span><span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="p">)]</span><span class="o">-</span><span class="p">(</span><span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">l2</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">abras1</span> <span class="o">=</span> <span class="n">abras1</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">abras2</span> <span class="o">=</span> <span class="p">((</span><span class="n">xslice</span><span class="p">[(</span><span class="n">xslice</span> <span class="o">&gt;=</span><span class="n">l1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">xslice</span> <span class="o">&lt;</span><span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="o">/</span><span class="mi">2</span><span class="p">)]</span><span class="o">-</span><span class="p">(</span><span class="n">l1</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">l2</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">abras2</span> <span class="o">=</span> <span class="n">abras2</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">bras1</span> <span class="o">=</span> <span class="p">((</span><span class="n">xslice</span><span class="p">[(</span><span class="n">xslice</span> <span class="o">&gt;=</span><span class="n">l1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">xslice</span> <span class="o">&lt;</span><span class="n">l1</span><span class="p">)]</span><span class="o">-</span><span class="p">(</span><span class="n">l1</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">l1</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">bras1</span> <span class="o">=</span> <span class="n">bras1</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">bras2</span> <span class="o">=</span> <span class="p">(</span><span class="n">xslice</span><span class="p">[</span><span class="n">xslice</span> <span class="o">&lt;</span><span class="n">l1</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">l1</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">bras2</span> <span class="o">=</span> <span class="n">bras2</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Feathers Routine</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pm1</span> <span class="o">=</span> <span class="n">vecpss</span><span class="p">[:,</span><span class="mi">0</span><span class="p">][:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">main1</span><span class="p">)</span><span class="o">+</span><span class="n">vecpss</span><span class="p">[:,</span><span class="mi">1</span><span class="p">][:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">main1</span><span class="p">)</span>
+        <span class="n">pm2</span> <span class="o">=</span> <span class="n">vecpss</span><span class="p">[:,</span><span class="mi">1</span><span class="p">][:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">main2</span><span class="p">)</span><span class="o">+</span><span class="n">vecpss</span><span class="p">[:,</span><span class="mi">2</span><span class="p">][:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">main2</span><span class="p">)</span>
+        <span class="n">pa1</span> <span class="o">=</span> <span class="n">vecpss</span><span class="p">[:,</span><span class="mi">2</span><span class="p">][:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">abras1</span><span class="p">)</span><span class="o">+</span><span class="n">vecpss</span><span class="p">[:,</span><span class="mi">3</span><span class="p">][:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">abras1</span><span class="p">)</span>
+        <span class="n">pa2</span> <span class="o">=</span> <span class="n">vecpss</span><span class="p">[:,</span><span class="mi">3</span><span class="p">][:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">abras2</span><span class="p">)</span><span class="o">+</span><span class="n">vecpss</span><span class="p">[:,</span><span class="mi">4</span><span class="p">][:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">abras2</span><span class="p">)</span>
+        <span class="n">pb1</span> <span class="o">=</span> <span class="n">vecpss</span><span class="p">[:,</span><span class="mi">4</span><span class="p">][:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">bras1</span><span class="p">)</span><span class="o">+</span><span class="n">vecpss</span><span class="p">[:,</span><span class="mi">5</span><span class="p">][:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">bras1</span><span class="p">)</span>
+        <span class="n">pb2</span> <span class="o">=</span> <span class="n">vecpss</span><span class="p">[:,</span><span class="mi">5</span><span class="p">][:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">bras2</span><span class="p">)</span><span class="o">+</span><span class="n">vecpss</span><span class="p">[:,</span><span class="mi">6</span><span class="p">][:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">bras2</span><span class="p">)</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Store the feathers in a single vector following the structure:</span>
+
+<span class="sd">                [pb2(0,0),..,pb2(0,n),pb1(0,0),..,pb1(0,n),pa2(0,0),..,pa2(0,k),pa1(0,0),..,pa1(0,k),pm2(0,0),..,pm2(0,j),pm1(0,0),..,pm1(0,j)]</span>
+<span class="sd">        vecps = [pb2(1,0),..,pb2(1,n),pb1(1,0),..,pb1(1,n),pa2(1,0),..,pa2(1,k),pa1(1,0),..,pa1(1,k),pm2(1,0),..,pm2(1,j),pm1(1,0),..,pm1(1,j)]</span>
+<span class="sd">                [pb2(2,0),..,pb2(2,n),pb1(2,0),..,pb1(2,n),pa2(2,0),..,pa2(2,k),pa1(2,0),..,pa1(2,k),pm2(2,0),..,pm2(2,j),pm1(2,0),..,pm1(2,j)]</span>
+
+<span class="sd">        Matrix concatenation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vecps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">pb2</span><span class="p">,</span> <span class="n">pb1</span><span class="p">,</span> <span class="n">pa2</span><span class="p">,</span> <span class="n">pa1</span><span class="p">,</span> <span class="n">pm2</span><span class="p">,</span> <span class="n">pm1</span><span class="p">]</span>
+
+
+        <span class="n">trailingedge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="n">nslice</span><span class="p">))</span>
+
+        <span class="n">xpt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">ypt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">zpt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nslice</span><span class="p">):</span>
+            <span class="n">xpt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">,(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">,(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]])</span>
+            <span class="n">ypt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">,(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">,(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]])</span>
+            <span class="n">zpt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">pts</span><span class="p">[</span><span class="mi">2</span><span class="p">,(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="n">j</span><span class="o">*</span><span class="n">number_ellipses</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="mi">2</span><span class="p">,(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">number_ellipses</span><span class="p">]])</span>
+
+            <span class="n">vecp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vecps</span><span class="p">[:,</span><span class="n">j</span><span class="p">])</span>
+
+            <span class="n">trailingedge</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">xpt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">vecp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">trailingedge</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">ypt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">vecp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">trailingedge</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">zpt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">vecp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="n">leadingedge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">pts</span><span class="p">[:,</span><span class="nb">int</span><span class="p">(</span><span class="n">number_ellipses</span><span class="o">/</span><span class="mi">2</span><span class="p">)::</span><span class="nb">int</span><span class="p">(</span><span class="n">number_ellipses</span><span class="p">)],</span><span class="n">trailingedge</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">leadingedge</span><span class="p">,</span> <span class="n">trailingedge</span>
+    <span class="k">def</span> <span class="nf">get_liftingline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">leadingedge</span><span class="p">,</span> <span class="n">trailingedge</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        === Call of wing_envelope function. Given the kinematics, the wing shape is found ===</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">nlete</span> <span class="o">=</span> <span class="mi">16</span>
+
+        <span class="n">leadingedge</span> <span class="o">=</span> <span class="n">smooth_line</span><span class="p">(</span><span class="n">leadingedge</span><span class="p">,</span> <span class="n">nlete</span><span class="p">)</span>
+        <span class="n">trailingedge</span> <span class="o">=</span> <span class="n">smooth_line</span><span class="p">(</span><span class="n">trailingedge</span><span class="p">,</span> <span class="n">nlete</span><span class="p">)</span>
+
+        <span class="p">[</span><span class="n">line</span><span class="p">,</span> <span class="n">chord_leadingedge</span><span class="p">,</span> <span class="n">chord_trailingedge</span><span class="p">]</span> <span class="o">=</span> <span class="n">quarterchord_naive</span><span class="p">(</span><span class="n">leadingedge</span><span class="p">,</span> <span class="n">trailingedge</span><span class="p">)</span>
+
+        <span class="sd">&quot;&quot;&quot;&quot;</span>
+<span class="sd">        ============= PLOT ROUTINE =============</span>
+<span class="sd">        Here in the original code there is a function that prints out on the screen wing plots.</span>
+<span class="sd">        It is now omitted, and there will be implemented later in a second time</span>
+<span class="sd">        ========================================</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">tol</span> <span class="o">=</span> <span class="mf">0.1</span>
+        <span class="n">nmax</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">chg</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">it</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">while</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">it</span> <span class="o">&lt;</span> <span class="n">nmax</span><span class="p">:</span>
+            <span class="p">[</span><span class="n">line</span><span class="p">,</span> <span class="n">chord_leadingedge</span><span class="p">,</span> <span class="n">chord_trailingedge</span><span class="p">,</span> <span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">improveline_iteration</span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="n">chord_leadingedge</span><span class="p">,</span>
+                                                            <span class="n">chord_trailingedge</span><span class="p">,</span><span class="n">leadingedge</span><span class="p">,</span><span class="n">trailingedge</span><span class="p">,</span><span class="n">it</span><span class="p">)</span>
+
+            <span class="n">chg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">chg</span><span class="p">,</span> <span class="n">a</span><span class="p">]</span>
+
+            <span class="n">it</span> <span class="o">=</span> <span class="n">it</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="p">[</span><span class="n">lifting_line</span><span class="p">,</span> <span class="n">chord_leadingedge</span><span class="p">,</span> <span class="n">chord_trailingedge</span><span class="p">]</span> <span class="o">=</span> <span class="n">smooth_quarterline</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">chord_leadingedge</span><span class="p">,</span> <span class="n">chord_trailingedge</span><span class="p">)</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Output lifting_line, chord_leadingedge, chord_trailingedge CHECKED</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">line_dummy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">lifting_line</span><span class="p">)</span>
+        <span class="n">nl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">chord_direction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="n">nl</span><span class="p">))</span>
+        <span class="n">updir</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="n">nl</span><span class="p">))</span>
+        <span class="n">chord</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nl</span><span class="p">))</span>
+
+    <span class="c1"># =============================================================================</span>
+    <span class="c1">#     Evaluating the chord and its direction</span>
+    <span class="c1">#     For every slice, it&#39;s calculated the distance btw Lead. edge and Trail.</span>
+    <span class="c1">#     edge (chord_distance), and then the modulus, so that the versor is</span>
+    <span class="c1">#     identified.</span>
+    <span class="c1"># =============================================================================</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nl</span><span class="p">):</span>
+
+            <span class="n">chord_distance</span> <span class="o">=</span> <span class="p">(</span><span class="n">chord_trailingedge</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">chord_leadingedge</span><span class="p">[:,</span><span class="n">i</span><span class="p">])</span> <span class="o">+</span> <span class="mf">1e-20</span>
+            <span class="n">chord</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">chord_distance</span><span class="p">)</span>
+            <span class="c1">#chord = chord[:,np.newaxis]</span>
+            <span class="n">chord_direction</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">chord_distance</span><span class="o">/</span><span class="n">chord</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">linevec</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">line</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="p">(</span><span class="n">nl</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">linevec</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">line</span><span class="p">[:,</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">linevec</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">line</span><span class="p">[:,</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="n">linevec</span> <span class="o">=</span> <span class="n">linevec</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">linevec</span><span class="p">)</span>
+            <span class="n">updir</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">chord_direction</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="n">linevec</span><span class="p">)</span>  <span class="c1"># Different value in the last iteration</span>
+
+        <span class="n">updir_dummy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">updir</span><span class="p">)</span>
+        <span class="n">chord_direction_dummy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">chord_direction</span><span class="p">)</span>
+        <span class="n">chord_dummy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">chord</span><span class="p">)</span>
+        <span class="c1"># Left Wing</span>
+
+        <span class="n">line_left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fliplr</span><span class="p">(</span><span class="n">line_dummy</span><span class="p">)</span>
+        <span class="n">up_direction_left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fliplr</span><span class="p">(</span><span class="n">updir_dummy</span><span class="p">)</span>
+        <span class="n">chord_direction_left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fliplr</span><span class="p">(</span><span class="n">chord_direction_dummy</span><span class="p">)</span>
+        <span class="n">chord_left</span> <span class="o">=</span> <span class="n">chord_dummy</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">line_left</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">negative</span><span class="p">(</span><span class="n">line_left</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])</span>
+        <span class="n">chord_direction_left</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">negative</span><span class="p">(</span><span class="n">chord_direction_left</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])</span>
+        <span class="n">up_direction_left</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">negative</span><span class="p">(</span><span class="n">up_direction_left</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])</span>
+
+        <span class="n">sumvector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="n">nl</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nl</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nl</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">sumvector</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">lifting_line</span><span class="p">[:,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">lifting_line</span><span class="p">[:,</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sumvector</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">lifting_line</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">lifting_line</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">2</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sumvector</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">lifting_line</span><span class="p">,</span> <span class="n">updir</span><span class="p">,</span> <span class="n">chord_direction</span><span class="p">,</span> <span class="n">chord</span><span class="p">,</span> <span class="n">line_left</span><span class="p">,</span> <span class="n">up_direction_left</span><span class="p">,</span> <span class="n">chord_direction_left</span><span class="p">,</span> <span class="n">chord_left</span><span class="p">,</span> <span class="n">dx</span>
+
+
+
+    <span class="k">def</span> <span class="nf">merge_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line_package</span><span class="p">):</span>
+        <span class="n">line_r</span><span class="p">,</span><span class="n">updir_r</span><span class="p">,</span><span class="n">chordir_r</span><span class="p">,</span><span class="n">chord_r</span><span class="p">,</span><span class="n">line_l</span><span class="p">,</span><span class="n">updir_l</span><span class="p">,</span><span class="n">chordir_l</span><span class="p">,</span><span class="n">chord_l</span><span class="p">,</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">line_package</span>
+        <span class="n">x_ep</span> <span class="o">=</span> <span class="mf">0.05</span>
+        <span class="n">nmid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">x_ep</span><span class="o">/</span><span class="n">dx</span><span class="p">))</span>
+        <span class="n">line_r</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">line_r</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">+</span> <span class="n">x_ep</span>
+        <span class="n">line_l</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">line_l</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">-</span> <span class="n">x_ep</span>
+
+        <span class="n">xmid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">line_l</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">line_r</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">nmid</span><span class="p">)</span>
+        <span class="n">length_xmid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">xmid</span><span class="p">)</span>
+        <span class="n">line_mid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xmid</span><span class="p">,</span> <span class="n">line_r</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">xmid</span><span class="p">)),</span> <span class="n">line_r</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">xmid</span><span class="p">))])</span>
+        <span class="n">chordir_mid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">chordir_r</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">xmid</span><span class="p">))])</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">updir_mid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">updir_r</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">xmid</span><span class="p">))])</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">chord_mid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">length_xmid</span><span class="p">)</span>
+        <span class="n">chord_mid</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">chord_r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">length_xmid</span><span class="p">)</span>
+
+        <span class="n">line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">line_l</span><span class="p">,</span><span class="n">line_mid</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">line_r</span><span class="p">]</span>
+        <span class="n">chordir</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">chordir_l</span><span class="p">,</span> <span class="n">chordir_mid</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">chordir_r</span><span class="p">]</span>
+        <span class="n">updir</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">updir_l</span><span class="p">,</span> <span class="n">updir_mid</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">updir_r</span><span class="p">]</span>
+        <span class="n">chord</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">chord_l</span><span class="p">,</span> <span class="n">chord_mid</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mf">1e4</span><span class="p">,</span> <span class="n">chord_r</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">line</span><span class="p">,</span> <span class="n">chordir</span><span class="p">,</span> <span class="n">updir</span><span class="p">,</span> <span class="n">chord</span>
+
+    <span class="c1"># calling methods of BirdModel that are defined in other files</span>
+    <span class="n">get_aeroforces</span> <span class="o">=</span> <span class="n">get_aeroforces</span>
+    <span class="n">dynamics</span> <span class="o">=</span> <span class="n">dynamics</span>
+    <span class="n">get_stability_matrix</span> <span class="o">=</span> <span class="n">get_stability_matrix</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Kinematics and bird constructors have been briefly introduced because they will be called from the user in the <code class="docutils literal notranslate"><span class="pre">main.py</span></code> file.</p>
+</div>
+<p>We are now able to create the user files.</p>
+</div>
+<div class="section" id="input-file">
+<h2>Input file<a class="headerlink" href="#input-file" title="Permalink to this headline">¶</a></h2>
+<p>As all the other input files, this has to respect the path <code class="docutils literal notranslate"><span class="pre">multiflap/odes/bird_dynamics.py</span></code>. The equations of motion of the flier restricted on the longitudinal plane are:</p>
+<div class="math notranslate nohighlight" id="equation-bird-odes">
+<span class="eqno">(2)<a class="headerlink" href="#equation-bird-odes" title="Permalink to this equation">¶</a></span>\[\begin{split}\dot{u} &amp;= -qw - g\sin \theta + \frac{1}{m_b}{F_{x'}(\mathbf{x}(t),  t)}\\
+\dot{w} &amp;= qu + g\cos \theta +\frac{1}{m_b} F_{z'}(\mathbf{x}(t),  t)\\
+\dot{q} &amp;=\frac{1}{I_{yy}}M_{y'}(\mathbf{x}(t),  t)\\
+\dot{\theta} &amp;= q\end{split}\]</div>
+<p>and therefore the time-dependent stability matrix:</p>
+<div class="math notranslate nohighlight" id="equation-stability-matrix-bird">
+<span class="eqno">(3)<a class="headerlink" href="#equation-stability-matrix-bird" title="Permalink to this equation">¶</a></span>\[\begin{split}\mathbb{A}(\mathbf{x}(t), t) =
+\begin{pmatrix}
+\frac{1}{m}\frac{\partial{F_{x'}}}{\partial{u}}  &amp; \frac{1}{m}\frac{\partial{F_{x'}}}{\partial{w}} - q&amp; - w + \frac{1}{m}\frac{\partial{F_{x'}}}{\partial{q}}&amp; -g\cos{\theta} + \frac{1}{m}\frac{\partial{F_{x'}}}{\partial{\theta}}\\
+q + \frac{1}{m}\frac{\partial{F_{z'}}}{\partial{u}}  &amp; \frac{1}{m}\frac{\partial{F_{z'}}}{\partial{w}}&amp;  u + \frac{1}{m}\frac{\partial{F_{z'}}}{\partial{q}} &amp; g\sin{\theta} + \frac{1}{m}\frac{\partial{F_{z'}}}{\partial{\theta}}\\
+\frac{1}{I_{yy}}\frac{\partial{M_{y'}}}{\partial{u}}  &amp; \frac{1}{I_{yy}}\frac{\partial{M_{y'}}}{\partial{w}}&amp; \frac{1}{I_{yy}}\frac{\partial{M_{y'}}}{\partial{q}}  &amp; \frac{1}{I_{yy}}\frac{\partial{M_{y'}}}{\partial{\theta}}\\
+0 &amp; 0 &amp;1 &amp; 0 \\
+\end{pmatrix}\end{split}\]</div>
+<p>The aerodynamic derivatives are computed at every time step from the <code class="docutils literal notranslate"><span class="pre">get_stability_matrix</span></code> function.</p>
+<p>The input file is <code class="docutils literal notranslate"><span class="pre">multiflap/odes/bird_dynamics.py</span></code>. This set of ODEs is coupled with the aerodynamics. To use the aerodynamic solver, the realative package <code class="docutils literal notranslate"><span class="pre">aero_package</span></code> needs to be loaded.</p>
+<p>At every time step the position of the wing and the extraction of the lifting line is calculated, based on the bird object passed from the main file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">aero_package.flapping_forces</span> <span class="kn">import</span> <span class="n">get_flappingforces</span>
+<span class="kn">import</span> <span class="nn">scipy.integrate</span> <span class="k">as</span> <span class="nn">ode</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span>
+<span class="n">dim</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="k">def</span> <span class="nf">dynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ODE system for the Equation of Motion on the longitudinal plane.</span>
+<span class="sd">        This function will be passed to the numerical integrator</span>
+
+<span class="sd">        Inputs:</span>
+<span class="sd">            x0: initial values [u, w, q, theta]</span>
+<span class="sd">            t: time</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">            x_dot: velocity vector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#Read inputs:</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">theta</span>  <span class="o">=</span> <span class="n">x0</span>  <span class="c1"># Read state space points</span>
+
+        <span class="c1"># get the aereodynamic forces at time t</span>
+        <span class="p">[</span><span class="n">_</span><span class="p">,</span> <span class="n">Fy</span><span class="p">,</span> <span class="n">Fz</span><span class="p">,</span> <span class="n">My</span><span class="p">,</span> <span class="n">F_tail</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_aeroforces</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+        <span class="c1"># bird body dynamics</span>
+        <span class="n">dudt</span> <span class="o">=</span> <span class="o">-</span><span class="n">q</span><span class="o">*</span><span class="n">w</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">-</span> <span class="n">Fz</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">mass</span>
+        <span class="n">dwdt</span> <span class="o">=</span> <span class="n">q</span><span class="o">*</span><span class="n">u</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">-</span> <span class="n">Fy</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">mass</span> <span class="o">-</span> <span class="n">F_tail</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">mass</span>
+        <span class="n">dqdt</span> <span class="o">=</span>  <span class="n">My</span><span class="o">/</span><span class="mf">0.1</span>
+        <span class="n">dthetadt</span> <span class="o">=</span> <span class="n">q</span>
+
+        <span class="c1"># collecting x_dot components in a single array:</span>
+        <span class="n">x_dot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dudt</span><span class="p">,</span> <span class="n">dwdt</span><span class="p">,</span> <span class="n">dqdt</span><span class="p">,</span> <span class="n">dthetadt</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x_dot</span>
+
+<span class="k">def</span> <span class="nf">get_aeroforces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the aereodynamic forces at a time t</span>
+<span class="sd">        1. Get the wing state (angles of each joint at time t)</span>
+<span class="sd">        2. Based on the joint angles, exctracts the wing envelope</span>
+<span class="sd">        3. From the envelope, exctracts the lifing line</span>
+<span class="sd">        4. The lifting line is mirrored for the symmetric wing</span>
+<span class="sd">        5. Lifting line properties and bird velocities are</span>
+<span class="sd">            passed to the liftin line solver</span>
+
+<span class="sd">        Inputs:</span>
+<span class="sd">            x0: initial values [u, w, q, theta]</span>
+<span class="sd">            t: time</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">            aereodynamic_forces : components of the aereod. forces and moments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="mf">0.25</span><span class="o">*</span><span class="mf">1e-4</span>
+        <span class="n">wing_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_wingstate</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">wing_state_dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_wingstate</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="n">dt</span><span class="p">)</span>
+
+        <span class="p">[</span><span class="n">leadingedge</span><span class="p">,</span>
+         <span class="n">trailingedge</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_wingenvelope</span><span class="p">(</span><span class="n">wing_state</span><span class="p">)</span>
+
+        <span class="p">[</span><span class="n">leadingedge_dt</span><span class="p">,</span>
+         <span class="n">trailingedge_dt</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_wingenvelope</span><span class="p">(</span><span class="n">wing_state_dt</span><span class="p">)</span>
+
+        <span class="n">lifting_line</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">get_liftingline</span><span class="p">(</span><span class="n">leadingedge</span><span class="p">,</span>
+                                             <span class="n">trailingedge</span><span class="p">)</span>
+
+        <span class="n">lifting_line_dt</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">get_liftingline</span><span class="p">(</span><span class="n">leadingedge_dt</span><span class="p">,</span>
+                                                <span class="n">trailingedge_dt</span><span class="p">)</span>
+
+        <span class="p">[</span><span class="n">line</span><span class="p">,</span> <span class="n">chordir</span><span class="p">,</span> <span class="n">updir</span><span class="p">,</span> <span class="n">chord</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge_lines</span><span class="p">(</span><span class="n">lifting_line</span><span class="p">)</span>
+
+        <span class="p">[</span><span class="n">line_dt</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge_lines</span><span class="p">(</span><span class="n">lifting_line_dt</span><span class="p">)</span>
+
+        <span class="n">v_kinematics</span> <span class="o">=</span> <span class="n">get_kinematicvelocity</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">line_dt</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+
+        <span class="c1"># call the aereodynamic solver for the lifting line get_flappingforces</span>
+        <span class="p">[</span><span class="n">Fx</span><span class="p">,</span>
+         <span class="n">Fy</span><span class="p">,</span>
+         <span class="n">Fz</span><span class="p">,</span>
+         <span class="n">My</span><span class="p">,</span>
+         <span class="n">F_tail</span><span class="p">,</span>
+         <span class="n">M_wing</span><span class="p">,</span>
+         <span class="n">M_tail</span><span class="p">,</span>
+         <span class="n">M_drag</span><span class="p">,</span>
+         <span class="n">M_lift</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_flappingforces</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">v_kinematics</span><span class="p">,</span>
+                                      <span class="n">line</span><span class="p">,</span> <span class="n">chordir</span><span class="p">,</span> <span class="n">updir</span><span class="p">,</span> <span class="n">chord</span><span class="p">)</span>
+
+        <span class="n">aereodynamic_forces</span> <span class="o">=</span> <span class="p">[</span><span class="n">Fx</span><span class="p">,</span> <span class="n">Fy</span><span class="p">,</span> <span class="n">Fz</span><span class="p">,</span> <span class="n">My</span><span class="p">,</span>
+                               <span class="n">F_tail</span><span class="p">,</span> <span class="n">M_wing</span><span class="p">,</span> <span class="n">M_tail</span><span class="p">,</span> <span class="n">M_drag</span><span class="p">,</span> <span class="n">M_lift</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">aereodynamic_forces</span>
+
+
+<span class="k">def</span> <span class="nf">get_kinematicvelocity</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">line_dt</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+
+       <span class="n">line_c</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+       <span class="n">line_c2</span> <span class="o">=</span> <span class="n">line_dt</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+       <span class="n">v_kin</span> <span class="o">=</span>  <span class="p">(</span><span class="n">line_c</span> <span class="o">-</span> <span class="n">line_c2</span><span class="p">)</span><span class="o">/</span><span class="n">dt</span>
+
+       <span class="k">return</span> <span class="n">v_kin</span>
+
+<span class="k">def</span> <span class="nf">get_stability_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Stability matrix of the ODE system for the longitudinal plane</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">        x0: initial condition [u_0, w_0, q_0, theta_0]</span>
+<span class="sd">    Outputs:</span>
+<span class="sd">        A: Stability matrix evaluated at x0. (dxd) dimension</span>
+<span class="sd">        A[i, j] = dv[i]/dx[j]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span>
+    <span class="n">perturbation</span> <span class="o">=</span> <span class="mf">1e-3</span>
+    <span class="n">x0_u</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="p">[</span><span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">perturbation</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">x0_w</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">x0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">perturbation</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">x0_q</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">x0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">perturbation</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">_</span><span class="p">,</span> <span class="n">Fy</span><span class="p">,</span> <span class="n">Fz</span><span class="p">,</span> <span class="n">My</span><span class="p">,</span> <span class="n">F_tail</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_aeroforces</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+    <span class="c1"># force evaluation, perturbation along &#39;u&#39;</span>
+    <span class="p">[</span><span class="n">_</span><span class="p">,</span> <span class="n">Fyu</span><span class="p">,</span> <span class="n">Fzu</span><span class="p">,</span> <span class="n">Myu</span><span class="p">,</span> <span class="n">F_tailu</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_aeroforces</span><span class="p">(</span><span class="n">x0_u</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+    <span class="c1"># force evaluation, perturbation along &#39;w&#39;</span>
+    <span class="p">[</span><span class="n">_</span><span class="p">,</span> <span class="n">Fyw</span><span class="p">,</span> <span class="n">Fzw</span><span class="p">,</span> <span class="n">Myw</span><span class="p">,</span> <span class="n">F_tailw</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_aeroforces</span><span class="p">(</span><span class="n">x0_w</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+    <span class="c1"># force evaluation, perturbation along &#39;q&#39;</span>
+    <span class="p">[</span><span class="n">_</span><span class="p">,</span> <span class="n">Fyq</span><span class="p">,</span> <span class="n">Fzq</span><span class="p">,</span> <span class="n">Myq</span><span class="p">,</span> <span class="n">F_tailq</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_aeroforces</span><span class="p">(</span><span class="n">x0_q</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+
+    <span class="c1"># Derivatives of Fz with respect to the state space variables</span>
+    <span class="n">dFzu_dU</span> <span class="o">=</span> <span class="p">(</span><span class="n">Fzu</span> <span class="o">-</span> <span class="n">Fz</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">perturbation</span><span class="p">)</span>
+    <span class="n">dFzw_dW</span> <span class="o">=</span> <span class="p">(</span><span class="n">Fzw</span> <span class="o">-</span> <span class="n">Fz</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">perturbation</span><span class="p">)</span>
+    <span class="n">dFzq_dq</span> <span class="o">=</span> <span class="p">(</span><span class="n">Fzq</span> <span class="o">-</span> <span class="n">Fz</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">perturbation</span><span class="p">)</span>
+
+    <span class="c1"># Derivatives of Fy with respect to the state space variables</span>
+    <span class="n">dFyu_dU</span> <span class="o">=</span> <span class="p">(</span><span class="n">Fyu</span> <span class="o">-</span> <span class="n">Fy</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">perturbation</span><span class="p">)</span>
+    <span class="n">dFyw_dW</span> <span class="o">=</span> <span class="p">(</span><span class="n">Fyw</span> <span class="o">-</span> <span class="n">Fy</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">perturbation</span><span class="p">)</span>
+    <span class="n">dFyq_dq</span> <span class="o">=</span> <span class="p">(</span><span class="n">Fyq</span> <span class="o">-</span> <span class="n">Fy</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">perturbation</span><span class="p">)</span>
+
+    <span class="c1"># Derivatives of F_tail with respect to the state space variables</span>
+    <span class="n">dFytail_du</span> <span class="o">=</span> <span class="p">(</span><span class="n">F_tailu</span> <span class="o">-</span> <span class="n">F_tail</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">perturbation</span><span class="p">)</span>
+    <span class="n">dFytail_dw</span> <span class="o">=</span> <span class="p">(</span><span class="n">F_tailw</span> <span class="o">-</span> <span class="n">F_tail</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">perturbation</span><span class="p">)</span>
+    <span class="n">dFytail_dq</span> <span class="o">=</span> <span class="p">(</span><span class="n">F_tailq</span> <span class="o">-</span> <span class="n">F_tail</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">perturbation</span><span class="p">)</span>
+
+    <span class="c1"># Derivatives of My with respect to the state space variables</span>
+    <span class="n">dMy_du</span> <span class="o">=</span> <span class="p">(</span><span class="n">Myu</span> <span class="o">-</span> <span class="n">My</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">perturbation</span><span class="p">)</span>
+    <span class="n">dMy_dw</span> <span class="o">=</span> <span class="p">(</span><span class="n">Myw</span> <span class="o">-</span> <span class="n">My</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">perturbation</span><span class="p">)</span>
+    <span class="n">dMy_dq</span> <span class="o">=</span> <span class="p">(</span><span class="n">Myq</span> <span class="o">-</span> <span class="n">My</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">perturbation</span><span class="p">)</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">x0</span>
+
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="n">dFzu_dU</span><span class="o">/</span><span class="n">m</span><span class="p">,</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span> <span class="n">dFzw_dW</span><span class="o">/</span><span class="n">m</span><span class="p">,</span>
+                   <span class="o">-</span><span class="n">w</span> <span class="o">-</span> <span class="n">dFzq_dq</span><span class="o">/</span><span class="n">m</span><span class="p">,</span> <span class="o">-</span><span class="n">g</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)],</span>
+                  <span class="p">[</span><span class="n">q</span> <span class="o">-</span> <span class="n">dFyu_dU</span><span class="o">/</span><span class="n">m</span> <span class="o">-</span> <span class="n">dFytail_du</span><span class="o">/</span><span class="n">m</span><span class="p">,</span> <span class="o">-</span><span class="n">dFyw_dW</span><span class="o">/</span><span class="n">m</span> <span class="o">-</span> <span class="n">dFytail_dw</span><span class="o">/</span><span class="n">m</span><span class="p">,</span>
+                   <span class="n">u</span> <span class="o">-</span> <span class="n">dFyq_dq</span><span class="o">/</span><span class="n">m</span> <span class="o">-</span> <span class="n">dFytail_dq</span><span class="o">/</span><span class="n">m</span><span class="p">,</span> <span class="o">-</span><span class="n">g</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)],</span>
+                  <span class="p">[</span><span class="n">dMy_du</span><span class="o">/</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">dMy_dw</span><span class="o">/</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">dMy_dq</span><span class="o">/</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                  <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">A</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-main-file">
+<h2>The main file<a class="headerlink" href="#the-main-file" title="Permalink to this headline">¶</a></h2>
+<p>The main is composed by the following parts:</p>
+<ol class="arabic simple">
+<li><p>Generate the kinematics object;</p></li>
+<li><p>Build the <strong>bird</strong> object</p></li>
+<li><p>Pass the bird object to the multiple-shooting solver</p></li>
+<li><p>Solve the multiple-shooting problem</p></li>
+</ol>
+<p>The main file is thus</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span>  <span class="nn">ms_package.multiple_shooting</span> <span class="kn">import</span> <span class="n">MultipleShooting</span>
+<span class="kn">from</span> <span class="nn">aero_package.bird_model</span> <span class="kn">import</span> <span class="n">BirdModel</span>
+<span class="kn">from</span> <span class="nn">aero_package.kinematics_constructor</span> <span class="kn">import</span> <span class="n">Shoulder</span><span class="p">,</span> <span class="n">Elbow</span><span class="p">,</span> <span class="n">Wrist</span><span class="p">,</span> <span class="n">Joint</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">inf</span>
+<span class="kn">from</span> <span class="nn">ms_package.lma_solver</span> <span class="kn">import</span> <span class="n">Solver</span>
+
+
+<span class="c1"># generate bird kinematics by calling &quot;kinematics_constructor&quot; module</span>
+<span class="n">bird_shoulder</span> <span class="o">=</span> <span class="n">Shoulder</span><span class="p">(</span><span class="n">axis_x</span><span class="o">=</span><span class="n">Joint</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.014</span><span class="p">,</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span>
+                         <span class="n">axis_y</span><span class="o">=</span><span class="n">Joint</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mi">19</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span>
+                         <span class="n">axis_z</span><span class="o">=</span><span class="n">Joint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mi">42</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+<span class="n">bird_elbow</span> <span class="o">=</span> <span class="n">Elbow</span><span class="p">(</span><span class="n">axis_x</span><span class="o">=</span><span class="n">Joint</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span>
+                   <span class="n">axis_y</span><span class="o">=</span><span class="n">Joint</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">bird_wrist</span> <span class="o">=</span> <span class="n">Wrist</span><span class="p">(</span><span class="n">axis_y</span><span class="o">=</span><span class="n">Joint</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span>
+                   <span class="n">axis_z</span><span class="o">=</span><span class="n">Joint</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">))</span>
+
+<span class="n">mybird</span> <span class="o">=</span> <span class="n">BirdModel</span><span class="p">(</span><span class="n">shoulder</span><span class="o">=</span><span class="n">bird_shoulder</span><span class="p">,</span> <span class="n">elbow</span><span class="o">=</span><span class="n">bird_elbow</span><span class="p">,</span> <span class="n">wrist</span><span class="o">=</span><span class="n">bird_wrist</span><span class="p">)</span>
+
+<span class="c1"># set initial guess for multiple-shooting scheme</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="p">[</span><span class="mf">18.</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
+
+<span class="c1"># generate multiple-shooting object</span>
+<span class="n">ms_obj</span> <span class="o">=</span> <span class="n">MultipleShooting</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">M</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">t_steps</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">model</span> <span class="o">=</span> <span class="n">mybird</span><span class="p">)</span>
+
+<span class="c1"># call the LMA solver</span>
+<span class="n">mysol</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">(</span><span class="n">ms_obj</span> <span class="o">=</span> <span class="n">ms_obj</span><span class="p">)</span><span class="o">.</span><span class="n">lma</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>It is now possible to run the main file inside the <code class="docutils literal notranslate"><span class="pre">multiflap</span></code> directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../license.html" class="btn btn-neutral float-right" title="LICENSE" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rossler.html" class="btn btn-neutral float-left" title="Rossler’s system" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Gianmarco Ducci
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
