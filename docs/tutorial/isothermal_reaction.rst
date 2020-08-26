@@ -144,4 +144,3 @@ the output will look like
    :alt: Limit cycle stability.
    :align: center
    :width: 80%
-
