@@ -15,12 +15,3 @@ The documentation is organized as follows:
    multiple_shooting/index.rst
    tutorial/index.rst
    license
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
