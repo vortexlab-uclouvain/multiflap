@@ -1,7 +1,8 @@
 Isothermal reaction
 ===================
 
-An isothermal reaction is described by a set of ODEs of the form:
+An isothermal reaction is described by a set of ODEs of the form [Sey2009]_
+
 
 .. math::
    \begin{equation}
@@ -144,3 +145,5 @@ the output will look like
    :alt: Limit cycle stability.
    :align: center
    :width: 80%
+
+.. [Sey2009] Practical bifurcation and stability analysis, Seydel Rudiger, Springer Science \& Business Media

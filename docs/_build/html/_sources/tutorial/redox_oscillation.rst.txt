@@ -1,7 +1,7 @@
 Redox oscillation
 =================
 
-The set of ODEs for this system is:
+The set of ODEs for this system is [DOS2019]_:
 
 .. math::
   \frac{dD_{1}}{dt} &= p - aA D_{1} -d D_{1}\\
@@ -163,3 +163,4 @@ and the value of the stable Floquet multipliers is also plotted:
    :alt: Floquet multipliers.
    :align: center
    :width: 65%
+.. [DOS2019] del Olmo, M.; Kramer, A.; Herzel, H, A robust model for circadian redox oscillations, Int. J. Mol. Sci. 2019, 20, 2368.

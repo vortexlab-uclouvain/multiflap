@@ -1,7 +1,8 @@
 Isothermal reaction
 ===================
 
-An isothermal reaction is described by a set of ODEs of the form :cite:`seydel2009`:
+An isothermal reaction is described by a set of ODEs of the form [Sey2009]_
+
 
 .. math::
    \begin{equation}
@@ -145,4 +146,4 @@ the output will look like
    :align: center
    :width: 80%
 
-.. bibliography:: ./references.bib
+.. [Sey2009] Practical bifurcation and stability analysis, Seydel Rudiger, Springer Science \& Business Media
