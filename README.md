@@ -15,7 +15,7 @@ In order to run the code for a particular dynamical system, two files have to be
 1.   Get a local copy of `multiflap`:
 
 ```
-git clone https://github.com/vortexlab-uclouvain/multiflap.git
+git clone https://github.com/vortexlab-uclouvain/multiflap.git && cd multiflap
 ```
 2. Install the packages:
 ```bash
