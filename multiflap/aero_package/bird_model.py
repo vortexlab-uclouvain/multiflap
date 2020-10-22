@@ -517,13 +517,13 @@ class BirdModel:
     get_aeroforces = get_aeroforces
     dynamics = dynamics
     get_stability_matrix = get_stability_matrix
-bird_shoulder = Shoulder(axis_x=Joint(0.2,0.014,-np.pi/2), 
-                         axis_y=Joint(-np.deg2rad(19),np.pi/12,np.pi/2), 
-                         axis_z=Joint(0,np.deg2rad(42),np.pi))
-bird_elbow = Elbow(axis_x=Joint(0.,np.pi/6,-np.pi/2), 
-                   axis_y=Joint(np.pi/6,np.pi/6,-np.pi/2))
-
-bird_wrist = Wrist(axis_y=Joint(-np.pi/6,np.pi/6,np.pi/2), 
-                   axis_z=Joint(0.,0.,0.))
-
-mybird = BirdModel(shoulder=bird_shoulder, elbow=bird_elbow, wrist=bird_wrist)
+#bird_shoulder = Shoulder(axis_x=Joint(0.2,0.014,-np.pi/2), 
+#                         axis_y=Joint(-np.deg2rad(19),np.pi/12,np.pi/2), 
+#                         axis_z=Joint(0,np.deg2rad(42),np.pi))
+#bird_elbow = Elbow(axis_x=Joint(0.,np.pi/6,-np.pi/2), 
+#                   axis_y=Joint(np.pi/6,np.pi/6,-np.pi/2))
+#
+#bird_wrist = Wrist(axis_y=Joint(-np.pi/6,np.pi/6,np.pi/2), 
+#                   axis_z=Joint(0.,0.,0.))
+#
+#mybird = BirdModel(shoulder=bird_shoulder, elbow=bird_elbow, wrist=bird_wrist)

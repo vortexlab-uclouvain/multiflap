@@ -90,7 +90,7 @@ def get_flappingforces(x0, v_kin, line, chordir, updir, chord):
         norm_velocity[j] = np.sqrt(np.sum(velocity_profile[:, j]*velocity_profile[:, j]))
         direction_velocity[:, j] = velocity_profile[:, j]/norm_velocity[j]
         angle_of_attack[j] = np.arctan2(np.sum(direction_velocity[:, j]*updir[:, j]), np.sum(direction_velocity[:, j]*chordir[:, j]))
-    tol = 0.01
+    tol = 0.001
     max_iterations = 50
     ds = np.zeros(len(chord))
     s = np.zeros((np.size(line[0])))

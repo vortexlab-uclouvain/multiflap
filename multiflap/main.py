@@ -34,7 +34,7 @@ from ms_package.lma_solver import Solver
 # generate bird kinematics by calling "bird" module
 bird_shoulder = Shoulder(axis_x=Joint(0.2,0.014,-np.pi/2),
                          axis_y=Joint(-np.deg2rad(19),np.deg2rad(20),np.pi/2),
-                         axis_z=Joint(0,np.deg2rad(42),np.pi))
+                         axis_z=Joint(0,np.deg2rad(44),np.pi))
 bird_elbow = Elbow(axis_x=Joint(0.,np.pi/6,-np.pi/2),
                    axis_y=Joint(np.pi/6,np.pi/6,-np.pi/2))
 
