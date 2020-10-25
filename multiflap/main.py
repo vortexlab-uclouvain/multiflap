@@ -29,8 +29,10 @@ import time
 from numpy.linalg import norm
 from numpy import inf
 from ms_package.lma_solver import Solver
+from utilities.save_data import SaveData
 
-
+sim_name = "bird_flight"
+SaveData(sim_name).make_folder()
 # generate bird kinematics by calling "bird" module
 bird_shoulder = Shoulder(axis_x=Joint(0.2,0.014,-np.pi/2),
                          axis_y=Joint(-np.deg2rad(19),np.deg2rad(20),np.pi/2),
@@ -47,9 +49,16 @@ mybird = BirdModel(shoulder=bird_shoulder, elbow=bird_elbow, wrist=bird_wrist)
 x0 = [18., 0.5, 0.1, 0.01]
 
 # generate multiple-shooting object
-ms_obj = MultipleShooting(x0, M = 2, period=0.25, t_steps=60, model = mybird)
+ms_obj = MultipleShooting(x0, M = 2, period=0.25, t_steps=70, model = mybird)
 
 # call the LMA solver
 mysol = Solver(ms_obj = ms_obj).lma()
 
-mypath = '/Users/gducci/UCL/PROJECT/Simulations/class_test'
+sol_array = mysol[3].space
+sol_time = mysol[3].time
+
+
+# save data
+SaveData(sim_name).save_data('multipliers_LC', eigenvalues)
+SaveData(sim_name).save_data('solution_LC', sol_array)
+SaveData(sim_name).save_data('time_array_LC', sol_time)

@@ -146,4 +146,7 @@ the output will look like
    :align: center
    :width: 80%
 
+.. module:: ../multiflap/ms_package/multiple_shooting_period
+.. autofunction:: get_mappedpoint
+
 .. [Sey2009] Practical bifurcation and stability analysis, Seydel Rudiger, Springer Science \& Business Media
