@@ -29,7 +29,7 @@ import collections
 from scipy.integrate import odeint
 class LyapunovExponents:
 
-    def __init__(self, x0, n, delta_time, ms_object = None):
+    def __init__(self, x0, n, t_f, ms_object = None):
 
 
         """
@@ -38,28 +38,29 @@ class LyapunovExponents:
         Arguments:
             x0: Initial condition for time integration
             n: Number of intermediate points to rescale the trajectory separation
-            delta_time: Time interval between n and n+1
+            t_f: Final time of integration
             ms_object: file containind the set of ODEs defined in odes/ folder
 
         """
 
         self.n = n
-        self.delta_time = delta_time
+        self.t_f= t_f
         self.ms_object = ms_object
         self.x0 = x0
+        self.delta_time = self.t_f/self.n
         #self.d = self.x0 * 1e-5
     def get_lyapunov_exponent(self):
 
-       """ Calculating the largest Lyapunov exponent numerically
+        """ Calculating the largest Lyapunov exponent numerically
 
-            Implementation of the leading Lyapunov exponent obtained rescaling
-            the flow separation with the initial perturbation in order to keep.
+                Implementation of the leading Lyapunov exponent obtained rescaling
+                the flow separation with the initial perturbation in order to keep.
 
-            Output:
+                Output:
 
-                lambda_t: Leading Lyapunov exponent
+                    lambda_t: Leading Lyapunov exponent
 
-       """
+        """
         lambda_t = 0
 
         # remove x0 transient and let it fall in the attraction domain
@@ -87,4 +88,5 @@ class LyapunovExponents:
             x_pert = x + (d_j*(norm_d/norm_d_j))
 
         lambda_t = np.sum(lambda_local)/(self.n*self.delta_time)
+        print(lambda_t)
         return lambda_t

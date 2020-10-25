@@ -22,47 +22,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 '''
 import numpy as np
-from  odes.lorentz import MyModel
-from ms_package.rk_integrator import rk4
-from ms_package.multiple_shooting_period import MultipleShooting
-from scipy.integrate import odeint
-import matplotlib.pyplot as plt
-from ms_package.lma_solver_period import Solver
-from mpl_toolkits.mplot3d import Axes3D
+from  odes.lorentz import Lorentz
+from ms_package.lyapunov_exponents import LyapunovExponents
 
 x = [10., 10., 3.6]
 
-mymodel = MyModel(a=10, b=28, c=8/3)
+mymodel = Lorentz(a=10, b=28, c=8/3)
 
-ms_obj =  MultipleShooting(x, M=2, period_guess= 10., t_steps=50000, model=mymodel)
+t_f = 100
+n = 10000
 
-odes = mymodel.dynamics
+exp = LyapunovExponents(x, n, t_f, mymodel).get_lyapunov_exponent()
 
-t_array = np.linspace(0., 50, 50000)
-sol = rk4(odes, x, t_array)
-
-mysol = Solver(ms_obj = ms_obj).lma(5., '/Users/gducci/UCL/PROJECT/Simulations/class_test')
-
-jac = mysol[4]
-
-eigenvalues, eigenvectors = np.linalg.eig(jac)
-
-sol_array = mysol[3].space
-sol_time = mysol[3].time
-period = sol_time[-1]
-
-sol_integration = sol.x
-
-fig1 = plt.figure(1)
-ax = fig1.gca(projection='3d')
-ax.set_xlabel('$x$')
-ax.set_ylabel('$y$')
-ax.set_zlabel('$z$')
-ax.plot(sol_integration[:, 0],
-        sol_integration[:, 1],
-        sol_integration[:, 2], alpha = 0.3, color='red')
-
-ax.plot(sol_array[:, 0],
-        sol_array[:, 1],
-        sol_array[:, 2],color = 'b')
-plt.show()
+print(exp)
