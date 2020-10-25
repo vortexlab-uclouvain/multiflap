@@ -27,11 +27,13 @@ from ms_package.lyapunov_exponents import LyapunovExponents
 
 x = [10., 10., 3.6]
 
+# Creating the object containing the eqs
 mymodel = Lorentz(a=10, b=28, c=8/3)
 
 t_f = 100
 n = 10000
 
+# calling the LyapunovExponents class
 lambda_t = LyapunovExponents(x, n, t_f, mymodel).get_lyapunov_exponent()
 
 print(lambda_t)
