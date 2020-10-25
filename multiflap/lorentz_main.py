@@ -32,6 +32,6 @@ mymodel = Lorentz(a=10, b=28, c=8/3)
 t_f = 100
 n = 10000
 
-exp = LyapunovExponents(x, n, t_f, mymodel).get_lyapunov_exponent()
+lambda_t = LyapunovExponents(x, n, t_f, mymodel).get_lyapunov_exponent()
 
-print(exp)
+print(lambda_t)
