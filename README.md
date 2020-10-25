@@ -3,7 +3,8 @@
 `multiflap` is a Python toolbox for finding periodic orbit of nonlinear systems
 of ODEs. The code relies on the multiple-shooting algorithm, and simoultaneously allows to study the stability of the system via the Floquet multipliers.
 
-It handles the also the computation of the leading Lyapunov exponent to characterize chaotic behaviours. This computation relies on long time numerical calculation of two nearby trajectories, rescaling the separation of the perturbed one in defined sampling points.
+It handles also the computation of the leading Lyapunov exponent to characterize chaotic behaviours. This computation relies on long time numerical calculation of two nearby trajectories, rescaling the separation of the perturbed one in defined sampling points.
+
 This toolbox is optimised to study the limit cycle of flapping wings dynamics, but the modular architecture allows the user to use the kernel with any set of ODEs.
 
 In order to run the code for a particular dynamical system, two files have to be created:
