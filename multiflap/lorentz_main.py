@@ -33,7 +33,14 @@ mymodel = Lorentz(a=10, b=28, c=8/3)
 t_f = 100
 n = 10000
 
-# calling the LyapunovExponents class
-lambda_t = LyapunovExponents(x, n, t_f, mymodel).get_lyapunov_exponent()
+time_array = np.linspace(20, 100, 2)
+
+hist = []
+for i in range (len(time_array)):
+        # calling the LyapunovExponents class
+        lambda_t = LyapunovExponents(x, n, time_array[i], mymodel).get_lyapunov_exponent()
+        hist.append(lambda_t)
+        print(lambda_t)
+
 
 print(lambda_t)

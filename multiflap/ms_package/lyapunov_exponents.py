@@ -83,8 +83,6 @@ class LyapunovExponents:
             fx_pert = integration_pert[-1, :]
             d_j = fx_pert - fx
             norm_d_j = np.linalg.norm(d_j)
-
-            # Re-scaling the flow separation
             lambda_local[i] = np.log(norm_d_j/norm_d) 
             x = fx
             x_pert = x + (d_j*(norm_d/norm_d_j))
