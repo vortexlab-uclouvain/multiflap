@@ -15,7 +15,7 @@ The leading trajectory starts from an initial value :math:`\mathbf{x}_1`. Fixed 
    :nowrap:
  
    \begin{equation}
-   \mathbf{x}_{i+1} = f\big(\mathbf{x}_{i}\big) \Big \rvert_{t_0}^{t_{0} + (i+1)\Delta t} 
+   \mathbf{x}_{i+1} = f\big(\mathbf{x}_{i}\big) \Big \rvert_{t_i}^{t_{i} + \Delta t} 
    \end{equation}
 
 
@@ -27,7 +27,7 @@ The exact separation of the trajectories is:
    :nowrap:
  
    \begin{equation}
-   \mathbf{d}_{i+1} = f\big(\mathbf{z}_{i}\big) \Big \rvert_{t_0}^{t_{0} + (i+1)\Delta t}- \mathbf{x}_{i+1}
+   \mathbf{d}_{i+1} = f\big(\mathbf{z}_{i}\big) \Big \rvert_{t_i}^{t_{i} + \Delta t}- \mathbf{x}_{i+1}
    \end{equation}
 
 the vector :math:`\mathbf{d_{i+1}|}` is re-scaled with the module of the initial perturbation :math:`|\delta \mathbf{x}|`.

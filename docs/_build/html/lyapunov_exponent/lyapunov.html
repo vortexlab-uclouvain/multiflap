@@ -173,12 +173,12 @@
 <p>The leading trajectory starts from an initial value <span class="math notranslate nohighlight">\(\mathbf{x}_1\)</span>. Fixed a sampling time <span class="math notranslate nohighlight">\(\Delta t\)</span>, the <span class="math notranslate nohighlight">\((i+1)-th\)</span> point of the reference trajectory is:</p>
 <div class="math notranslate nohighlight">
 \begin{equation}
-\mathbf{x}_{i+1} = f\big(\mathbf{x}_{i}\big) \Big \rvert_{t_0}^{t_{0} + (i+1)\Delta t}
+\mathbf{x}_{i+1} = f\big(\mathbf{x}_{i}\big) \Big \rvert_{t_i}^{t_{i} + \Delta t}
 \end{equation}</div><p>The neighbouring trajectory is initially perturbed with a perturbation <span class="math notranslate nohighlight">\(\delta \mathbf{x}\)</span>. At every sampling point this trajectory is riscaled with the module of the initial perturbation at time <span class="math notranslate nohighlight">\(t_0\)</span>.</p>
 <p>The exact separation of the trajectories is:</p>
 <div class="math notranslate nohighlight">
 \begin{equation}
-\mathbf{d}_{i+1} = f\big(\mathbf{z}_{i}\big) \Big \rvert_{t_0}^{t_{0} + (i+1)\Delta t}- \mathbf{x}_{i+1}
+\mathbf{d}_{i+1} = f\big(\mathbf{z}_{i}\big) \Big \rvert_{t_i}^{t_{i} + \Delta t}- \mathbf{x}_{i+1}
 \end{equation}</div><p>the vector <span class="math notranslate nohighlight">\(\mathbf{d_{i+1}|}\)</span> is re-scaled with the module of the initial perturbation <span class="math notranslate nohighlight">\(|\delta \mathbf{x}|\)</span>.</p>
 <p>The next integration point for the perturbed trajectory is therefore:</p>
 <div class="math notranslate nohighlight">
