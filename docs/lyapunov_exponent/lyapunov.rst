@@ -15,7 +15,7 @@ The leading trajectory starts from an initial value :math:`\mathbf{x}_1`. Fixed 
    :nowrap:
  
    \begin{equation}
-   \mathbf{x}_{i+1} = f\big(\mathbf{x}_{i}\big) \Big \rvert_{t_0}^{t_{0} + (i+1)\Delta t} 
+   \mathbf{x}_{i+1} = f\big(\mathbf{x}_{i}\big) \Big \rvert_{t_0}^{t_{0} + \Delta t} 
    \end{equation}
 
 
