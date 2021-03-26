@@ -10,6 +10,13 @@ This toolbox is optimised to study the limit cycle of flapping wings dynamics, b
 In order to run the code for a particular dynamical system, two files have to be created:
 * **Input file**: The input file contains the system of differential equations, and the related staility matrix.
 * **Main file**: The main file is the python module that will e executed. More detailes on the format of the main file will be provided later. **NOTE** despite of example cases, the main file has to be inside `multiflap` directory.
+
+For guided examples and tutorials of how to use multiflap, and how to create your case-study, please refer to the dedicated documentation available [here](<https://multiflap.readthedocs.io/en/latest/tutorial/index.html>).
+
+# Contacts
+Gianmarco Ducci, PhD student @UCLouvain, Belgium.
+
+<gianmarco.ducci@uclouvain.be>
 ## Installation and getting started
 
 `multiflap` runs on Python 3 and Python 2.  
@@ -102,16 +109,12 @@ ms_obj = MultipleShooting(x, M=2, period= 0.25,
 ```python
 mysolution = Solver(ms_obj = ms_obj).lma()
 ```
-For guided examples and tutorials of how to use multiflap, and how to create your case-study, please refer to the dedicated documentation available [here](<https://multiflap.readthedocs.io/en/latest/tutorial/index.html>).
 ## Generate a phase portrait animation
 
 A script that allows to produce phase portrait animation using `Matplotlib` is provided within the [utilities](multiflap/utils) directory. In the default template the system of ODE is given, however is highly recommended to use this script as mere post-processing and load data from simulations as arrays.
 Outputs of the scripts, as examples, are within [anim](anim) directory.
 
-## Contacts
 
-Gianmarco Ducci, PhD student @UCLouvain, Belgium.
-<gianmarco.ducci@uclouvain.be>
 ## Literature
 
 #### Multiple shooting scheme 
