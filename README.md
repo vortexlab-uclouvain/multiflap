@@ -1,8 +1,9 @@
-[![Static](https://img.shields.io/badge/docs-latest-blue)][stable docs url]
-
-[stable docs url]: https://multiflap.readthedocs.io/en/latest/
 # multiflap
 
+[![Static](https://img.shields.io/badge/docs-latest-blue)][stable docs url]
+[![Static](https://img.shields.io/badge/multiflap-v1.0-brightgreen)][]
+
+[stable docs url]: https://multiflap.readthedocs.io/en/latest/
 
 `multiflap` is a Python toolbox for finding periodic orbit of nonlinear systems
 of ODEs. The code relies on the multiple-shooting algorithm, and simoultaneously allows to study the stability of the system via the Floquet multipliers.
