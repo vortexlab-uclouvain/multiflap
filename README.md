@@ -17,8 +17,7 @@ In order to run the code for a particular dynamical system, two files have to be
 
 For guided examples and tutorials of how to use multiflap, and how to create your case-study, please refer to the dedicated documentation available [here](<https://multiflap.readthedocs.io/en/latest/tutorial/index.html>).
 
-# Contacts
-Gianmarco Ducci, PhD student @UCLouvain, Belgium.
+The main admin of this repo is Gianmarco Ducci, PhD student @UCLouvain, Belgium.
 
 <gianmarco.ducci@uclouvain.be>
 ## Installation and getting started
