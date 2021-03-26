@@ -1,7 +1,7 @@
 [![Static](https://img.shields.io/badge/docs-latest-blue)][stable docs url]
+
 [stable docs url]: https://multiflap.readthedocs.io/en/latest/
 # multiflap
-[![docs](https://img.shields.io/static/v1?label=docs&message=stable&color=blue&style=flat-square)][https://multiflap.readthedocs.io/en/latest/]
 
 
 `multiflap` is a Python toolbox for finding periodic orbit of nonlinear systems
