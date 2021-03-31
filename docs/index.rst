@@ -1,4 +1,4 @@
-Welcome to multiflapp's documentation!
+Welcome to multiflap documentation!
 ======================================
 
 Multiflap is a ``python`` toolbox optimised to assess the cycle stability of flapping fliers. The kernel of this framework relies on the **multiple-shooting** algorithm, which is a numerical method to detect iteratively limit cycles, and assess their stability via the Floquet multipliers.
