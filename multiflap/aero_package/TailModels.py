@@ -41,11 +41,11 @@ def delta_tail(velocity_vector, tail_span):
     Lat_force = 0.
     return Lat_force, Lift, Drag
 
-def tail_geometry(length, **opening):
-    tail_opening=opening.get('tail_opening', settings.tail_opening)
-    tail_span = 2*length*np.tan(tail_opening/2)
-    AR_tail = 2*(tail_span/length)
-    NP_tail = settings.wingframe_position_tail + np.array([0., 0., (2/3)*length])
+def tail_geometry(opening):
+    #tail_opening=opening.get('tail_opening', opening)
+    tail_span = 2*(settings.tail_length)*np.tan(opening/2)
+    AR_tail = 2*(tail_span/(settings.tail_length))
+    NP_tail = settings.wingframe_position_tail + np.array([0., 0., (2/3)*settings.tail_length])
     return tail_span, AR_tail, NP_tail
 
 

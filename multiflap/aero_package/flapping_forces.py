@@ -24,17 +24,18 @@ limitations under the License.
 import numpy as np  # Import NumPy
 from .MergeLines import MergeLines
 from .circulation import circulation, inucedvel_filament, inducedvel_segment
-from .TailModels import delta_tail, tail_geometry 
-from .settings import SimulationsSettings 
+from .TailModels import delta_tail, tail_geometry
+from .settings import SimulationsSettings
 from .bird import Shoulder, Elbow, Wrist, Joint
 settings = SimulationsSettings()
-def get_flappingforces(x0, v_kin, line, chordir, updir, chord):
+def get_flappingforces(x0, v_kin, line, chordir, updir, chord, tail_opening):
 
     u, w, q, theta = x0
 
     cl_alpha = 2*np.pi
     rho = 1.225  # Air density
-
+    CD_0 = 0.015
+    F_pro = 0
     U = np.array([0, w, u])
     ang_velocity = np.array([q, 0, 0])
 
@@ -52,6 +53,7 @@ def get_flappingforces(x0, v_kin, line, chordir, updir, chord):
     M_lift = 0
     M_tail = 0
     F_tail_tot = 0
+    P_ind = 0
 
     line_c = line[:, 1:-1:2] # Center points: at the center of each
     # interval --> every other point,
@@ -90,7 +92,7 @@ def get_flappingforces(x0, v_kin, line, chordir, updir, chord):
         norm_velocity[j] = np.sqrt(np.sum(velocity_profile[:, j]*velocity_profile[:, j]))
         direction_velocity[:, j] = velocity_profile[:, j]/norm_velocity[j]
         angle_of_attack[j] = np.arctan2(np.sum(direction_velocity[:, j]*updir[:, j]), np.sum(direction_velocity[:, j]*chordir[:, j]))
-    tol = 0.001
+    tol = 0.005
     max_iterations = 50
     ds = np.zeros(len(chord))
     s = np.zeros((np.size(line[0])))
@@ -137,7 +139,7 @@ def get_flappingforces(x0, v_kin, line, chordir, updir, chord):
 # =============================================================================
 #     Induced velocity on the tail
 # =============================================================================
-    [tail_span, AR_tail, NP_tail] = tail_geometry(settings.tail_length)
+    [tail_span, AR_tail, NP_tail] = tail_geometry(tail_opening)
     V_ind = 0
     dl_induced = line[:,1:] - line[:,:-1]
     for i in range (np.size(gamma)):
@@ -173,14 +175,14 @@ def get_flappingforces(x0, v_kin, line, chordir, updir, chord):
         M_drag_j = np.cross(lever_arm[:, j], Drag_moment)
         M_lift_j = np.cross(lever_arm[:, j], Lift_moment)
         M_wing_j = np.cross(lever_arm[:, j], F_moment)
-
+        F_pro = F_pro + (0.5*rho*(CD_0)*chord[j]*local_velocity[:,j]**(2))*ds[j]
         M_wing = M_wing + M_wing_j[0]
         M_drag = M_drag + M_drag_j[0]
         M_lift = M_lift + M_lift_j[0]
         My = My + M[0]
+        P_ind = P_ind + np.dot(F*ds[j],-line_velocity[:,j])
 
     F_tail_tot = delta_tail(U_tail, tail_span)
-
     M_tail = np.cross(NP_tail, F_tail_tot)
     My = M_wing + M_tail[0]
-    return Fx, Fy, Fz, My, F_tail_tot[1], M_wing, M_tail[0], M_drag, M_lift
+    return Fx, Fy, Fz, My, F_tail_tot[1], M_wing, M_tail[0], M_drag, M_lift, P_ind

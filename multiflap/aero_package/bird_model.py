@@ -28,7 +28,7 @@ from .RotationMatrix import RotationMatrix
 from .CompMatrix import CompMatrix
 from .Plumes import plumes
 from collections import namedtuple
-from odes.bird_dynamics import dynamics, get_aeroforces, get_stability_matrix
+from odes.bird_dynamics import dynamics, get_aeroforces, get_stability_matrix, get_body_coeff
 
 WingState = namedtuple('WingState',[
     'shoulder_x',
@@ -42,18 +42,20 @@ WingState = namedtuple('WingState',[
 
 class BirdModel:
 
-    def __init__(self, shoulder=None, elbow=None, wrist=None):
+    def __init__(self, shoulder=None, elbow=None, wrist=None, settings = None):
 
         #Parameters:
         self.dimensions = 4
+        self.rho = 1.225
         self.g = 9.81
         self.mass = 1.2
         self.frequency = 4
-        self.wingframe_position = np.array([0, -0.0, -0.05])
+        self.wingframe_position = np.array([0., -0.0, -0.05])
         self.wingframe_position_tail = np.array([0, -0., .3])
         self.tail_length = 0.25
         self.tail_chord = 0.15
-        self.tail_opening = 0.
+        #self.settings = SimulationsSettings()
+        self.tail_opening = settings.tail_opening
         self.shoulder = Shoulder()
         self.wrist = Wrist()
         self.elbow = Elbow()
@@ -68,18 +70,6 @@ class BirdModel:
 
     def get_wingstate(self, t):
 
-#        ws = WingState()
-
-        # Shoulder motion
-        #ws.shoulder_x = self.shoulder.axis_x.motion_joint(t)
-        #ws.shoulder_y = self.shoulder.axis_y.motion_joint(t)
-        #ws.shoulder_z = self.shoulder.axis_z.motion_joint(t)
-        ## Elbow motion
-        #ws.elbow_x = self.elbow.axis_x.motion_joint(t)
-        #ws.elbow_y = self.elbow.axis_y.motion_joint(t)
-        ## Wrist motion
-        #ws.wrist_y = self.wrist.axis_y.motion_joint(t)
-        #ws.wrist_z = self.wrist.axis_z.motion_joint(t)
         state_shoulder_x = self.shoulder.axis_x.motion_joint(t)
         state_shoulder_y = self.shoulder.axis_y.motion_joint(t)
         state_shoulder_z = self.shoulder.axis_z.motion_joint(t)
@@ -91,7 +81,6 @@ class BirdModel:
         state_wrist_z = self.wrist.axis_z.motion_joint(t)
 
         wing_state = [state_shoulder_x, state_shoulder_z, state_shoulder_y, state_elbow_y, state_elbow_x, state_wrist_y, state_wrist_z]
-        #return ws
         return wing_state
 
     def get_wingenvelope(self, wing_state):
@@ -517,6 +506,7 @@ class BirdModel:
     get_aeroforces = get_aeroforces
     dynamics = dynamics
     get_stability_matrix = get_stability_matrix
+    get_body_coeff = get_body_coeff
 #bird_shoulder = Shoulder(axis_x=Joint(0.2,0.014,-np.pi/2), 
 #                         axis_y=Joint(-np.deg2rad(19),np.pi/12,np.pi/2), 
 #                         axis_z=Joint(0,np.deg2rad(42),np.pi))
