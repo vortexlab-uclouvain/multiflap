@@ -2,32 +2,43 @@ import numpy as np
 import os
 class SaveData:
 
-    def __init__(self, simulation_name, folder_results = '../results/trial_todelete'):
-        self.simulation_name = simulation_name
-        self.folder_results = folder_results
-        self.folder_simulation =folder_results+'/'+simulation_name
-    def save_data(self, filename, data_array):
+    def __init__(self,  project_name = 'a', simulation_id = 'a', folder_results = '../results'):
+        self.project_name = project_name # root of the case study
+        self.folder_simulation = folder_results+'/'+self.project_name
+        self.simulation_id = self.folder_simulation+'/'+simulation_id
 
-        if filename == 'multipliers_LC':
-                np.save(self.folder_simulation+'/'+'floquet_multipliers', data_array)
-        elif filename == 'solution_LC':
-                np.save(self.folder_simulation+'/'+'solution_LC', data_array)
-        elif filename == 'time_array_LC':
-                np.save(self.folder_simulation+'/'+'time_array', data_array)
-        elif filename == 'fixed_points':
-                np.save(self.folder_simulation+'/'+'fixed_points', data_array)
-        else:
-                np.save(self.folder_simulation+'/'+filename, data_array, allow_pickle=True)
-        return print(filename+" file saved")
-
-    def make_folder(self):
-        path = self.folder_results+'/'+self.simulation_name
+    def make_folder_sim(self):
+        path = self.folder_simulation
         try:
                 os.mkdir(path)
         except:
                 print("error")
 
         return print("simulation folder created")
+
+    def make_folder(self):
+        path = self.simulation_id
+        try:
+                os.mkdir(path)
+        except:
+                print("error")
+
+        return print("simulation case created")
+
+    def save_data(self, filename, data_array):
+        path = self.simulation_id
+
+        if filename == 'multipliers_LC':
+                np.save(path+'/'+'floquet_multipliers', data_array)
+        elif filename == 'solution_LC':
+                np.save(path+'/'+'solution_LC', data_array)
+        elif filename == 'time_array_LC':
+                np.save(path+'/'+'time_array', data_array)
+        elif filename == 'fixed_points':
+                np.save(path+'/'+'fixed_points', data_array)
+        else:
+                np.save(path+'/'+filename, data_array, allow_pickle=True)
+        return print(filename+" file saved")
 
     def remove_contents(self):
         path = self.folder_results+'/'+self.simulation_name
@@ -49,7 +60,7 @@ class SaveData:
         return ("Empty folder correctly removed")
 
     def write_simulation_settings(self, bird_obj):
-        simulation_info = open(self.folder_simulation+'/simulation_settings.txt', 'w+')
+        simulation_info = open(self.simulation_id+'/simulation_settings.txt', 'w+')
         simulation_info.write('FRAMES COORDINATES (with respect to the aerodynamic reference system)'+'\n')
         simulation_info.write('Wing frame position: '+str(bird_obj.wingframe_position)+'\n')
         simulation_info.write('Tail frame position: '+str(bird_obj.wingframe_position_tail)+'\n')
@@ -94,6 +105,14 @@ class SaveData:
 
         return
 
+    def write_test(self, case_name, param):
+        path = self.folder_simulation+'/'+case_name
+        
+        simulation_info = open(path+'/DataFile_Results.txt', 'w+')
+        simulation_info.write('a = '+str(param)+'\n')
+        simulation_info.close() 
+        
+        return
     def write_simulation_results(self, error, multipliers):
         simulation_info = open(self.folder_simulation+'/DataFile_Results.txt', 'w+')
         simulation_info.write('Number of Iterations: '+str(np.size(error))+'\n')
@@ -106,3 +125,4 @@ class SaveData:
         simulation_info.close() 
         
         return
+
