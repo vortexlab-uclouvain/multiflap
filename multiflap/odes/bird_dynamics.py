@@ -44,10 +44,12 @@ def dynamics(self, x0, t):
         u, w, q, theta  = x0  # Read state space points
 
         # get the aereodynamic forces at time t
-        [_, Fy, Fz, My, F_tail, _, _, _, _] = self.get_aeroforces(x0, t)
-
+        [_, Fy, Fz, My, F_tail, _, _, _, _, P_ind] = self.get_aeroforces(x0, t)
+        cd_b = self.get_body_coeff(u)
+        s_b = 0.00813*self.mass**(2/3)
+        drag_body = (0.5*self.rho*(cd_b*s_b)*(u)**2)
         # bird body dynamics
-        dudt = -q*w - self.g*np.sin(theta) - Fz/self.mass
+        dudt = -q*w - self.g*np.sin(theta) - Fz/self.mass - drag_body
         dwdt = q*u + self.g*np.cos(theta) - Fy/self.mass - F_tail/self.mass
         dqdt =  My/0.1
         dthetadt = q
@@ -56,6 +58,25 @@ def dynamics(self, x0, t):
         x_dot = np.array([dudt, dwdt, dqdt, dthetadt], float)
 
         return x_dot
+
+def get_body_coeff(self, v):
+    rho = self.rho
+    mu = 1.81*10**(-5)
+        # Body surface
+    S_b = 0.00813*self.mass**(2/3)
+
+    # Diameter of the body
+    d = np.sqrt(4*S_b/(np.pi))
+
+    FR_t = 6.0799*self.mass**(0.1523) #fineness ratio l/d (only trunk of the bird)
+
+    # Reynolds nuself.massber
+    Re = (rho*d*v)/mu
+
+    # MayBury Thesis
+    CD_b = 66.6*self.mass**(-0.511)*FR_t**(0.915)*S_b**(1.063)*Re**(-0.197)
+
+    return CD_b
 
 def get_aeroforces(self, x0, t):
         """
@@ -105,11 +126,12 @@ def get_aeroforces(self, x0, t):
          M_wing,
          M_tail,
          M_drag,
-         M_lift] = get_flappingforces(x0, v_kinematics,
-                                      line, chordir, updir, chord)
+         M_lift,
+         P_ind] = get_flappingforces(x0, v_kinematics,
+                                      line, chordir, updir, chord, self.tail_opening)
 
         aereodynamic_forces = [Fx, Fy, Fz, My,
-                               F_tail, M_wing, M_tail, M_drag, M_lift]
+                               F_tail, M_wing, M_tail, M_drag, M_lift, P_ind]
         return aereodynamic_forces
 
 
@@ -138,13 +160,13 @@ def get_stability_matrix(self, x0, t):
     x0_u = x0 + [x0[0]*perturbation, 0, 0, 0]
     x0_w = x0 + [0, x0[1]*perturbation, 0, 0]
     x0_q = x0 + [0, 0, x0[2]*perturbation, 0]
-    [_, Fy, Fz, My, F_tail, _, _, _, _] = self.get_aeroforces(x0, t)
+    [_, Fy, Fz, My, F_tail, _, _, _, _, _] = self.get_aeroforces(x0, t)
     # force evaluation, perturbation along 'u'
-    [_, Fyu, Fzu, Myu, F_tailu, _, _, _, _] = self.get_aeroforces(x0_u, t)
+    [_, Fyu, Fzu, Myu, F_tailu, _, _, _, _, _] = self.get_aeroforces(x0_u, t)
     # force evaluation, perturbation along 'w'
-    [_, Fyw, Fzw, Myw, F_tailw, _, _, _, _] = self.get_aeroforces(x0_w, t)
+    [_, Fyw, Fzw, Myw, F_tailw, _, _, _, _, _] = self.get_aeroforces(x0_w, t)
     # force evaluation, perturbation along 'q'
-    [_, Fyq, Fzq, Myq, F_tailq, _, _, _, _] = self.get_aeroforces(x0_q, t)
+    [_, Fyq, Fzq, Myq, F_tailq, _, _, _, _, _] = self.get_aeroforces(x0_q, t)
 
 
     # Derivatives of Fz with respect to the state space variables
