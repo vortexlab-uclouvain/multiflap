@@ -181,6 +181,7 @@ def get_flappingforces(x0, v_kin, line, chordir, updir, chord, tail_opening):
         M_lift = M_lift + M_lift_j[0]
         My = My + M[0]
         P_ind = P_ind + np.dot(F*ds[j],-line_velocity[:,j])
+        #P_ind = P_ind + np.dot(F*ds[j],U)
 
     F_tail_tot = delta_tail(U_tail, tail_span)
     M_tail = np.cross(NP_tail, F_tail_tot)
