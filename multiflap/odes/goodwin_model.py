@@ -1,6 +1,6 @@
 '''
 file goodwin_model.py
-@author Gianmarco Ducci
+@author Gianmarco Ducci, Marta del Olmo
 @copyright Copyright © UCLouvain 2020
 
 multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.
