@@ -44,12 +44,12 @@ def dynamics(self, x0, t):
         u, w, q, theta  = x0  # Read state space points
 
         # get the aereodynamic forces at time t
-        [_, Fy, Fz, My, F_tail, _, _, _, _, P_ind] = self.get_aeroforces(x0, t)
+        [_, Fy, Fz, My, F_tail, Drag_tail, _, _, _, _, _, _,_] = self.get_aeroforces(x0, t)
         cd_b = self.get_body_coeff(u)
         s_b = 0.00813*self.mass**(2/3)
         drag_body = (0.5*self.rho*(cd_b*s_b)*(u)**2)
         # bird body dynamics
-        dudt = -q*w - self.g*np.sin(theta) - Fz/self.mass - drag_body
+        dudt = -q*w - self.g*np.sin(theta) - Fz/self.mass - drag_body/self.mass - Drag_tail/self.mass
         dwdt = q*u + self.g*np.cos(theta) - Fy/self.mass - F_tail/self.mass
         dqdt =  My/0.1
         dthetadt = q
@@ -123,15 +123,15 @@ def get_aeroforces(self, x0, t):
          Fz,
          My,
          F_tail,
+         Drag_tail,
          M_wing,
          M_tail,
          M_drag,
          M_lift,
-         P_ind] = get_flappingforces(x0, v_kinematics,
+         P_ind, F_pro, aoa] = get_flappingforces(x0, v_kinematics,
                                       line, chordir, updir, chord, self.tail_opening)
 
-        aereodynamic_forces = [Fx, Fy, Fz, My,
-                               F_tail, M_wing, M_tail, M_drag, M_lift, P_ind]
+        aereodynamic_forces = [Fx, Fy, Fz, My, F_tail, Drag_tail, M_wing, M_tail, M_drag, M_lift, P_ind, F_pro, aoa]
         return aereodynamic_forces
 
 
@@ -160,13 +160,13 @@ def get_stability_matrix(self, x0, t):
     x0_u = x0 + [x0[0]*perturbation, 0, 0, 0]
     x0_w = x0 + [0, x0[1]*perturbation, 0, 0]
     x0_q = x0 + [0, 0, x0[2]*perturbation, 0]
-    [_, Fy, Fz, My, F_tail, _, _, _, _, _] = self.get_aeroforces(x0, t)
+    [_, Fy, Fz, My, F_tail, Drag_tail, _, _, _, _, _, F_pro, _] = self.get_aeroforces(x0, t)
     # force evaluation, perturbation along 'u'
-    [_, Fyu, Fzu, Myu, F_tailu, _, _, _, _, _] = self.get_aeroforces(x0_u, t)
+    [_, Fyu, Fzu, Myu, F_tailu, Drag_tailu, _, _, _, _, _, F_prou, _] = self.get_aeroforces(x0_u, t)
     # force evaluation, perturbation along 'w'
-    [_, Fyw, Fzw, Myw, F_tailw, _, _, _, _, _] = self.get_aeroforces(x0_w, t)
+    [_, Fyw, Fzw, Myw, F_tailw, Drag_tailw, _, _, _, _, _, F_prow, _] = self.get_aeroforces(x0_w, t)
     # force evaluation, perturbation along 'q'
-    [_, Fyq, Fzq, Myq, F_tailq, _, _, _, _, _] = self.get_aeroforces(x0_q, t)
+    [_, Fyq, Fzq, Myq, F_tailq, Drag_tailq, _, _, _, _, _, F_proq, _] = self.get_aeroforces(x0_q, t)
 
 
     # Derivatives of Fz with respect to the state space variables
@@ -184,14 +184,19 @@ def get_stability_matrix(self, x0, t):
     dFytail_dw = (F_tailw - F_tail)/(x0[1]*perturbation)
     dFytail_dq = (F_tailq - F_tail)/(x0[2]*perturbation)
 
+    # Derivatives of Drag_tail with respect to the state space variables
+    dDrag_tail_du = (Drag_tailu - Drag_tail)/(x0[0]*perturbation)
+    dDrag_tail_dw = (Drag_tailw - Drag_tail)/(x0[1]*perturbation)
+    dDrag_tail_dq = (Drag_tailq - Drag_tail)/(x0[2]*perturbation)
+
     # Derivatives of My with respect to the state space variables
     dMy_du = (Myu - My)/(x0[0]*perturbation)
     dMy_dw = (Myw - My)/(x0[1]*perturbation)
     dMy_dq = (Myq - My)/(x0[2]*perturbation)
+
     u, w, q, theta = x0
 
-    A = np.array([[-dFzu_dU/m, -q - dFzw_dW/m,
-                   -w - dFzq_dq/m, -g*np.cos(theta)],
+    A = np.array([[-dFzu_dU/m, -q - dFzw_dW/m, -w - dFzq_dq/m, -g*np.cos(theta)],
                   [q - dFyu_dU/m - dFytail_du/m, -dFyw_dW/m - dFytail_dw/m,
                    u - dFyq_dq/m - dFytail_dq/m, -g*np.sin(theta)],
                   [dMy_du/0.1, dMy_dw/0.1, dMy_dq/0.1, 0],

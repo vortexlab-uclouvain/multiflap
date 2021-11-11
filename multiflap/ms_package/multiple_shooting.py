@@ -60,7 +60,7 @@ class MultipleShooting:
         t_final = t0 + deltat     # Final time
 
         time_array = np.linspace(t0, t_final, self.t_steps)
-        rk_solution = rk4(self.model.dynamics, x0, time_array)
+        rk_solution = rk2(self.model.dynamics, x0, time_array)
     #    sspSolution = ode.solve_ivp(birdEqn_py, 
                         #[tInitial, tFinal], ssp0,'LSODA', max_step = deltat/Nt)
     #    sspSolution = (sspSolution.y).T
@@ -134,7 +134,6 @@ class MultipleShooting:
 
         #Last dxd elements of the velJ are determined by the action of
         #stability matrix on the current value of the Jacobian:
-
         velTangent = np.dot(self.model.get_stability_matrix(x0, t), J)
 
         # shape a back a (dxd) array in a d^2 matrix

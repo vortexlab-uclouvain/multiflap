@@ -58,14 +58,22 @@ class RetrievingAero:
         Fz = np.zeros(time_steps)
         My = np.zeros(time_steps)
         F_tail = np.zeros(time_steps)
+        Drag_tail = np.zeros(time_steps)
         M_wing = np.zeros(time_steps)
         M_tail = np.zeros(time_steps)
         M_drag = np.zeros(time_steps)
         M_lift = np.zeros(time_steps)
         P_ind = np.zeros(time_steps)
+        F_pro = np.zeros(time_steps)
+        P_pro = np.zeros(time_steps)
+        angle_of_attack = []
+        print(self.bird_obj.tail_opening)
         for i in range (time_steps):
-            [_, Fy[i], Fz[i], My[i], F_tail[i], _, _, _, _, P_ind[i]] = self.bird_obj.get_aeroforces(periodic_orbit[i], timeArray[i])
-        return Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift, P_ind
+            [_, Fy[i], Fz[i], My[i], F_tail[i],Drag_tail[i], M_wing[i], M_tail[i], _, _, P_ind[i], F_pro[i], aoa] = self.bird_obj.get_aeroforces(periodic_orbit[i], timeArray[i])
+            aoa = np.rad2deg(aoa)
+            P_pro[i] = F_pro[i]*periodic_orbit[i][0]
+            angle_of_attack.append(aoa)
+        return Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift, P_ind, P_pro, angle_of_attack
 
     def parasitic_power(self, periodic_orbit):
         timeArray = self.time_steps
@@ -84,7 +92,7 @@ class RetrievingAero:
     def get_body_coeff(self, v):
         rho = 1.225
         mu = 1.81*10**(-5)
-          # Body surface
+        # Body surface
         S_b = 0.00813*self.bird_obj.mass**(2/3)
 
         # Diameter of the body

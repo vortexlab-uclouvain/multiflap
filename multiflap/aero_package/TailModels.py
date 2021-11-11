@@ -34,8 +34,10 @@ def delta_tail(velocity_vector, tail_span):
     velocity_module = np.linalg.norm(velocity_vector)
     Force = (np.pi/4)*rho*(velocity_module**2)*alpha*(tail_span**2)
     Lift = Force*np.cos(alpha)
+
     Cf = 1.328/np.sqrt(Reynolds)
-    Df = 0.5*rho*(velocity_module**2)*(tail_span*settings.tail_length/2)*Cf
+    Sf = (tail_span*settings.tail_length/2)*2
+    Df = 0.5*rho*(velocity_module**2)*(2*Sf)*Cf
     Drag_ind = 0.5*Lift*alpha
     Drag = Drag_ind + Df + Force*np.sin(alpha)
     Lat_force = 0.

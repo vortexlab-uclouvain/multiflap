@@ -31,10 +31,9 @@ settings = SimulationsSettings()
 def get_flappingforces(x0, v_kin, line, chordir, updir, chord, tail_opening):
 
     u, w, q, theta = x0
-
     cl_alpha = 2*np.pi
     rho = 1.225  # Air density
-    CD_0 = 0.015
+    CD_0 = 0.02
     F_pro = 0
     U = np.array([0, w, u])
     ang_velocity = np.array([q, 0, 0])
@@ -186,4 +185,4 @@ def get_flappingforces(x0, v_kin, line, chordir, updir, chord, tail_opening):
     F_tail_tot = delta_tail(U_tail, tail_span)
     M_tail = np.cross(NP_tail, F_tail_tot)
     My = M_wing + M_tail[0]
-    return Fx, Fy, Fz, My, F_tail_tot[1], M_wing, M_tail[0], M_drag, M_lift, P_ind
+    return Fx, Fy, Fz+F_pro[2], My, F_tail_tot[1], F_tail_tot[2], M_wing, M_tail[0], M_drag, M_lift, P_ind, F_pro[2], angle_of_attack

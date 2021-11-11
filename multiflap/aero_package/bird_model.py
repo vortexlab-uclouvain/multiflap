@@ -42,13 +42,13 @@ WingState = namedtuple('WingState',[
 
 class BirdModel:
 
-    def __init__(self, shoulder=None, elbow=None, wrist=None, settings = None):
+    def __init__(self, shoulder=None, elbow=None, wrist=None, settings = None, mass = 1.2):
 
         #Parameters:
         self.dimensions = 4
         self.rho = 1.225
         self.g = 9.81
-        self.mass = 1.2
+        self.mass = mass
         self.frequency = 4
         self.wingframe_position = np.array([0., -0.0, -0.05])
         self.wingframe_position_tail = np.array([0, -0., .3])

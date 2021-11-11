@@ -130,7 +130,6 @@ class MultipleShootingPeriod:
         """
 
 
-
         x0 = x0_jacobian[0:self.dim]
         J = x0_jacobian[self.dim:].reshape((self.dim, self.dim))
 
@@ -141,8 +140,8 @@ class MultipleShootingPeriod:
 
         #Last dxd elements of the velJ are determined by the action of
         #stability matrix on the current value of the Jacobian:
-
         velTangent = np.dot(self.model.get_stability_matrix(x0, t), J)
+        #velTangent = np.dot(self.model.get_stability_matrix(x0, t), J)
 
         # shape a back a (dxd) array in a d^2 matrix
 
@@ -177,6 +176,7 @@ class MultipleShootingPeriod:
         jacODE_ic = np.zeros(self.dim + self.dim ** 2)
 
         jacODE_ic[0:self.dim] = x0
+
 
         jacODE_ic[self.dim:] = np.reshape(jac_ic, self.dim**2)
 

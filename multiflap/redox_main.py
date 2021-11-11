@@ -33,10 +33,10 @@ import matplotlib as mpl
 
 x = [0.5, 0.5, 0.6, 0.2]
 
-time_array = np.linspace(0, 180, 90000)
+time_array = np.linspace(0, 180, 900)
 mymodel = RedoxModel()
 
-ms_obj =  MultipleShootingPeriod(x, M=2, period_guess= 23., t_steps=50000, model=mymodel, integrator='odeint')
+ms_obj =  MultipleShootingPeriod(x, M=2, period_guess= 23., t_steps=5000, model=mymodel,option_jacobian='analytical', integrator='odeint')
 
 mysol = SolverPeriod(ms_obj = ms_obj).lma()
 
@@ -44,7 +44,7 @@ jac = mysol[4]
 
 eigenvalues, eigenvectors = np.linalg.eig(jac)
 
-
+print(eigenvalues)
 sol_array = mysol[3].space
 sol_time = mysol[3].time
 period = sol_time[-1]
