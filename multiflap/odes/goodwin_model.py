@@ -1,5 +1,5 @@
 '''
-file redox_oscillation.py
+file goodwin_model.py
 @author Gianmarco Ducci
 @copyright Copyright © UCLouvain 2020
 
@@ -28,9 +28,9 @@ import numpy as np
 """
 Example case adopted from:
 
-    A Robust Model for Circadian Redox Oscillations,
-    del Olmo, M.; Kramer, A.; Herzel, H., Int. J. Mol. Sci., 2019, 20, 2368
-    https://www.mdpi.com/1422-0067/20/9/2368
+    Spontaneous Synchronization of Coupled Circadian Oscillators,
+    Gonze D., Bernard S., Waltermann C., Kramer A., Herzel H.
+    doi: 10.1529/biophysj.104.058388
 
 """
 class GoodwinModel:

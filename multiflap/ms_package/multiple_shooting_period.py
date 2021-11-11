@@ -232,7 +232,7 @@ class MultipleShootingPeriod:
         # Set the numerical perturbation over the direction of the flow
         # ---------------------------------------------------------------------
 
-        epsilon = 1e-3
+        epsilon = 1e-5
 
 
         # ---------------------------------------------------------------------
