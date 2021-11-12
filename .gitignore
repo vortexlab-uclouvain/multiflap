@@ -6,6 +6,7 @@ build
 dist
 
 multiflap/TODO
+multiflap/*.swp
 postprocessing
 
 results/*
