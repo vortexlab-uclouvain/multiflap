@@ -35,7 +35,7 @@ Example case adopted from:
 """
 class GoodwinModel:
     def __init__(self, k1=0.7, k2=0.45, k3=0.7, k4=0.35, k5=0.7, k6=0.35, 
-                 K1=1, K2=1, K4=1, K6=1, n=7):
+                 K1=1, K2=1, K4=1, K6=1, n=7, perturbation=False):
 
         self.k1 = k1
         self.k2 = k2
@@ -48,6 +48,7 @@ class GoodwinModel:
         self.K4 = K4
         self.K6 = K6
         self.n = n
+        self.perturbation = perturbation
         self.dimension = 3
     def dynamics(self, x0, t):
 
@@ -61,7 +62,14 @@ class GoodwinModel:
         Outputs:
             x_dot: velocity vector
         """
+
+
         x, y, z = x0
+
+        if self.perturbation == True:
+            y_pert = self.gaussian_perturbation(t)
+            y = y + y_pert
+
         dx_dt = self.k1*(self.K1**self.n/(self.K1**self.n + z**self.n)) - \
                 self.k2*x/(self.K2 + x)
         dy_dt = self.k3*x - self.k4*y/(self.K4 + y)
@@ -84,8 +92,23 @@ class GoodwinModel:
             A[i, j] = dv[i]/dx[j]
         """
         x, y, z = x0
-        A_matrix = np.array([[(-self.k2*(self.K2 + x) + self.k2*x)/(self.K2 + x)**2, 0., (-self.k1*(self.K1**self.n)*self.n*z**(self.n-1))/(self.K1**self.n + z**self.n)**2],
+        A_matrix = np.array([
+                      [(-self.k2*(self.K2 + x) + self.k2*x)/(self.K2 + x)**2,
+                       0.,
+                       (-self.k1*(self.K1**self.n)*self.n*z**(self.n-1))/ \
+                       (self.K1**self.n + z**self.n)**2],
                       [self.k3,  (-self.k4*(self.K4 + y) + self.k4*y)/(self.K4 + y)**2, 0],
-                      [0, self.k5, (-self.k6*(self.K6 + z) + self.k6*z)/(self.K6 + z)**2]], float)
+                      [0, self.k5, (-self.k6*(self.K6 + z) + self.k6*z)/(self.K6 + z)**2]], 
+                    float)
 
         return A_matrix
+
+
+    def gaussian_perturbation(self, t):
+        sigma = .5
+        t_0 = 120 
+        a_0 = 0.1
+
+        w = a_0*np.e**(-0.5*(((t-t_0)/sigma)**2))
+
+        return w
