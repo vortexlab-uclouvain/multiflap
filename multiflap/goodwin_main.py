@@ -57,7 +57,7 @@ period = sol_time[-1]
 
 ssp_pert = odeint(GoodwinModel(perturbation=True).dynamics, sol_array[-1,:], time_array)
 ssp_unpert = odeint(GoodwinModel(perturbation=False).dynamics, sol_array[-1,:], time_array)
-pert = GoodwinModel().gaussian_perturbation(time_array)
+pert = GoodwinModel().square(time_array, amp=2, t_0 = 150)
 
 fig1 = plt.figure(figsize=(12,8))
 ax1 = fig1.add_subplot(312)

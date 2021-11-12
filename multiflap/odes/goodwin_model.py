@@ -106,9 +106,15 @@ class GoodwinModel:
 
     def gaussian_perturbation(self, t):
         sigma = .5
-        t_0 = 120 
+        t_0 = 120
         a_0 = 0.1
 
         w = a_0*np.e**(-0.5*(((t-t_0)/sigma)**2))
 
         return w
+
+    def square(self, t, amp = 1, t_0 = 100, width = 10):
+        amp = amp
+        t_0 = t_0
+        width = width #semi-width
+        return amp * (abs(t - t_0) < width)
