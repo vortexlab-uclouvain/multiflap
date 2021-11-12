@@ -66,12 +66,12 @@ class GoodwinModel:
 
         x, y, z = x0
 
+        x_pert = 0
         if self.perturbation == True:
-            y_pert = self.gaussian_perturbation(t)
-            y = y + y_pert
+            x_pert = self.gaussian_perturbation(t)
 
         dx_dt = self.k1*(self.K1**self.n/(self.K1**self.n + z**self.n)) - \
-                self.k2*x/(self.K2 + x)
+                self.k2*x/(self.K2 + x) + x_pert
         dy_dt = self.k3*x - self.k4*y/(self.K4 + y)
         dz_dt = self.k5*y - self.k6*z/(self.K6 + z)
 
