@@ -1,6 +1,6 @@
 '''
-file redox_main.py
-@author Gianmarco Ducci
+file goodwin_main.py
+@author Gianmarco Ducci, Marta del Olmo
 @copyright Copyright © UCLouvain 2020
 
 multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.
@@ -33,7 +33,7 @@ import matplotlib as mpl
 
 x = [0.1, 1, 1]
 
-time_array = np.linspace(0, 180, 90000)
+time_array = np.linspace(0, 250, 90000)
 mymodel = GoodwinModel()
 
 ms_obj =  MultipleShootingPeriod(x,
@@ -50,36 +50,29 @@ jac = mysol[4]
 eigenvalues, eigenvectors = np.linalg.eig(jac)
 
 
+
 sol_array = mysol[3].space
 sol_time = mysol[3].time
 period = sol_time[-1]
 
-fig1 = plt.figure()
-ax1 = fig1.gca()
-ax1.plot( sol_time, sol_array[:,0], label = "x")
-ax1.plot( sol_time, sol_array[:,1], label = "y")
-ax1.plot( sol_time, sol_array[:,2], label = "z")
-plt.legend()
-#plt.savefig('../img/' + 'redox_oscillation.png', format = 'png' )
-plt.show()
+ssp_pert = odeint(GoodwinModel(perturbation=True).dynamics, sol_array[-1,:], time_array)
+ssp_unpert = odeint(GoodwinModel(perturbation=False).dynamics, sol_array[-1,:], time_array)
+pert = GoodwinModel().gaussian_perturbation(time_array)
 
-fig2 = plt.figure()
-ax2 = fig2.gca()
-ax2.set_aspect('equal')
-ax2.set_xlabel('$Re$', fontsize=20)
-ax2.set_ylabel('$Im$', fontsize=20)
-ax2.xaxis.set_tick_params(labelsize=10)
-ax2.set_xlim(-1.1, 2.)
-ax2.set_ylim(-1.2, 1.2)
-ax2.xaxis.set_major_locator(mpl.ticker.MultipleLocator(1.))
-ax2.yaxis.set_major_locator(mpl.ticker.MultipleLocator(1.))
-ax2.xaxis.set_major_formatter(FormatStrFormatter('%.1f'))
-ax2.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
-plt.tick_params(labelsize=12)
-circle = np.linspace(0,2*np.pi,101)
-ax2.plot(np.cos(circle),np.sin(circle), linewidth=3.)
-plt.grid(False)
-ax2.scatter(eigenvalues.real, eigenvalues.imag , s=70,marker='.',color='red',facecolors='red', edgecolors='red', linewidth=1.8)
-plt.gcf().subplots_adjust(left=0.16)
-#plt.savefig('../img/' + 'redox_multipliers.png', format = 'png' )
+fig1 = plt.figure(figsize=(12,8))
+ax1 = fig1.add_subplot(312)
+ax1.plot(time_array, ssp_pert[:,0], label='x')
+ax1.plot(time_array, ssp_pert[:,1], label='y')
+ax1.plot(time_array, ssp_pert[:,2], label='z')
+ax1.legend()
+ax1.set_xlabel('time (h)'); ax1.set_ylabel('Goodwin variables')
+ax2 = fig1.add_subplot(311)
+ax2.plot(time_array, pert)
+ax2.set_xlabel('time (h)'); ax2.set_ylabel('Gaussian perturbation')
+ax3 = fig1.add_subplot(313)
+ax3.plot(time_array, ssp_pert[:,0] - ssp_unpert[:,0], label='x_pert - x_unpert')
+ax3.plot(time_array, ssp_pert[:,1] - ssp_unpert[:,1], label='y_pert - y_unpert')
+ax3.plot(time_array, ssp_pert[:,2] - ssp_unpert[:,2], label='z_pert - z_unpert')
+ax3.legend()
+ax3.set_xlabel('time (h)'); ax3.set_ylabel('pert-unpert')
 plt.show()
