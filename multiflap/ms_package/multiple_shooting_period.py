@@ -182,7 +182,7 @@ class MultipleShootingPeriod:
 
 
         t_Final = initial_time + integration_time
-        Nt = 50000 #50000  # interval discretization for computing the integration
+        Nt = 500 #50000  # interval discretization for computing the integration
 
         tArray = np.linspace(initial_time, t_Final, Nt)
 

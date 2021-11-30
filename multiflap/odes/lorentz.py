@@ -25,15 +25,11 @@ import numpy as np
 
 
 class Lorentz:
-    def __init__(self, a=None, b=None, c=None, d=None, e=None, q=None, p=None):
+    def __init__(self, sigma=None, r=None, b=None):
 
-        self.a = a
+        self.sigma = sigma
+        self.r = r
         self.b = b
-        self.c = c
-        self.d = d
-        self.e = e
-        self.q = q
-        self.p = p
         self.dimension = 3
 
     def dynamics(self, x0, t):
@@ -49,9 +45,9 @@ class Lorentz:
             x_dot: velocity vector
         """
         x, y, z = x0
-        dxdt = self.a*(y-x)
-        dydt = x*(self.b-z)-y
-        dzdt = x*y - self.c*z
+        dxdt = self.sigma*(y-x)
+        dydt = x*(self.r-z)-y
+        dzdt = x*y - self.b*z
         vel_array = np.array([dxdt, dydt, dzdt], float)
         return vel_array
 
@@ -67,8 +63,8 @@ class Lorentz:
             A[i, j] = dv[i]/dx[j]
         """
         x, y, z = x0
-        A_matrix = np.array([[-self.a,  self.a, 0],
-                            [(self.b-z), -1, -x],
-                            [y, x, -self.c]], float)
+        A_matrix = np.array([[-self.sigma,  self.sigma, 0],
+                            [(self.r-z), -1, -x],
+                            [y, x, -self.b]], float)
 
         return A_matrix
