@@ -73,37 +73,4 @@ class RetrievingAero:
             aoa = np.rad2deg(aoa)
             P_pro[i] = F_pro[i]*periodic_orbit[i][0]
             angle_of_attack.append(aoa)
-        return Fx, Fy, Fz, My, F_tail, M_wing, M_tail, M_drag, M_lift, P_ind, P_pro, angle_of_attack
-
-    def parasitic_power(self, periodic_orbit):
-        timeArray = self.time_steps
-        time_steps = len(timeArray)
-        P_par = np.zeros(len(self.time_steps))
-        for i in range (time_steps):
-            u = periodic_orbit[i, 0]
-            w = periodic_orbit[i, 1]
-            norm_v = np.sqrt(u**2 + w**2)
-            cd_b = self.get_body_coeff(norm_v)
-            s_b = 0.00813*self.bird_obj.mass**(2/3)
-            drag_body = (0.5*self.bird_obj.rho*(cd_b*s_b)*(norm_v)**2)
-            P_par[i] = drag_body*norm_v
-        return P_par
-
-    def get_body_coeff(self, v):
-        rho = 1.225
-        mu = 1.81*10**(-5)
-        # Body surface
-        S_b = 0.00813*self.bird_obj.mass**(2/3)
-
-        # Diameter of the body
-        d = np.sqrt(4*S_b/(np.pi))
-
-        FR_t = 6.0799*self.bird_obj.mass**(0.1523) #fineness ratio l/d (only trunk of the bird)
-
-        # Reynolds nuself.massber
-        Re = (rho*d*v)/mu
-
-        # MayBury Thesis
-        CD_b = 66.6*self.bird_obj.mass**(-0.511)*FR_t**(0.915)*S_b**(1.063)*Re**(-0.197)
-
-        return CD_b
+        return Fx, Fy, Fz, My, F_tail, Drag_tail, M_wing, M_tail, M_drag, M_lift, P_ind, P_pro, angle_of_attack
