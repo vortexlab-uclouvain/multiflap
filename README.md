@@ -1,7 +1,7 @@
 # multiflap
 
 [![Static](https://img.shields.io/badge/docs-latest-blue)][stable docs url]
-[![Static](https://img.shields.io/badge/multiflap-v1.0-brightgreen)][stable link url]
+[![Static](https://img.shields.io/badge/multiflap-v1.1-brightgreen)][stable link url]
 
 [stable docs url]: https://multiflap.readthedocs.io/en/latest/
 [stable link url]: https://github.com/vortexlab-uclouvain/multiflap/releases/tag/v1.0
