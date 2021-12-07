@@ -38,7 +38,7 @@ python setup.py install
 3. To run one of the examples, from the multiflap root directory:
 
 ```
-python3 examples/rossler_system.py
+python3 examples/redox_oscillator.py
 ```
 ## Input files
 
