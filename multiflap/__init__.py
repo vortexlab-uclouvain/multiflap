@@ -7,3 +7,4 @@ from .odes.rossler import Rossler
 from .odes.lorentz import Lorentz
 from .odes.forced_vdp import ForcedVanDerPol
 from .ms_package.rk_integrator import rk2, rk3, rk4
+from .utils.mf_plots import Plot
