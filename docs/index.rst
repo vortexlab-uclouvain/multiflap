@@ -11,7 +11,7 @@ Welcome to multiflap's documentation!
    :caption: Contents:
 
    getting_started/index.rst
-   multiflap
+   multiflap.utils
 
 
 Indices and tables
