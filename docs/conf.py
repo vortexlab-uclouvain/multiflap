@@ -12,7 +12,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../'))
+sys.path.insert(0, os.path.abspath('../'))
 #TOP_DIR = os.path.abspath(os.path.join('..', '..'))
 #sys.path.insert(0, TOP_DIR)
 # -- Project information -----------------------------------------------------
