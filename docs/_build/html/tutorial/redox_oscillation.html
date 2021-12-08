@@ -14,7 +14,6 @@
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/my_width.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/contentui.css" type="text/css" />
 
   
   
@@ -32,7 +31,6 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/language_data.js"></script>
-        <script src="../_static/contentui.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
@@ -265,47 +263,6 @@ d &amp; -e &amp; 0 &amp; 0\\
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ms_obj</span> <span class="o">=</span>  <span class="n">MultipleShootingPeriod</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">period_guess</span><span class="o">=</span> <span class="mf">23.</span><span class="p">,</span> <span class="n">t_steps</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">mymodel</span><span class="p">)</span>
 <span class="n">mysol</span> <span class="o">=</span> <span class="n">SolverPeriod</span><span class="p">(</span><span class="n">ms_obj</span> <span class="o">=</span> <span class="n">ms_obj</span><span class="p">)</span><span class="o">.</span><span class="n">lma</span><span class="p">()</span>
 </pre></div>
-</div>
-<div class="toggle-header docutils container">
-<p><code class="docutils literal notranslate"><span class="pre">`redox_main.py</span></code> <strong>Show full main</strong></p>
-</div>
-<div class="toggle-content docutils container">
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span>  <span class="nn">odes.redox_oscillation</span> <span class="kn">import</span> <span class="n">RedoxModel</span>
-<span class="kn">from</span> <span class="nn">ms_package.rk_integrator</span> <span class="kn">import</span> <span class="n">rk4</span>
-<span class="kn">from</span> <span class="nn">ms_package.multiple_shooting_period</span> <span class="kn">import</span> <span class="n">MultipleShootingPeriod</span>
-<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">odeint</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">ms_package.lma_solver_period</span> <span class="kn">import</span> <span class="n">SolverPeriod</span>
-
-<span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]</span>
-
-<span class="n">time_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">90000</span><span class="p">)</span>
-<span class="n">mymodel</span> <span class="o">=</span> <span class="n">RedoxModel</span><span class="p">()</span>
-
-<span class="n">ms_obj</span> <span class="o">=</span>  <span class="n">MultipleShootingPeriod</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">period_guess</span><span class="o">=</span> <span class="mf">23.</span><span class="p">,</span> <span class="n">t_steps</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">mymodel</span><span class="p">)</span>
-
-<span class="n">mysol</span> <span class="o">=</span> <span class="n">SolverPeriod</span><span class="p">(</span><span class="n">ms_obj</span> <span class="o">=</span> <span class="n">ms_obj</span><span class="p">)</span><span class="o">.</span><span class="n">lma</span><span class="p">()</span>
-
-<span class="n">jac</span> <span class="o">=</span> <span class="n">mysol</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-
-<span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">jac</span><span class="p">)</span>
-
-
-<span class="n">sol_array</span> <span class="o">=</span> <span class="n">mysol</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">space</span>
-<span class="n">sol_time</span> <span class="o">=</span> <span class="n">mysol</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">time</span>
-<span class="n">period</span> <span class="o">=</span> <span class="n">sol_time</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">sol_time</span><span class="p">,</span> <span class="n">sol_array</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;D1&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">sol_time</span><span class="p">,</span> <span class="n">sol_array</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;D2&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">sol_time</span><span class="p">,</span> <span class="n">sol_array</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;R&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">sol_time</span><span class="p">,</span> <span class="n">sol_array</span><span class="p">[:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div></blockquote>
 </div>
 <p>The solution is shown below:</p>
 <div class="figure align-center">

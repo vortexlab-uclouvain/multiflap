@@ -14,7 +14,6 @@
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/my_width.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/contentui.css" type="text/css" />
 
   
   
@@ -32,7 +31,6 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/language_data.js"></script>
-        <script src="../_static/contentui.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
@@ -186,122 +184,7 @@
 <span class="eqno">(2)<a class="headerlink" href="#equation-jac-an-initial-conditions" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{pmatrix} {\mathbf{x}(t_0)}\\ {\mathbb{J}^{0}} \end{pmatrix} = \begin{pmatrix} \mathbf{x}_0 \\ \mathbb{I} \end{pmatrix}\end{split}\]</div>
 <p>This means solving a <span class="math notranslate nohighlight">\((n+n^{2})\)</span> system of differential equations.</p>
 <p>First of all the ODE system <a class="reference internal" href="#equation-jac-an">(1)</a> is reshaped in a <span class="math notranslate nohighlight">\((n+n^{2})\)</span> equations. This is done by the method <code class="docutils literal notranslate"><span class="pre">jacobian_ode</span></code>.</p>
-<div class="toggle-header docutils container">
-<p><code class="docutils literal notranslate"><span class="pre">jacobian_ode</span></code> <strong>Show code</strong></p>
-</div>
-<div class="toggle-content docutils container">
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">jacobian_ode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0_jacobian</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Set up the additional ODE system (d + d^2) to evaluate analytically the</span>
-<span class="sd">    Jacobian matrix.</span>
-<span class="sd">    This function is used to unpack the Jacobian elements to solve</span>
-
-<span class="sd">    \dot{J} = AJ</span>
-
-<span class="sd">    It reshapes Equation (7.18) of Seydel&#39;s book &quot;Practical Bifurcation and</span>
-<span class="sd">    Stability Analysis&quot;</span>
-<span class="sd">    in order get the components of the Jacobian via numerical integration</span>
-<span class="sd">    Inputs:</span>
-<span class="sd">        x0_jacobian: (d+d^2) initial values</span>
-<span class="sd">                     state space itself and the tangent space</span>
-<span class="sd">        t: time.</span>
-
-<span class="sd">    Outputs:</span>
-<span class="sd">        jac_elements_ODE = (d+d^2) dimensional velocity vector</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-
-
-    <span class="n">x0</span> <span class="o">=</span> <span class="n">x0_jacobian</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]</span>
-    <span class="n">J</span> <span class="o">=</span> <span class="n">x0_jacobian</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-
-    <span class="n">jac_elements_ODE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">x0_jacobian</span><span class="p">))</span>
-
-    <span class="n">jac_elements_ODE</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">dynamics</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
-
-
-    <span class="c1">#Last dxd elements of the velJ are determined by the action of</span>
-    <span class="c1">#stability matrix on the current value of the Jacobian:</span>
-
-    <span class="n">velocity_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_stability_matrix</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="n">J</span><span class="p">)</span>
-
-    <span class="c1"># shape a back a (dxd) array in a d^2 matrix</span>
-
-    <span class="n">jac_elements_ODE</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">velocity_vector</span><span class="p">,</span>
-                                                   <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">jac_elements_ODE</span>
-</pre></div>
-</div>
-</div></blockquote>
-</div>
 <p>The function <code class="docutils literal notranslate"><span class="pre">get_jacobian_analytical</span></code> is then implemented in order to solve the reshaped ODE system <a class="reference internal" href="#equation-jac-an">(1)</a></p>
-<div class="toggle-header docutils container">
-<p><code class="docutils literal notranslate"><span class="pre">get_jacobian_analytical()</span></code> <strong>Show code</strong></p>
-</div>
-<div class="toggle-content docutils container">
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_jacobian_analytical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">initial_time</span><span class="p">,</span> <span class="n">integration_time</span><span class="p">):</span>
-
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return the Jacobian (or Monodromy Matrix) of the flow, starting from x0</span>
-<span class="sd">    and integrated for a time &quot;integration_time&quot;.</span>
-
-<span class="sd">    It solves numerically the (d + d^2) ODE system.</span>
-
-<span class="sd">    Reference: Equation (7.18) Seydel&#39;s book &quot;Practical Bifurcation and</span>
-<span class="sd">    Stability Analysis&quot;.</span>
-
-<span class="sd">    Inputs:</span>
-<span class="sd">        x0 : Initial point of the phase space. len(x0) = dimension</span>
-<span class="sd">        initial_time: initial time needed as the system is non-autonomous</span>
-<span class="sd">        integration_time: integration time</span>
-<span class="sd">    Outputs:</span>
-<span class="sd">        J: Jacobian (Monodromy Matrix) of flow from t -&gt; t+integration_time</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Initial conditions (ic) for Jacobian matrix (see 7.18 Seydel)</span>
-
-    <span class="n">jac_ic</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-
-    <span class="n">jacODE_ic</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-
-    <span class="n">jacODE_ic</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">x0</span>
-
-    <span class="n">jacODE_ic</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">jac_ic</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-
-
-    <span class="n">t_Final</span> <span class="o">=</span> <span class="n">initial_time</span> <span class="o">+</span> <span class="n">integration_time</span>
-    <span class="n">Nt</span> <span class="o">=</span> <span class="mi">50000</span> <span class="c1">#50000  # interval discretization for computing the integration</span>
-
-    <span class="n">tArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">initial_time</span><span class="p">,</span> <span class="n">t_Final</span><span class="p">,</span> <span class="n">Nt</span><span class="p">)</span>
-
-    <span class="n">start_jac</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-<span class="c1">#   jac_elements_solution = ode.solve_ivp(jacobian_ode,[t_initial, t_Final],</span>
-                            <span class="c1">#jacODE_ic, &#39;RK45&#39;)</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">integrator</span><span class="o">==</span><span class="s1">&#39;rk&#39;</span><span class="p">:</span>
-        <span class="n">rk_jac_elements_solution</span> <span class="o">=</span> <span class="n">rk2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jacobian_ode</span><span class="p">,</span> <span class="n">jacODE_ic</span><span class="p">,</span> <span class="n">tArray</span><span class="p">)</span>
-
-        <span class="n">end_jac</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Jacobian time &quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">end_jac</span><span class="o">-</span><span class="n">start_jac</span><span class="p">))</span>
-
-        <span class="n">jac_elements_solution</span> <span class="o">=</span> <span class="n">rk_jac_elements_solution</span><span class="o">.</span><span class="n">x</span>
-    <span class="c1">#    jac_elements_solution = jac_elements_solution.y.T</span>
-        <span class="c1"># Pack back the jacobian in matrix:</span>
-        <span class="n">J</span> <span class="o">=</span> <span class="n">jac_elements_solution</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
-                                                            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">integrator</span><span class="o">==</span><span class="s1">&#39;odeint&#39;</span><span class="p">:</span>
-        <span class="n">jac_elements_solution</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jacobian_ode</span><span class="p">,</span> <span class="n">jacODE_ic</span><span class="p">,</span> <span class="n">tArray</span><span class="p">)</span>
-        <span class="n">J</span> <span class="o">=</span> <span class="n">jac_elements_solution</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
-                                                          <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">J</span>
-</pre></div>
-</div>
-</div></blockquote>
-</div>
 </div>
 <div class="section" id="numerical-computation">
 <h2>Numerical computation<a class="headerlink" href="#numerical-computation" title="Permalink to this headline">¶</a></h2>
@@ -315,70 +198,6 @@ trajectory along each state variable, i.e.:</p>
 This feature is particularly useful anytime that the encoding of the stability matrix is hard to provide.</p>
 </div>
 <p>The function that returns the numerical Jacobian is <code class="docutils literal notranslate"><span class="pre">get_jacobian_numerical</span></code>.</p>
-<div class="toggle-header docutils container">
-<p><code class="docutils literal notranslate"><span class="pre">get_jacobian_numerical</span></code> <strong>Show code</strong></p>
-</div>
-<div class="toggle-content docutils container">
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_jacobian_numerical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">initial_time</span><span class="p">,</span> <span class="n">integration_time</span><span class="p">):</span>
-
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Finite difference evaluation of Jacobian</span>
-<span class="sd">    Flow is perturbed in all directions of the phase space, and the generic</span>
-<span class="sd">    component of the Jacobian is calculated by finite difference as follow:</span>
-
-<span class="sd">    dF[i]/dx[j] = (F^t(x_perturbed)[i] - F^t(x)[i])/perturbation</span>
-
-<span class="sd">    Jacobian = dF[i]/dx[j] (dim x dim) matrix</span>
-
-<span class="sd">    epsilon = value of the perturbation</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">time_steps</span> <span class="o">=</span> <span class="mi">50000</span>
-    <span class="c1"># ---------------------------------------------------------------------</span>
-    <span class="c1">#  Initialization of the Jacobian Matrix</span>
-    <span class="c1"># ---------------------------------------------------------------------</span>
-
-    <span class="n">jacobian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-
-    <span class="c1"># ---------------------------------------------------------------------</span>
-    <span class="c1"># Set the numerical perturbation over the direction of the flow</span>
-    <span class="c1"># ---------------------------------------------------------------------</span>
-
-    <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">1e-3</span>
-
-
-    <span class="c1"># ---------------------------------------------------------------------</span>
-    <span class="c1"># Finite difference scheme for jacobian evaluation</span>
-    <span class="c1"># ---------------------------------------------------------------------</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;... Running jacobian Function&quot;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">):</span>
-        <span class="n">perturbation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-
-        <span class="n">perturbation</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">perturbation</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">x0</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">epsilon</span>
-
-        <span class="n">x0_pert</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">perturbation</span>
-
-        <span class="p">[</span><span class="n">vel</span><span class="p">,</span> <span class="n">_</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mappedpoint</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span>
-                                        <span class="n">initial_time</span><span class="p">,</span>
-                                        <span class="n">integration_time</span><span class="p">)</span>
-
-        <span class="p">[</span><span class="n">vel_pert</span><span class="p">,</span> <span class="n">_</span><span class="p">]</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">get_mappedpoint</span><span class="p">(</span><span class="n">x0_pert</span><span class="p">,</span>
-                                              <span class="n">initial_time</span><span class="p">,</span>
-                                              <span class="n">integration_time</span><span class="p">)</span>
-
-
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">):</span>
-
-            <span class="n">jacobian</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">vel_pert</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">vel</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="n">perturbation</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-
-
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;... jacobian Calculated&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">jacobian</span>
-</pre></div>
-</div>
-</div></blockquote>
-</div>
 </div>
 </div>
 

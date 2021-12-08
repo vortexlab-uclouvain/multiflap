@@ -14,7 +14,6 @@
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/my_width.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/contentui.css" type="text/css" />
 
   
   
@@ -32,7 +31,6 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/language_data.js"></script>
-        <script src="../_static/contentui.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
@@ -193,47 +191,6 @@ Integrating the ODEs system, the point <span class="math notranslate nohighlight
 \[\mathbb{J} \big \rvert_{t_{i}}^{t_{i}+\tau^{*}}(\mathbf{x}_i) \approx  \mathbb{J} \big \rvert_{t_{i}}^{t_{i}+\overline{\tau}}(\mathbf{x}_i)\]</div>
 </div>
 <p>The function the returns the mapped point <span class="math notranslate nohighlight">\(f(\mathbf{x}_i)  \big \rvert_{t_{i}}^{t_{i}+\overline{\tau}}\)</span> is the <code class="docutils literal notranslate"><span class="pre">get_mappedpoint</span></code> method of <code class="docutils literal notranslate"><span class="pre">multiple_shooting_period.py</span></code> module.</p>
-<div class="toggle-header docutils container">
-<p><code class="docutils literal notranslate"><span class="pre">get_mappedpoint()</span></code> <strong>Show code</strong></p>
-</div>
-<div class="toggle-content docutils container">
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_mappedpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">deltat</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the last element of the time integration. It outputs where a</span>
-<span class="sd">    point x0(t) is mapped after a time deltat.</span>
-
-<span class="sd">    Inputs:</span>
-<span class="sd">        x0: initial value</span>
-<span class="sd">        t0: initial time (required as the system is non-autonomous)</span>
-<span class="sd">        deltat: integration_time</span>
-
-<span class="sd">    Outputs:</span>
-<span class="sd">        mapped_point: last element of the time integration</span>
-<span class="sd">        solution: complete trajectory traced out from x0(t0) for t = deltat</span>
-
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">t_final</span> <span class="o">=</span> <span class="n">t0</span> <span class="o">+</span> <span class="n">deltat</span>     <span class="c1"># Final time</span>
-
-    <span class="n">time_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">t_final</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_steps</span><span class="p">)</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">integrator</span><span class="o">==</span><span class="s1">&#39;rk&#39;</span><span class="p">:</span>
-        <span class="n">tuple_solution</span> <span class="o">=</span> <span class="n">rk4</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">dynamics</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">time_array</span><span class="p">)</span>
-    <span class="c1">#    sspSolution = ode.solve_ivp(birdEqn_py,</span>
-                        <span class="c1">#[tInitial, tFinal], ssp0,&#39;LSODA&#39;, max_step = deltat/Nt)</span>
-    <span class="c1">#    sspSolution = (sspSolution.y).T</span>
-        <span class="n">solution</span> <span class="o">=</span> <span class="n">tuple_solution</span><span class="o">.</span><span class="n">x</span>
-        <span class="n">mapped_point</span> <span class="o">=</span> <span class="n">solution</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>  <span class="c1"># Read the final point to sspdeltat</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">integrator</span><span class="o">==</span><span class="s1">&#39;odeint&#39;</span><span class="p">:</span>
-        <span class="n">solution</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">dynamics</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">time_array</span><span class="p">)</span>
-        <span class="n">mapped_point</span> <span class="o">=</span> <span class="n">solution</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
-        <span class="n">odesol</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;odesol&#39;</span><span class="p">,[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">])</span>
-        <span class="n">tuple_solution</span> <span class="o">=</span> <span class="n">odesol</span><span class="p">(</span><span class="n">solution</span><span class="p">,</span> <span class="n">time_array</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">mapped_point</span><span class="p">,</span> <span class="n">tuple_solution</span>
-</pre></div>
-</div>
-</div></blockquote>
-</div>
 <p>Plugging Equation <a class="reference internal" href="#equation-period-iteration">(3)</a> in Equation <a class="reference internal" href="#equation-multishooting2-period">(1)</a>, and re-arranging Equation <a class="reference internal" href="#equation-multishooting2-period">(1)</a>, we get:</p>
 <div class="math notranslate nohighlight" id="equation-multishooting4-period">
 <span class="eqno">(4)<a class="headerlink" href="#equation-multishooting4-period" title="Permalink to this equation">¶</a></span>\[      \mathbb{J}(\mathbf{x}_i) \Big \rvert_{t_{i}}^{t_{i}+\overline{\tau}} \Delta\mathbf{x}_i -\Delta\mathbf{x}_{i+1} + \mathbf{v} \big ( f(\mathbf{x}_i)  \big \rvert_{t_{i}}^{t_{i}+\overline{\tau}}\big ) \Delta \tau = \underbrace{-\big(f(\mathbf{x}_i)\big \rvert_{t_{i}}^{t_{i}+\overline{\tau}} - \mathbf{x}_{i+1}\big)}_{Error}\]</div>
@@ -268,89 +225,6 @@ f(\mathbf{x}_1) \big \rvert_{t_{1}}^{t_{1}+\overline{\tau}}- \mathbf{x}_2 \\
 -\overline{T}\\
 \end{pmatrix}}_{\mathbf{E}\ [n \times M + 1]}\end{split}\]</div>
 <p>The system <a class="reference internal" href="#equation-shootingscheme-period">(5)</a> is set up calling the method <code class="docutils literal notranslate"><span class="pre">get_ms_scheme</span></code> of <code class="docutils literal notranslate"><span class="pre">multiple_shooting_period.py</span></code> module.</p>
-<div class="toggle-header docutils container">
-<p><code class="docutils literal notranslate"><span class="pre">get_ms_scheme()</span></code> <strong>Show code</strong></p>
-</div>
-<div class="toggle-content docutils container">
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_ms_scheme</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
-
-
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the multiple-shooting scheme to set up the equation:</span>
-<span class="sd">    MS * DX = E</span>
-
-<span class="sd">    Inputs:</span>
-<span class="sd">        x0: array of m-points of the multiple-shooting scheme</span>
-
-<span class="sd">    Outputs (M = points number, N = dimension):</span>
-<span class="sd">        MS = Multiple-Shooting matrix dim(NxM, NxM)</span>
-<span class="sd">        error = error vector dim(NxM),</span>
-<span class="sd">        trajectory_tuple = trajectory related to the initial value and time</span>
-<span class="sd">    -----------------------------------------------------------------------</span>
-
-<span class="sd">    Multiple-Shooting Matrix (MS):</span>
-
-<span class="sd">        dim(MS) = ((NxM) x (NxM))</span>
-
-<span class="sd">                 [  J(x_0, tau)  -I                                  ]</span>
-<span class="sd">                 [              J(x_1, tau)   -I                     ]</span>
-<span class="sd">        MS   =   [                .                                  ]</span>
-<span class="sd">                 [                 .                                 ]</span>
-<span class="sd">                 [                  .                                ]</span>
-<span class="sd">                 [                        J(x_{M-1}, tau)       I    ]</span>
-<span class="sd">                 [ -I ........................................  I    ]</span>
-
-
-<span class="sd">    Unknown Vector:                 Error vector:</span>
-
-<span class="sd">    dim(DX) = (NxM)                 dim(E) = (NxM)</span>
-
-<span class="sd">            [DX_0]                          [ f(x_0, tau) - x_1 ]</span>
-<span class="sd">    DX   =  [DX_1]                  E  =  - [ f(x_1, tau) - x_2 ]</span>
-<span class="sd">            [... ]                          [       ...         ]</span>
-<span class="sd">            [DX_M]                          [       x_M - x_0   ]</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># The dimension of the MultiShooting matrix is (NxM,NxM)</span>
-    <span class="c1"># The dimension of the MultiShooting matrix is (NxM,NxM)</span>
-    <span class="n">MS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">point_number</span><span class="p">,</span>
-                   <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point_number</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
-
-    <span class="c1"># Routine to fill the rest of the scheme</span>
-    <span class="c1">#complete_solution = []</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">point_number</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">x_start</span> <span class="o">=</span> <span class="n">x0</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">option_jacobian</span> <span class="o">==</span> <span class="s1">&#39;analytical&#39;</span><span class="p">:</span>
-            <span class="n">jacobian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_jacobian_analytical</span><span class="p">(</span><span class="n">x_start</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">tau</span><span class="p">,</span>
-                                                    <span class="n">tau</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">option_jacobian</span> <span class="o">==</span> <span class="s1">&#39;numerical&#39;</span><span class="p">:</span>
-            <span class="n">jacobian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_jacobian_numerical</span><span class="p">(</span><span class="n">x_start</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">tau</span><span class="p">,</span>
-                                                    <span class="n">tau</span><span class="p">)</span>
-
-        <span class="n">MS</span><span class="p">[(</span><span class="n">i</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">):</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="o">+</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span>
-           <span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="o">+</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)]</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-
-
-        <span class="n">MS</span><span class="p">[(</span><span class="n">i</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">):</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="o">+</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span>
-           <span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">):(</span><span class="n">i</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">jacobian</span>
-
-
-        <span class="p">[</span><span class="n">mapped_point</span><span class="p">,</span> <span class="n">complete_solution</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mappedpoint</span><span class="p">(</span><span class="n">x_start</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">tau</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
-        <span class="n">last_time</span> <span class="o">=</span> <span class="n">complete_solution</span><span class="o">.</span><span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">velocity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">dynamics</span><span class="p">(</span><span class="n">mapped_point</span><span class="p">,</span><span class="n">last_time</span><span class="p">)</span>
-        <span class="n">MS</span><span class="p">[(</span><span class="n">i</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">):</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="o">+</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">velocity</span>
-    <span class="c1">#trajectory = np.asanyarray(complete_solution)</span>
-    <span class="c1"># Last block of the scheme</span>
-    <span class="n">MS</span><span class="p">[</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:,</span> <span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-    <span class="n">MS</span><span class="p">[</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-    <span class="p">[</span><span class="n">error</span><span class="p">,</span> <span class="n">trajectory_tuple</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_error_vector</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error vector is&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">MS</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">trajectory_tuple</span>
-</pre></div>
-</div>
-</div></blockquote>
-</div>
 <div class="math notranslate nohighlight" id="equation-multishootingcompact-period">
 <span class="eqno">(6)<a class="headerlink" href="#equation-multishootingcompact-period" title="Permalink to this equation">¶</a></span>\[\mathbf{M}(\mathbf{x}_i) \mathbf{\Delta \mathbf{x}} = \mathbf{E}(\mathbf{x}_i)\]</div>
 </div>
