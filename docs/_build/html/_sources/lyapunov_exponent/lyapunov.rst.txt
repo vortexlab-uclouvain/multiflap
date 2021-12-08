@@ -30,7 +30,7 @@ The exact separation of the trajectories is:
    \mathbf{d}_{i+1} = f\big(\mathbf{z}_{i}\big) \Big \rvert_{t_i}^{t_{i} + \Delta t}- \mathbf{x}_{i+1}
    \end{equation}
 
-the vector :math:`\mathbf{d_{i+1}|}` is re-scaled with the module of the initial perturbation :math:`|\delta \mathbf{x}|`.
+the vector :math:`\mathbf{d}_{i+1}` is re-scaled with the module of the initial perturbation :math:`|\delta \mathbf{x}|`.
 
 The next integration point for the perturbed trajectory is therefore:
 

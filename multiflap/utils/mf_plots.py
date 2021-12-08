@@ -1,13 +1,41 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-class Plot:
+class Plot():
+
+    """
+    Plotting module for quick visualization of simulation results. This class
+    is not intended to have customized and high-quality images for publication,
+     rather a quick outcome of simulations.
+
+    Example:
+        >>> import multiflap as mf
+        >>> plot = mf.Plot(color='red') # create the plot object
+        >>> plot.limit_cycle_2D(sol_array[:,0], sol_array[:,1])
+        
+    """
 
     def __init__(self, color='k', grid=True):
         self.color = color
         self.grid = grid
-    
+
     def limit_cycle_2D(self, x, y):
+        """Plot of 2D limit cycles in the phase space.
+
+        Parameters
+        ----------
+        x : 1D-array
+            Array of the first variable to be plotted
+        y : 1D-array
+            Array of the second variable to be plotted
+
+        Returns
+        -------
+        None : void function
+               It plots the phase space of the 2 variables
+
+
+        """
         fig = plt.figure()
         ax = fig.gca()
         ax.plot(x, y, color=self.color)
@@ -16,6 +44,20 @@ class Plot:
         return None
 
     def limit_cycle_3D(self, *args):
+        """Plot of 3D limit cycles in the phase space.
+
+        Parameters
+        ----------
+        args : [nxm] array
+               Array solution, output of multiflap
+
+        Returns
+        -------
+        None : void function
+               It plots the phase space of the first 3 variables of args
+
+
+        """
 
         if len(args) == 2:
             raise ValueError('Please use the method "limit_cycle_2D"')
@@ -33,8 +75,22 @@ class Plot:
         plt.show()
 
         return None
-    
+
     def plot_multipliers(self, eigenvalues):
+        """Plot the Floquet multipliers and the unitary circle
+
+        Parameters
+        ----------
+        eigenvalues : array
+                      eigenvalues array, output of ``multiflap``
+
+        Returns
+        -------
+        None : void function
+               It plots the Floquet multipliers with the unitary circle
+
+
+        """
         # Define the unitary circle
         circle = np.linspace(0,2*np.pi,101)
         fig = plt.figure()
@@ -47,7 +103,7 @@ class Plot:
         plt.grid(self.grid)
         plt.show()
         return None
-    
+
     def plot_time_series(self,
                          variables,
                          time,

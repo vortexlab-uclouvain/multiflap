@@ -12,9 +12,9 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
-
-
+sys.path.insert(0, os.path.abspath('../'))
+#TOP_DIR = os.path.abspath(os.path.join('..', '..'))
+#sys.path.insert(0, TOP_DIR)
 # -- Project information -----------------------------------------------------
 
 project = 'multiflap'
@@ -22,7 +22,7 @@ copyright = '2020, Gianmarco Ducci'
 author = 'Gianmarco Ducci'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = '1.1'
 
 
 # -- General configuration ---------------------------------------------------
@@ -30,8 +30,24 @@ release = '0.1'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [ 'sphinxcontrib.bibtex', 'sphinxcontrib.programoutput']
+#extensions = [ 'sphinx.ext.napoleon','sphinx.ext.coverage', 'sphinxcontrib.bibtex', 'sphinxcontrib.programoutput', 'sphinx.ext.todo', 'sphinx.ext.viewcode','sphinx.ext.autodoc']
+extensions = ["sphinx.ext.napoleon", "sphinx.ext.viewcode", 'sphinx.ext.autodoc', 'sphinxcontrib.contentui']
 
+autoapi_dirs = ["../multiflap"]
+autoapi_file_patterns = ["*.py"]
+autoapi_ignore = ["*logs*", "__pycache__"]
+autoapi_member_order = "bysource"
+autoapi_keep_files = False
+autoapi_add_toctree_entry = False
+autoapi_options = [
+    "members",
+    "inherited-members",
+    "special-members",
+    "show-inheritance",
+    "special-members",
+    "imported-members",
+    "show-inheritance-diagram",
+]
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -49,7 +65,7 @@ pygments_style = 'sphinx'
 
 html_theme = 'sphinx_rtd_theme'
 
-extensions = ['sphinxcontrib.contentui']
+#extensions = ['sphinxcontrib.contentui']
 #if html_theme != 'sphinx_rtd_theme':
  #   def setup(app):
   #      app.add_stylesheet('custom.css')
