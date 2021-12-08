@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>multiflap.aero_package.distances_functions &#8212; multiflap  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for multiflap.aero_package.distances_functions</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">file distances_functions.py</span>
+<span class="sd">@author Victor Colognesi</span>
+<span class="sd">@copyright Copyright © UCLouvain 2020</span>
+
+<span class="sd">multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.</span>
+
+<span class="sd">Copyright &lt;2020&gt; &lt;Université catholique de Louvain (UCLouvain), Belgique&gt;</span>
+
+<span class="sd">List of the contributors to the development of multiflap, Description and complete License: see LICENSE and NOTICE files.</span>
+
+<span class="sd">Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="sd">you may not use this file except in compliance with the License.</span>
+<span class="sd">You may obtain a copy of the License at</span>
+
+<span class="sd"> http://www.apache.org/licenses/LICENSE-2.0</span>
+
+<span class="sd">Unless required by applicable law or agreed to in writing, software</span>
+<span class="sd">distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="sd">WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="sd">See the License for the specific language governing permissions and</span>
+<span class="sd">limitations under the License.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="distance_point2line"><a class="viewcode-back" href="../../../multiflap.aero_package.html#multiflap.aero_package.distances_functions.distance_point2line">[docs]</a><span class="k">def</span> <span class="nf">distance_point2line</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="n">p0</span><span class="p">))</span>
+    <span class="n">closest</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">+</span> <span class="p">(</span><span class="n">s</span><span class="o">*</span><span class="n">v</span><span class="p">)</span>   <span class="c1"># This might be .dot()</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">p</span><span class="o">-</span><span class="n">closest</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="n">closest</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">closest</span><span class="p">,</span> <span class="n">d</span></div>
+
+
+
+<div class="viewcode-block" id="distance_line2line"><a class="viewcode-back" href="../../../multiflap.aero_package.html#multiflap.aero_package.distances_functions.distance_line2line">[docs]</a><span class="k">def</span> <span class="nf">distance_line2line</span><span class="p">(</span><span class="n">p01</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">p02</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
+
+    <span class="n">v1v2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v1</span><span class="o">*</span><span class="p">(</span><span class="n">v2</span><span class="p">))</span>
+    <span class="n">p01v1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p01</span><span class="o">*</span><span class="p">(</span><span class="n">v1</span><span class="p">))</span>
+    <span class="n">p02v1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p02</span><span class="o">*</span><span class="p">(</span><span class="n">v1</span><span class="p">))</span>
+    <span class="n">p01v2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p01</span><span class="o">*</span><span class="p">(</span><span class="n">v2</span><span class="p">))</span>
+    <span class="n">p02v2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p02</span><span class="o">*</span><span class="p">(</span><span class="n">v2</span><span class="p">))</span>
+
+    <span class="n">s1</span> <span class="o">=</span> <span class="p">(</span><span class="n">p02v1</span> <span class="o">-</span> <span class="n">p01v1</span> <span class="o">+</span> <span class="n">p01v2</span><span class="o">*</span><span class="n">v1v2</span> <span class="o">-</span> <span class="n">p02v2</span><span class="o">*</span><span class="n">v1v2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">v1v2</span><span class="o">*</span><span class="n">v1v2</span><span class="p">)</span>
+    <span class="n">s2</span> <span class="o">=</span> <span class="n">p01v2</span> <span class="o">+</span> <span class="n">s1</span><span class="o">*</span><span class="n">v1v2</span> <span class="o">-</span> <span class="n">p02v2</span>
+
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">p01</span> <span class="o">+</span> <span class="n">s1</span><span class="o">*</span><span class="n">v1</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="n">p02</span> <span class="o">+</span> <span class="n">s2</span><span class="o">*</span><span class="n">v2</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">p1</span><span class="o">-</span><span class="n">p2</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="n">p1</span><span class="o">-</span><span class="n">p2</span><span class="p">))))</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">multiflap</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../multiflap.html">multiflap package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
