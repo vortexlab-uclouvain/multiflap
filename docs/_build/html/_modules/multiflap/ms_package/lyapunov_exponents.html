@@ -7,13 +7,12 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>multiflap.ms_package.lyapunov_exponents &mdash; multiflap 1.1 documentation</title>
+  <title>multiflap.ms_package.lyapunov_exponents &mdash; multiflap  documentation</title>
   
 
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/my_width.css" type="text/css" />
 
   
   
@@ -31,7 +30,6 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -82,15 +80,10 @@
               
             
             
-              <ul>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">User guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../limit_cycle_stability/index.html">Limit cycle stability</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../multiple_shooting/index.html">Multiple-shooting algorithm</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../lyapunov_exponent/index.html">Lyapunov exponent computation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../plotting.html">Plotting functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../API/index.html">API documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../license.html">LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../multiflap.html">multiflap package</a></li>
 </ul>
 
             
@@ -184,7 +177,7 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">odeint</span>
-<div class="viewcode-block" id="LyapunovExponents"><a class="viewcode-back" href="../../../docs/multiflap.ms_package.html#multiflap.ms_package.lyapunov_exponents.LyapunovExponents">[docs]</a><span class="k">class</span> <span class="nc">LyapunovExponents</span><span class="p">:</span>
+<div class="viewcode-block" id="LyapunovExponents"><a class="viewcode-back" href="../../../multiflap.ms_package.html#multiflap.ms_package.lyapunov_exponents.LyapunovExponents">[docs]</a><span class="k">class</span> <span class="nc">LyapunovExponents</span><span class="p">:</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">t_f</span><span class="p">,</span> <span class="n">ms_object</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 
@@ -206,7 +199,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">x0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delta_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_f</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span>
         <span class="c1">#self.d = self.x0 * 1e-5</span>
-<div class="viewcode-block" id="LyapunovExponents.get_lyapunov_exponent"><a class="viewcode-back" href="../../../docs/multiflap.ms_package.html#multiflap.ms_package.lyapunov_exponents.LyapunovExponents.get_lyapunov_exponent">[docs]</a>    <span class="k">def</span> <span class="nf">get_lyapunov_exponent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LyapunovExponents.get_lyapunov_exponent"><a class="viewcode-back" href="../../../multiflap.ms_package.html#multiflap.ms_package.lyapunov_exponents.LyapunovExponents.get_lyapunov_exponent">[docs]</a>    <span class="k">def</span> <span class="nf">get_lyapunov_exponent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot; Calculating the largest Lyapunov exponent numerically</span>
 
@@ -259,7 +252,7 @@
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2020, Gianmarco Ducci
+        &copy; Copyright 2021, Author
 
     </p>
   </div>

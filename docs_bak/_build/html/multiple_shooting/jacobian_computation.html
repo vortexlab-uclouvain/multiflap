@@ -1,0 +1,259 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Jacobian computation &mdash; multiflap 1.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/my_width.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Multiple-shooting solver" href="ms_solver.html" />
+    <link rel="prev" title="Numerical scheme (unknown period)" href="numerical_scheme_period.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> multiflap
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../limit_cycle_stability/index.html">Limit cycle stability</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Multiple-shooting algorithm</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="numerical_scheme.html">Numerical scheme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numerical_scheme_period.html">Numerical scheme (unknown period)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Jacobian computation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#analytical-computation">Analytical computation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#numerical-computation">Numerical computation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ms_solver.html">Multiple-shooting solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="floquet_multipliers.html">Floquet multipliers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../lyapunov_exponent/index.html">Lyapunov exponent computation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multiflap.utils.html">Plotting functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">multiflap</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Multiple-shooting algorithm</a> &raquo;</li>
+        
+      <li>Jacobian computation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/multiple_shooting/jacobian_computation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="jacobian-computation">
+<h1>Jacobian computation<a class="headerlink" href="#jacobian-computation" title="Permalink to this headline">¶</a></h1>
+<p>Two methods are implemented to calculate the Jacobian matrix and build the diagonal blocks of the multiple-shooting matrix <span class="math notranslate nohighlight">\(\textbf{M}\)</span>.</p>
+<div class="section" id="analytical-computation">
+<h2>Analytical computation<a class="headerlink" href="#analytical-computation" title="Permalink to this headline">¶</a></h2>
+<p>The analytical computation solves the Equation:</p>
+<div class="math notranslate nohighlight" id="equation-jac-an">
+<span class="eqno">(1)<a class="headerlink" href="#equation-jac-an" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{pmatrix} \dot{\mathbf{x}}\\ \dot{\mathbb{J}} \end{pmatrix} = \begin{pmatrix} \mathbf{v}(\mathbf{x}, t)\\ \mathbb{A}(\mathbf{x}, t) \ \mathbb{J} \end{pmatrix}\end{split}\]</div>
+<p>with the initial conditions:</p>
+<div class="math notranslate nohighlight" id="equation-jac-an-initial-conditions">
+<span class="eqno">(2)<a class="headerlink" href="#equation-jac-an-initial-conditions" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{pmatrix} {\mathbf{x}(t_0)}\\ {\mathbb{J}^{0}} \end{pmatrix} = \begin{pmatrix} \mathbf{x}_0 \\ \mathbb{I} \end{pmatrix}\end{split}\]</div>
+<p>This means solving a <span class="math notranslate nohighlight">\((n+n^{2})\)</span> system of differential equations.</p>
+<p>First of all the ODE system <a class="reference internal" href="#equation-jac-an">(1)</a> is reshaped in a <span class="math notranslate nohighlight">\((n+n^{2})\)</span> equations. This is done by the method <code class="docutils literal notranslate"><span class="pre">jacobian_ode</span></code>.</p>
+<p>The function <code class="docutils literal notranslate"><span class="pre">get_jacobian_analytical</span></code> is then implemented in order to solve the reshaped ODE system <a class="reference internal" href="#equation-jac-an">(1)</a></p>
+</div>
+<div class="section" id="numerical-computation">
+<h2>Numerical computation<a class="headerlink" href="#numerical-computation" title="Permalink to this headline">¶</a></h2>
+<p>Alternatively, Jacobian matrix can be computed via numerical differentiation of the perturbed
+trajectory along each state variable, i.e.:</p>
+<div class="math notranslate nohighlight" id="equation-jac-numerical">
+<span class="eqno">(3)<a class="headerlink" href="#equation-jac-numerical" title="Permalink to this equation">¶</a></span>\[\mathbb{J}_{i,j} (\mathbf{x}_0) \Big \rvert_{t}^{t+T} = \frac{f_{i}(\mathbf{x_0} + \varepsilon\mathbf{\hat{e}}_{j}) \Big \rvert_{t}^{t+T} -f_{i}(\mathbf{x_0}) \Big \rvert_{t}^{t+T} }{\varepsilon}\]</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>By computing the Jacobian numerically, there is no need to hard code the <strong>stability matrix</strong>.
+This feature is particularly useful anytime that the encoding of the stability matrix is hard to provide.</p>
+</div>
+<p>The function that returns the numerical Jacobian is <code class="docutils literal notranslate"><span class="pre">get_jacobian_numerical</span></code>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ms_solver.html" class="btn btn-neutral float-right" title="Multiple-shooting solver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="numerical_scheme_period.html" class="btn btn-neutral float-left" title="Numerical scheme (unknown period)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Gianmarco Ducci
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

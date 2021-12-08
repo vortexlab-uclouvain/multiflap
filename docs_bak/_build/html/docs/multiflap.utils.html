@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>multiflap.utils package &mdash; multiflap 1.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/my_width.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> multiflap
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../limit_cycle_stability/index.html">Limit cycle stability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multiple_shooting/index.html">Multiple-shooting algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lyapunov_exponent/index.html">Lyapunov exponent computation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multiflap.utils.html">Plotting functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">multiflap</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>multiflap.utils package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/docs/multiflap.utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="multiflap-utils-package">
+<h1>multiflap.utils package<a class="headerlink" href="#multiflap-utils-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-multiflap.utils.mf_plots">
+<span id="multiflap-utils-mf-plots-module"></span><h2>multiflap.utils.mf_plots module<a class="headerlink" href="#module-multiflap.utils.mf_plots" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="multiflap.utils.mf_plots.Plot">
+<em class="property">class </em><code class="sig-prename descclassname">multiflap.utils.mf_plots.</code><code class="sig-name descname">Plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">'k'</span></em>, <em class="sig-param"><span class="n">grid</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/multiflap/utils/mf_plots.html#Plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.utils.mf_plots.Plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Plotting module for quick visualization of simulation results. This class
+is not intended to have customized and high-quality images for publication,</p>
+<blockquote>
+<div><p>rather a quick outcome of simulations.</p>
+</div></blockquote>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">multiflap</span> <span class="k">as</span> <span class="nn">mf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span> <span class="c1"># create the plot object</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot</span><span class="o">.</span><span class="n">limit_cycle_2D</span><span class="p">(</span><span class="n">sol_array</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">sol_array</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="multiflap.utils.mf_plots.Plot.limit_cycle_2D">
+<code class="sig-name descname">limit_cycle_2D</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/multiflap/utils/mf_plots.html#Plot.limit_cycle_2D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.utils.mf_plots.Plot.limit_cycle_2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot of 2D limit cycles in the phase space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>1D-array</em>) – Array of the first variable to be plotted</p></li>
+<li><p><strong>y</strong> (<em>1D-array</em>) – Array of the second variable to be plotted</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>None</strong> – It plots the phase space of the 2 variables</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>void function</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.utils.mf_plots.Plot.limit_cycle_3D">
+<code class="sig-name descname">limit_cycle_3D</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/multiflap/utils/mf_plots.html#Plot.limit_cycle_3D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.utils.mf_plots.Plot.limit_cycle_3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot of 3D limit cycles in the phase space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> (<em>[</em><em>nxm</em><em>] </em><em>array</em>) – Array solution, output of multiflap</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>None</strong> – It plots the phase space of the first 3 variables of args</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>void function</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.utils.mf_plots.Plot.plot_multipliers">
+<code class="sig-name descname">plot_multipliers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">eigenvalues</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/multiflap/utils/mf_plots.html#Plot.plot_multipliers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.utils.mf_plots.Plot.plot_multipliers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the Floquet multipliers and the unitary circle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>eigenvalues</strong> (<em>array</em>) – eigenvalues array, output of <code class="docutils literal notranslate"><span class="pre">multiflap</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>None</strong> – It plots the Floquet multipliers with the unitary circle</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>void function</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.utils.mf_plots.Plot.plot_time_series">
+<code class="sig-name descname">plot_time_series</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">variables</span></em>, <em class="sig-param"><span class="n">time</span></em>, <em class="sig-param"><span class="n">ylabel</span><span class="o">=</span><span class="default_value">'variable'</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/multiflap/utils/mf_plots.html#Plot.plot_time_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.utils.mf_plots.Plot.plot_time_series" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-multiflap.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-multiflap.utils" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Gianmarco Ducci
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

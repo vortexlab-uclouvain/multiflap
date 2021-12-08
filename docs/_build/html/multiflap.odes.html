@@ -1,0 +1,688 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>multiflap.odes package &mdash; multiflap  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="multiflap.utils package" href="multiflap.utils.html" />
+    <link rel="prev" title="multiflap.ms_package package" href="multiflap.ms_package.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> multiflap
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started/index.html">User guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="multiflap.html">multiflap package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="multiflap.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="multiflap.ms_package.html">multiflap.ms_package package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">multiflap.odes package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multiflap-odes-bird-dynamics-module">multiflap.odes.bird_dynamics module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.odes.forced_vdp">multiflap.odes.forced_vdp module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.odes.goodwin_model">multiflap.odes.goodwin_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.odes.isothermal_reaction">multiflap.odes.isothermal_reaction module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multiflap-odes-jaschinski-module">multiflap.odes.jaschinski module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.odes.lorentz">multiflap.odes.lorentz module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.odes.lotka">multiflap.odes.lotka module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.odes.redox_oscillation">multiflap.odes.redox_oscillation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.odes.rossler">multiflap.odes.rossler module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.odes.template">multiflap.odes.template module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.odes.torus">multiflap.odes.torus module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.odes">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="multiflap.utils.html">multiflap.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#multiflap-goodwin-main-module">multiflap.goodwin_main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#multiflap-lorentz-main-module">multiflap.lorentz_main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#multiflap-lotka-main-module">multiflap.lotka_main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#multiflap-main-module">multiflap.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#multiflap-main-isothermal-module">multiflap.main_isothermal module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#multiflap-main-torus-module">multiflap.main_torus module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#multiflap-redox-main-module">multiflap.redox_main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#multiflap-rossler-main-module">multiflap.rossler_main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#module-multiflap">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">multiflap</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="multiflap.html">multiflap package</a> &raquo;</li>
+        
+      <li>multiflap.odes package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/multiflap.odes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="multiflap-odes-package">
+<h1>multiflap.odes package<a class="headerlink" href="#multiflap-odes-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="multiflap-odes-bird-dynamics-module">
+<h2>multiflap.odes.bird_dynamics module<a class="headerlink" href="#multiflap-odes-bird-dynamics-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-multiflap.odes.forced_vdp">
+<span id="multiflap-odes-forced-vdp-module"></span><h2>multiflap.odes.forced_vdp module<a class="headerlink" href="#module-multiflap.odes.forced_vdp" title="Permalink to this headline">¶</a></h2>
+<p>file forced_vdp.py
+&#64;author Gianmarco Ducci
+&#64;copyright Copyright © UCLouvain 2020</p>
+<p>multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.</p>
+<p>Copyright &lt;2020&gt; &lt;Université catholique de Louvain (UCLouvain), Belgique&gt;</p>
+<p>List of the contributors to the development of multiflap, Description and complete License: see LICENSE and NOTICE files.</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<dl class="py class">
+<dt id="multiflap.odes.forced_vdp.ForcedVanDerPol">
+<em class="property">class </em><code class="sig-prename descclassname">multiflap.odes.forced_vdp.</code><code class="sig-name descname">ForcedVanDerPol</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lam</span><span class="o">=</span><span class="default_value">1.8</span></em>, <em class="sig-param"><span class="n">gamma</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">delta</span><span class="o">=</span><span class="default_value">4</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/forced_vdp.html#ForcedVanDerPol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.forced_vdp.ForcedVanDerPol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="multiflap.odes.forced_vdp.ForcedVanDerPol.dynamics">
+<code class="sig-name descname">dynamics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/forced_vdp.html#ForcedVanDerPol.dynamics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.forced_vdp.ForcedVanDerPol.dynamics" title="Permalink to this definition">¶</a></dt>
+<dd><p>ODE system
+This function will be passed to the numerical integrator</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial values
+t: time</p>
+</dd>
+<dt>Outputs:</dt><dd><p>x_dot: velocity vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-multiflap.odes.goodwin_model">
+<span id="multiflap-odes-goodwin-model-module"></span><h2>multiflap.odes.goodwin_model module<a class="headerlink" href="#module-multiflap.odes.goodwin_model" title="Permalink to this headline">¶</a></h2>
+<p>file goodwin_model.py
+&#64;author Gianmarco Ducci, Marta del Olmo
+&#64;copyright Copyright © UCLouvain 2020</p>
+<p>multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.</p>
+<p>Copyright &lt;2020&gt; &lt;Université catholique de Louvain (UCLouvain), Belgique&gt;</p>
+<p>List of the contributors to the development of multiflap, Description and complete License: see LICENSE and NOTICE files.</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<dl class="py class">
+<dt id="multiflap.odes.goodwin_model.GoodwinModel">
+<em class="property">class </em><code class="sig-prename descclassname">multiflap.odes.goodwin_model.</code><code class="sig-name descname">GoodwinModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k1</span><span class="o">=</span><span class="default_value">0.7</span></em>, <em class="sig-param"><span class="n">k2</span><span class="o">=</span><span class="default_value">0.45</span></em>, <em class="sig-param"><span class="n">k3</span><span class="o">=</span><span class="default_value">0.7</span></em>, <em class="sig-param"><span class="n">k4</span><span class="o">=</span><span class="default_value">0.35</span></em>, <em class="sig-param"><span class="n">k5</span><span class="o">=</span><span class="default_value">0.7</span></em>, <em class="sig-param"><span class="n">k6</span><span class="o">=</span><span class="default_value">0.35</span></em>, <em class="sig-param"><span class="n">K1</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">K2</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">K4</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">K6</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">7</span></em>, <em class="sig-param"><span class="n">perturbation</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/goodwin_model.html#GoodwinModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.goodwin_model.GoodwinModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="multiflap.odes.goodwin_model.GoodwinModel.dynamics">
+<code class="sig-name descname">dynamics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/goodwin_model.html#GoodwinModel.dynamics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.goodwin_model.GoodwinModel.dynamics" title="Permalink to this definition">¶</a></dt>
+<dd><p>ODE system
+This function will be passed to the numerical integrator</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial values
+t: time</p>
+</dd>
+<dt>Outputs:</dt><dd><p>x_dot: velocity vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.odes.goodwin_model.GoodwinModel.gaussian_perturbation">
+<code class="sig-name descname">gaussian_perturbation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/goodwin_model.html#GoodwinModel.gaussian_perturbation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.goodwin_model.GoodwinModel.gaussian_perturbation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.odes.goodwin_model.GoodwinModel.get_stability_matrix">
+<code class="sig-name descname">get_stability_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/goodwin_model.html#GoodwinModel.get_stability_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.goodwin_model.GoodwinModel.get_stability_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stability matrix of the ODE system</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial condition</p>
+</dd>
+<dt>Outputs:</dt><dd><p>A: Stability matrix evaluated at x0. (dxd) dimension
+A[i, j] = dv[i]/dx[j]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.odes.goodwin_model.GoodwinModel.square">
+<code class="sig-name descname">square</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">amp</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">t_0</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/goodwin_model.html#GoodwinModel.square"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.goodwin_model.GoodwinModel.square" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-multiflap.odes.isothermal_reaction">
+<span id="multiflap-odes-isothermal-reaction-module"></span><h2>multiflap.odes.isothermal_reaction module<a class="headerlink" href="#module-multiflap.odes.isothermal_reaction" title="Permalink to this headline">¶</a></h2>
+<p>file isothermal_reaction.py
+&#64;author Gianmarco Ducci
+&#64;copyright Copyright © UCLouvain 2020</p>
+<p>multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.</p>
+<p>Copyright &lt;2020&gt; &lt;Université catholique de Louvain (UCLouvain), Belgique&gt;</p>
+<p>List of the contributors to the development of multiflap, Description and complete License: see LICENSE and NOTICE files.</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<dl class="py class">
+<dt id="multiflap.odes.isothermal_reaction.IsothermalReaction">
+<em class="property">class </em><code class="sig-prename descclassname">multiflap.odes.isothermal_reaction.</code><code class="sig-name descname">IsothermalReaction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lam</span><span class="o">=</span><span class="default_value">1.8</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/isothermal_reaction.html#IsothermalReaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.isothermal_reaction.IsothermalReaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="multiflap.odes.isothermal_reaction.IsothermalReaction.dynamics">
+<code class="sig-name descname">dynamics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/isothermal_reaction.html#IsothermalReaction.dynamics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.isothermal_reaction.IsothermalReaction.dynamics" title="Permalink to this definition">¶</a></dt>
+<dd><p>ODE system
+This function will be passed to the numerical integrator</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial values
+t: time</p>
+</dd>
+<dt>Outputs:</dt><dd><p>x_dot: velocity vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.odes.isothermal_reaction.IsothermalReaction.get_stability_matrix">
+<code class="sig-name descname">get_stability_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/isothermal_reaction.html#IsothermalReaction.get_stability_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.isothermal_reaction.IsothermalReaction.get_stability_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stability matrix of the ODE system</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial condition</p>
+</dd>
+<dt>Outputs:</dt><dd><p>A: Stability matrix evaluated at x0. (dxd) dimension
+A[i, j] = dv[i]/dx[j]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="multiflap-odes-jaschinski-module">
+<h2>multiflap.odes.jaschinski module<a class="headerlink" href="#multiflap-odes-jaschinski-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-multiflap.odes.lorentz">
+<span id="multiflap-odes-lorentz-module"></span><h2>multiflap.odes.lorentz module<a class="headerlink" href="#module-multiflap.odes.lorentz" title="Permalink to this headline">¶</a></h2>
+<p>file lorentz.py
+&#64;author Gianmarco Ducci
+&#64;copyright Copyright © UCLouvain 2020</p>
+<p>multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.</p>
+<p>Copyright &lt;2020&gt; &lt;Université catholique de Louvain (UCLouvain), Belgique&gt;</p>
+<p>List of the contributors to the development of multiflap, Description and complete License: see LICENSE and NOTICE files.</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<dl class="py class">
+<dt id="multiflap.odes.lorentz.Lorentz">
+<em class="property">class </em><code class="sig-prename descclassname">multiflap.odes.lorentz.</code><code class="sig-name descname">Lorentz</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sigma</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">r</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/lorentz.html#Lorentz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.lorentz.Lorentz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="multiflap.odes.lorentz.Lorentz.dynamics">
+<code class="sig-name descname">dynamics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/lorentz.html#Lorentz.dynamics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.lorentz.Lorentz.dynamics" title="Permalink to this definition">¶</a></dt>
+<dd><p>ODE system
+This function will be passed to the numerical integrator</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial values
+t: time</p>
+</dd>
+<dt>Outputs:</dt><dd><p>x_dot: velocity vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.odes.lorentz.Lorentz.get_stability_matrix">
+<code class="sig-name descname">get_stability_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/lorentz.html#Lorentz.get_stability_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.lorentz.Lorentz.get_stability_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stability matrix of the ODE system</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial condition</p>
+</dd>
+<dt>Outputs:</dt><dd><p>A: Stability matrix evaluated at x0. (dxd) dimension
+A[i, j] = dv[i]/dx[j]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-multiflap.odes.lotka">
+<span id="multiflap-odes-lotka-module"></span><h2>multiflap.odes.lotka module<a class="headerlink" href="#module-multiflap.odes.lotka" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="multiflap.odes.lotka.lotka">
+<em class="property">class </em><code class="sig-prename descclassname">multiflap.odes.lotka.</code><code class="sig-name descname">lotka</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">c</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">d</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">e</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">p</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/lotka.html#lotka"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.lotka.lotka" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="multiflap.odes.lotka.lotka.dynamics">
+<code class="sig-name descname">dynamics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/lotka.html#lotka.dynamics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.lotka.lotka.dynamics" title="Permalink to this definition">¶</a></dt>
+<dd><p>ODE system
+This function will be passed to the numerical integrator</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial values
+t: time</p>
+</dd>
+<dt>Outputs:</dt><dd><p>x_dot: velocity vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-multiflap.odes.redox_oscillation">
+<span id="multiflap-odes-redox-oscillation-module"></span><h2>multiflap.odes.redox_oscillation module<a class="headerlink" href="#module-multiflap.odes.redox_oscillation" title="Permalink to this headline">¶</a></h2>
+<p>file redox_oscillation.py
+&#64;author Gianmarco Ducci
+&#64;copyright Copyright © UCLouvain 2020</p>
+<p>multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.</p>
+<p>Copyright &lt;2020&gt; &lt;Université catholique de Louvain (UCLouvain), Belgique&gt;</p>
+<p>List of the contributors to the development of multiflap, Description and complete License: see LICENSE and NOTICE files.</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<dl class="py class">
+<dt id="multiflap.odes.redox_oscillation.RedoxModel">
+<em class="property">class </em><code class="sig-prename descclassname">multiflap.odes.redox_oscillation.</code><code class="sig-name descname">RedoxModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">c</span><span class="o">=</span><span class="default_value">10000</span></em>, <em class="sig-param"><span class="n">d</span><span class="o">=</span><span class="default_value">0.2</span></em>, <em class="sig-param"><span class="n">e</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">p</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/redox_oscillation.html#RedoxModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.redox_oscillation.RedoxModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="multiflap.odes.redox_oscillation.RedoxModel.dynamics">
+<code class="sig-name descname">dynamics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/redox_oscillation.html#RedoxModel.dynamics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.redox_oscillation.RedoxModel.dynamics" title="Permalink to this definition">¶</a></dt>
+<dd><p>ODE system
+This function will be passed to the numerical integrator</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial values
+t: time</p>
+</dd>
+<dt>Outputs:</dt><dd><p>x_dot: velocity vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.odes.redox_oscillation.RedoxModel.get_stability_matrix">
+<code class="sig-name descname">get_stability_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/redox_oscillation.html#RedoxModel.get_stability_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.redox_oscillation.RedoxModel.get_stability_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stability matrix of the ODE system</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial condition</p>
+</dd>
+<dt>Outputs:</dt><dd><p>A: Stability matrix evaluated at x0. (dxd) dimension
+A[i, j] = dv[i]/dx[j]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-multiflap.odes.rossler">
+<span id="multiflap-odes-rossler-module"></span><h2>multiflap.odes.rossler module<a class="headerlink" href="#module-multiflap.odes.rossler" title="Permalink to this headline">¶</a></h2>
+<p>file rossler.py
+&#64;author Gianmarco Ducci
+&#64;copyright Copyright © UCLouvain 2020</p>
+<p>multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.</p>
+<p>Copyright &lt;2020&gt; &lt;Université catholique de Louvain (UCLouvain), Belgique&gt;</p>
+<p>List of the contributors to the development of multiflap, Description and complete License: see LICENSE and NOTICE files.</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<dl class="py class">
+<dt id="multiflap.odes.rossler.Rossler">
+<em class="property">class </em><code class="sig-prename descclassname">multiflap.odes.rossler.</code><code class="sig-name descname">Rossler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">c</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">d</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">e</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">p</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/rossler.html#Rossler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.rossler.Rossler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="multiflap.odes.rossler.Rossler.dynamics">
+<code class="sig-name descname">dynamics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/rossler.html#Rossler.dynamics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.rossler.Rossler.dynamics" title="Permalink to this definition">¶</a></dt>
+<dd><p>ODE system
+This function will be passed to the numerical integrator</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial values
+t: time</p>
+</dd>
+<dt>Outputs:</dt><dd><p>x_dot: velocity vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.odes.rossler.Rossler.get_stability_matrix">
+<code class="sig-name descname">get_stability_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/rossler.html#Rossler.get_stability_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.rossler.Rossler.get_stability_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stability matrix of the ODE system</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial condition</p>
+</dd>
+<dt>Outputs:</dt><dd><p>A: Stability matrix evaluated at x0. (dxd) dimension
+A[i, j] = dv[i]/dx[j]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-multiflap.odes.template">
+<span id="multiflap-odes-template-module"></span><h2>multiflap.odes.template module<a class="headerlink" href="#module-multiflap.odes.template" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="multiflap.odes.template.MyModel">
+<em class="property">class </em><code class="sig-prename descclassname">multiflap.odes.template.</code><code class="sig-name descname">MyModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">c</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">d</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">e</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">p</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/template.html#MyModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.template.MyModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="multiflap.odes.template.MyModel.dynamics">
+<code class="sig-name descname">dynamics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/template.html#MyModel.dynamics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.template.MyModel.dynamics" title="Permalink to this definition">¶</a></dt>
+<dd><p>ODE system
+This function will be passed to the numerical integrator</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial values [u, w, q, theta]
+t: time</p>
+</dd>
+<dt>Outputs:</dt><dd><p>x_dot: velocity vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.odes.template.MyModel.get_stability_matrix">
+<code class="sig-name descname">get_stability_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/template.html#MyModel.get_stability_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.template.MyModel.get_stability_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stability matrix of the ODE system for the longitudinal plane</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial condition [u_0, w_0, q_0, theta_0]</p>
+</dd>
+<dt>Outputs:</dt><dd><p>A: Stability matrix evaluated at x0. (dxd) dimension
+A[i, j] = dv[i]/dx[j]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-multiflap.odes.torus">
+<span id="multiflap-odes-torus-module"></span><h2>multiflap.odes.torus module<a class="headerlink" href="#module-multiflap.odes.torus" title="Permalink to this headline">¶</a></h2>
+<p>file torus.py
+&#64;author Gianmarco Ducci
+&#64;copyright Copyright © UCLouvain 2020</p>
+<p>multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.</p>
+<p>Copyright &lt;2020&gt; &lt;Université catholique de Louvain (UCLouvain), Belgique&gt;</p>
+<p>List of the contributors to the development of multiflap, Description and complete License: see LICENSE and NOTICE files.</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<dl class="py class">
+<dt id="multiflap.odes.torus.Torus">
+<em class="property">class </em><code class="sig-prename descclassname">multiflap.odes.torus.</code><code class="sig-name descname">Torus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lam</span><span class="o">=</span><span class="default_value">1.8</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/torus.html#Torus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.torus.Torus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="multiflap.odes.torus.Torus.dynamics">
+<code class="sig-name descname">dynamics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/torus.html#Torus.dynamics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.torus.Torus.dynamics" title="Permalink to this definition">¶</a></dt>
+<dd><p>ODE system
+This function will be passed to the numerical integrator</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial values
+t: time</p>
+</dd>
+<dt>Outputs:</dt><dd><p>x_dot: velocity vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.odes.torus.Torus.get_stability_matrix">
+<code class="sig-name descname">get_stability_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/odes/torus.html#Torus.get_stability_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.odes.torus.Torus.get_stability_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stability matrix of the ODE system</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial condition</p>
+</dd>
+<dt>Outputs:</dt><dd><p>A: Stability matrix evaluated at x0. (dxd) dimension
+A[i, j] = dv[i]/dx[j]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-multiflap.odes">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-multiflap.odes" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="multiflap.utils.html" class="btn btn-neutral float-right" title="multiflap.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="multiflap.ms_package.html" class="btn btn-neutral float-left" title="multiflap.ms_package package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Author
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

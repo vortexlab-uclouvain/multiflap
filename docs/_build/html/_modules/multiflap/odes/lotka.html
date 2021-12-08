@@ -7,13 +7,12 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>multiflap.odes.lotka &mdash; multiflap 1.1 documentation</title>
+  <title>multiflap.odes.lotka &mdash; multiflap  documentation</title>
   
 
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/my_width.css" type="text/css" />
 
   
   
@@ -31,7 +30,6 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -82,15 +80,10 @@
               
             
             
-              <ul>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">User guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../limit_cycle_stability/index.html">Limit cycle stability</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../multiple_shooting/index.html">Multiple-shooting algorithm</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../lyapunov_exponent/index.html">Lyapunov exponent computation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../plotting.html">Plotting functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../API/index.html">API documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../license.html">LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../multiflap.html">multiflap package</a></li>
 </ul>
 
             
@@ -157,7 +150,7 @@
   <h1>Source code for multiflap.odes.lotka</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">odeint</span>
-<div class="viewcode-block" id="lotka"><a class="viewcode-back" href="../../../docs/multiflap.odes.html#multiflap.odes.lotka.lotka">[docs]</a><span class="k">class</span> <span class="nc">lotka</span><span class="p">:</span>
+<div class="viewcode-block" id="lotka"><a class="viewcode-back" href="../../../multiflap.odes.html#multiflap.odes.lotka.lotka">[docs]</a><span class="k">class</span> <span class="nc">lotka</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">e</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span>
@@ -168,7 +161,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="n">q</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">p</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">=</span> <span class="mi">2</span>
-<div class="viewcode-block" id="lotka.dynamics"><a class="viewcode-back" href="../../../docs/multiflap.odes.html#multiflap.odes.lotka.lotka.dynamics">[docs]</a>    <span class="k">def</span> <span class="nf">dynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<div class="viewcode-block" id="lotka.dynamics"><a class="viewcode-back" href="../../../multiflap.odes.html#multiflap.odes.lotka.lotka.dynamics">[docs]</a>    <span class="k">def</span> <span class="nf">dynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;ODE system</span>
 <span class="sd">        This function will be passed to the numerical integrator</span>
@@ -199,7 +192,7 @@
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2020, Gianmarco Ducci
+        &copy; Copyright 2021, Author
 
     </p>
   </div>

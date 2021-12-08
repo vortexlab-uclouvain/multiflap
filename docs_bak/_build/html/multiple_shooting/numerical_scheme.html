@@ -1,0 +1,275 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Numerical scheme &mdash; multiflap 1.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/my_width.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Numerical scheme (unknown period)" href="numerical_scheme_period.html" />
+    <link rel="prev" title="Multiple-shooting algorithm" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> multiflap
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../limit_cycle_stability/index.html">Limit cycle stability</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Multiple-shooting algorithm</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Numerical scheme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numerical_scheme_period.html">Numerical scheme (unknown period)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jacobian_computation.html">Jacobian computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ms_solver.html">Multiple-shooting solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="floquet_multipliers.html">Floquet multipliers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../lyapunov_exponent/index.html">Lyapunov exponent computation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multiflap.utils.html">Plotting functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">multiflap</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Multiple-shooting algorithm</a> &raquo;</li>
+        
+      <li>Numerical scheme</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/multiple_shooting/numerical_scheme.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="numerical-scheme">
+<h1>Numerical scheme<a class="headerlink" href="#numerical-scheme" title="Permalink to this headline">¶</a></h1>
+<p>A multiple shooting algorithm is employed in order to identify the periodic orbits corresponding to trimmed flight, and to simultaneously compute their stability through their Floquet multipliers.</p>
+<p>We use a multiple-shooting scheme first proposed by~cite{lust2001}, which was a modification of~cite{keller1968}. This algorithm is adapted to our case with the advantage that the limit cycle period is known, since it must be equal to the flapping one.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/ms_scheme.png"><img alt="multiple-shooting scheme." src="../_images/ms_scheme.png" style="width: 65%;" /></a>
+</div>
+<p>The multiple-shooting method splits the limit cycle into several points computing relatives sub-trajectories.\
+Integrating the ODEs system, the point <span class="math notranslate nohighlight">\(\mathbf{x}^*_{i+1}\)</span> is mapped to the point  <span class="math notranslate nohighlight">\(\mathbf{x}^*_{i}\)</span> by</p>
+<div class="math notranslate nohighlight" id="equation-multishooting2">
+<span class="eqno">(1)<a class="headerlink" href="#equation-multishooting2" title="Permalink to this equation">¶</a></span>\[\mathbf{x}^*_{i+1} = f(\mathbf{x}^*_i)  \big \rvert_{t_{i}}^{t_{i}+\tau} = f(\mathbf{x}_i + \Delta\mathbf{x}_i) \big \rvert_{t_{i}}^{t_{i}+\tau}\]</div>
+<p>By expanding at the first order the right-hand-side of Equation <a class="reference internal" href="#equation-multishooting2">(1)</a>, the point <span class="math notranslate nohighlight">\(\mathbf{x}^*_{i+1}\)</span> can be expressed as function of the guessed points only</p>
+<div class="math notranslate nohighlight" id="equation-multishooting3">
+<span class="eqno">(2)<a class="headerlink" href="#equation-multishooting3" title="Permalink to this equation">¶</a></span>\[\mathbf{x}_{i+1} + \Delta\mathbf{x}_{i+1}  =f(\mathbf{x}_i) \big \rvert_{t_{i}}^{t_{i}+\tau} + \mathbb{J} (\mathbf{x}_i) \Big \rvert_{t_{i}}^{t_{i}+\tau}\cdot\Delta\mathbf{x}_i\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbb{J} \big \rvert_{t_{i}}^{t_{i}+\tau}(\mathbf{x}_i)\)</span> is the Jacobian matrix previously defined.</p>
+<p>Re-arranging Equation <a class="reference internal" href="#equation-multishooting3">(2)</a> we get</p>
+<div class="math notranslate nohighlight" id="equation-multishooting4">
+<span class="eqno">(3)<a class="headerlink" href="#equation-multishooting4" title="Permalink to this equation">¶</a></span>\[      \mathbb{J}(\mathbf{x}_i) \Big \rvert_{t_{i}}^{t_{i}+\tau}\cdot\Delta\mathbf{x}_i -\Delta\mathbf{x}_{i+1} = \underbrace{-\big(f(\mathbf{x}_i)\big \rvert_{t_{i}}^{t_{i}+\tau} - \mathbf{x}_{i+1}\big)}_{Error}\]</div>
+<p>and thus the <strong>multiple-shooting</strong> scheme becomes:</p>
+<div class="math notranslate nohighlight" id="equation-shootingscheme">
+<span class="eqno">(4)<a class="headerlink" href="#equation-shootingscheme" title="Permalink to this equation">¶</a></span>\[\begin{split}\underbrace{
+\begin{pmatrix}
+\mathbb{J} (\mathbf{x}_0) \Big \rvert_{0}^{\tau}  &amp; - \mathbb{I}&amp; 0&amp; \dots&amp; 0 \\
+\\
+0 &amp; \mathbb{J} (\mathbf{x}_1)\Big \rvert_{t_{1}}^{t_{1}+\tau}&amp; - \mathbb{I}  &amp; \dots &amp; 0\\
+\vdots &amp; \vdots &amp; \ddots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp;\dots &amp; \mathbb{J}(\mathbf{x}_{m-1})\Big \rvert_{t_{m-1}}^{T}  &amp; - \mathbb{I}\\
+- \mathbb{I} &amp; 0 &amp;\dots &amp; 0 &amp;  \mathbb{I}\\
+\end{pmatrix}}_{\mathbf{M}\ [n \times M, n \times M]}
+\underbrace{
+\begin{pmatrix}
+\Delta \mathbf{x}_{0}\\
+\Delta \mathbf{x}_{1}\\
+\vdots\\
+\vdots\\
+\vdots\\
+\Delta \mathbf{x}_{m-1}\\
+\Delta \mathbf{x}_{m}
+\end{pmatrix}}_{\Delta\mathbf{x}\ [n \times M]}=
+\underbrace{-\begin{pmatrix}
+f(\mathbf{x}_0) \big \rvert_{0}^{\tau}- \mathbf{x}_1 \\
+f(\mathbf{x}_1) \big \rvert_{t_{1}}^{t_{1}+\tau}- \mathbf{x}_2 \\
+\vdots\\
+(\mathbf{x}_{m-1}) \big \rvert_{t_{m-1}}^{T} - \mathbf{x}_m\\
+\mathbf{x}_{m}- \mathbf{x}_0\\
+\end{pmatrix}}_{\mathbf{E}\ [n \times M]}\end{split}\]</div>
+<div class="math notranslate nohighlight" id="equation-multishootingcompact">
+<span class="eqno">(5)<a class="headerlink" href="#equation-multishootingcompact" title="Permalink to this equation">¶</a></span>\[\mathbf{M}(\mathbf{x}_i) \mathbf{\Delta \mathbf{x}} = \mathbf{E}(\mathbf{x}_i)\]</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="numerical_scheme_period.html" class="btn btn-neutral float-right" title="Numerical scheme (unknown period)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Multiple-shooting algorithm" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Gianmarco Ducci
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

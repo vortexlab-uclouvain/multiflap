@@ -1,0 +1,858 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>multiflap.ms_package package &mdash; multiflap  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="multiflap.odes package" href="multiflap.odes.html" />
+    <link rel="prev" title="multiflap package" href="multiflap.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> multiflap
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started/index.html">User guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="multiflap.html">multiflap package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="multiflap.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">multiflap.ms_package package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multiflap-ms-package-bird-dynamics-module">multiflap.ms_package.bird_dynamics module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.ms_package.integrator_2">multiflap.ms_package.integrator_2 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.ms_package.lma_solver">multiflap.ms_package.lma_solver module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.ms_package.lma_solver_period">multiflap.ms_package.lma_solver_period module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.ms_package.lyapunov_exponents">multiflap.ms_package.lyapunov_exponents module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.ms_package.multiple_shooting">multiflap.ms_package.multiple_shooting module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.ms_package.multiple_shooting_period">multiflap.ms_package.multiple_shooting_period module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.ms_package.rk_integrator">multiflap.ms_package.rk_integrator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-multiflap.ms_package">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="multiflap.odes.html">multiflap.odes package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multiflap.utils.html">multiflap.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#multiflap-goodwin-main-module">multiflap.goodwin_main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#multiflap-lorentz-main-module">multiflap.lorentz_main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#multiflap-lotka-main-module">multiflap.lotka_main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#multiflap-main-module">multiflap.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#multiflap-main-isothermal-module">multiflap.main_isothermal module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#multiflap-main-torus-module">multiflap.main_torus module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#multiflap-redox-main-module">multiflap.redox_main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#multiflap-rossler-main-module">multiflap.rossler_main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiflap.html#module-multiflap">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">multiflap</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="multiflap.html">multiflap package</a> &raquo;</li>
+        
+      <li>multiflap.ms_package package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/multiflap.ms_package.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="multiflap-ms-package-package">
+<h1>multiflap.ms_package package<a class="headerlink" href="#multiflap-ms-package-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="multiflap-ms-package-bird-dynamics-module">
+<h2>multiflap.ms_package.bird_dynamics module<a class="headerlink" href="#multiflap-ms-package-bird-dynamics-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-multiflap.ms_package.integrator_2">
+<span id="multiflap-ms-package-integrator-2-module"></span><h2>multiflap.ms_package.integrator_2 module<a class="headerlink" href="#module-multiflap.ms_package.integrator_2" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="multiflap.ms_package.integrator_2.Integrator">
+<em class="property">class </em><code class="sig-prename descclassname">multiflap.ms_package.integrator_2.</code><code class="sig-name descname">Integrator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ode_system</span></em>, <em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">time_array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/integrator_2.html#Integrator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.integrator_2.Integrator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="multiflap.ms_package.integrator_2.Integrator.rk2">
+<code class="sig-name descname">rk2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/integrator_2.html#Integrator.rk2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.integrator_2.Integrator.rk2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runge-Kutta 2 Integrator.
+Inputs:
+VelocityFunction: Function name to integrate</p>
+<blockquote>
+<div><p>this function must have two inputs namely state space
+vector and time. For example: velocity(ssp, t)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>InitialCondition: Initial condition, 1xd NumPy array, where d is the</dt><dd><p>dimension of the state space</p>
+</dd>
+<dt>TimeArray: 1 x Nt NumPy array which contains instances for the solution</dt><dd><p>to be returned.</p>
+</dd>
+</dl>
+<p>Outputs:
+solution: Nt x d NumPy array which contains numerical solution of the</p>
+<blockquote>
+<div><p>ODE.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.ms_package.integrator_2.Integrator.rk3">
+<code class="sig-name descname">rk3</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/integrator_2.html#Integrator.rk3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.integrator_2.Integrator.rk3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runge-Kutta 3 Integrator.
+Inputs:
+VelocityFunction: Function name to integrate</p>
+<blockquote>
+<div><p>this function must have two inputs namely state space
+vector and time. For example: velocity(ssp, t)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>InitialCondition: Initial condition, 1xd NumPy array, where d is the</dt><dd><p>dimension of the state space</p>
+</dd>
+<dt>TimeArray: 1 x Nt NumPy array which contains instances for the solution</dt><dd><p>to be returned.</p>
+</dd>
+</dl>
+<p>Outputs:
+solution: Nt x d NumPy array which contains numerical solution of the</p>
+<blockquote>
+<div><p>ODE.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.ms_package.integrator_2.Integrator.rk4">
+<code class="sig-name descname">rk4</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/integrator_2.html#Integrator.rk4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.integrator_2.Integrator.rk4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runge-Kutta 4 Integrator.
+Inputs:
+VelocityFunction: Function name to integrate</p>
+<blockquote>
+<div><p>this function must have two inputs namely state space
+vector and time. For example: velocity(ssp, t)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>InitialCondition: Initial condition, 1xd NumPy array, where d is the</dt><dd><p>dimension of the state space</p>
+</dd>
+<dt>TimeArray: 1 x Nt NumPy array which contains instances for the solution</dt><dd><p>to be returned.</p>
+</dd>
+</dl>
+<p>Outputs:
+solution: Nt x d NumPy array which contains numerical solution of the</p>
+<blockquote>
+<div><p>ODE.</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-multiflap.ms_package.lma_solver">
+<span id="multiflap-ms-package-lma-solver-module"></span><h2>multiflap.ms_package.lma_solver module<a class="headerlink" href="#module-multiflap.ms_package.lma_solver" title="Permalink to this headline">¶</a></h2>
+<p>file lma_solver.py
+&#64;author Gianmarco Ducci
+&#64;copyright Copyright © UCLouvain 2020</p>
+<p>multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.</p>
+<p>Copyright &lt;2020&gt; &lt;Université catholique de Louvain (UCLouvain), Belgique&gt;</p>
+<p>List of the contributors to the development of multiflap, Description and complete License: see LICENSE and NOTICE files.</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<dl class="py class">
+<dt id="multiflap.ms_package.lma_solver.Solver">
+<em class="property">class </em><code class="sig-prename descclassname">multiflap.ms_package.lma_solver.</code><code class="sig-name descname">Solver</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tolerance</span><span class="o">=</span><span class="default_value">1e-05</span></em>, <em class="sig-param"><span class="n">max_iterations</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">ms_obj</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/lma_solver.html#Solver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.lma_solver.Solver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="multiflap.ms_package.lma_solver.Solver.lma">
+<code class="sig-name descname">lma</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/lma_solver.html#Solver.lma"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.lma_solver.Solver.lma" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-multiflap.ms_package.lma_solver_period">
+<span id="multiflap-ms-package-lma-solver-period-module"></span><h2>multiflap.ms_package.lma_solver_period module<a class="headerlink" href="#module-multiflap.ms_package.lma_solver_period" title="Permalink to this headline">¶</a></h2>
+<p>file lma_solver_period.py
+&#64;author Gianmarco Ducci
+&#64;copyright Copyright © UCLouvain 2020</p>
+<p>multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.</p>
+<p>Copyright &lt;2020&gt; &lt;Université catholique de Louvain (UCLouvain), Belgique&gt;</p>
+<p>List of the contributors to the development of multiflap, Description and complete License: see LICENSE and NOTICE files.</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<dl class="py class">
+<dt id="multiflap.ms_package.lma_solver_period.SolverPeriod">
+<em class="property">class </em><code class="sig-prename descclassname">multiflap.ms_package.lma_solver_period.</code><code class="sig-name descname">SolverPeriod</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tolerance</span><span class="o">=</span><span class="default_value">1e-05</span></em>, <em class="sig-param"><span class="n">max_iterations</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">ms_obj</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/lma_solver_period.html#SolverPeriod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.lma_solver_period.SolverPeriod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="multiflap.ms_package.lma_solver_period.SolverPeriod.lma">
+<code class="sig-name descname">lma</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/lma_solver_period.html#SolverPeriod.lma"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.lma_solver_period.SolverPeriod.lma" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-multiflap.ms_package.lyapunov_exponents">
+<span id="multiflap-ms-package-lyapunov-exponents-module"></span><h2>multiflap.ms_package.lyapunov_exponents module<a class="headerlink" href="#module-multiflap.ms_package.lyapunov_exponents" title="Permalink to this headline">¶</a></h2>
+<p>file multiple_shooting_period.py
+&#64;author Gianmarco Ducci
+&#64;copyright Copyright © UCLouvain 2020</p>
+<p>multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.</p>
+<p>Copyright &lt;2020&gt; &lt;Université catholique de Louvain (UCLouvain), Belgique&gt;</p>
+<p>List of the contributors to the development of multiflap, Description and complete License: see LICENSE and NOTICE files.</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<dl class="py class">
+<dt id="multiflap.ms_package.lyapunov_exponents.LyapunovExponents">
+<em class="property">class </em><code class="sig-prename descclassname">multiflap.ms_package.lyapunov_exponents.</code><code class="sig-name descname">LyapunovExponents</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">t_f</span></em>, <em class="sig-param"><span class="n">ms_object</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/lyapunov_exponents.html#LyapunovExponents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.lyapunov_exponents.LyapunovExponents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="multiflap.ms_package.lyapunov_exponents.LyapunovExponents.get_lyapunov_exponent">
+<code class="sig-name descname">get_lyapunov_exponent</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/lyapunov_exponents.html#LyapunovExponents.get_lyapunov_exponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.lyapunov_exponents.LyapunovExponents.get_lyapunov_exponent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculating the largest Lyapunov exponent numerically</p>
+<p>Implementation of the leading Lyapunov exponent obtained rescaling
+the flow separation with the initial perturbation in order to keep.</p>
+<p>Output:</p>
+<blockquote>
+<div><p>lambda_t: Leading Lyapunov exponent</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-multiflap.ms_package.multiple_shooting">
+<span id="multiflap-ms-package-multiple-shooting-module"></span><h2>multiflap.ms_package.multiple_shooting module<a class="headerlink" href="#module-multiflap.ms_package.multiple_shooting" title="Permalink to this headline">¶</a></h2>
+<p>file multiple_shooting.py
+&#64;author Gianmarco Ducci
+&#64;copyright Copyright © UCLouvain 2020</p>
+<p>multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.</p>
+<p>Copyright &lt;2020&gt; &lt;Université catholique de Louvain (UCLouvain), Belgique&gt;</p>
+<p>List of the contributors to the development of multiflap, Description and complete License: see LICENSE and NOTICE files.</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<dl class="py class">
+<dt id="multiflap.ms_package.multiple_shooting.MultipleShooting">
+<em class="property">class </em><code class="sig-prename descclassname">multiflap.ms_package.multiple_shooting.</code><code class="sig-name descname">MultipleShooting</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">M</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">0.25</span></em>, <em class="sig-param"><span class="n">t_steps</span><span class="o">=</span><span class="default_value">70</span></em>, <em class="sig-param"><span class="n">model</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">option_jacobian</span><span class="o">=</span><span class="default_value">'analytical'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/multiple_shooting.html#MultipleShooting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.multiple_shooting.MultipleShooting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="multiflap.ms_package.multiple_shooting.MultipleShooting.get_error_vector">
+<code class="sig-name descname">get_error_vector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/multiple_shooting.html#MultipleShooting.get_error_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.multiple_shooting.MultipleShooting.get_error_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the right-hand side of the multiple-shooting scheme
+Error vector -(f(x_i) - x_{i+1})
+dim: n x M</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: array of points of multiple-shooting scheme</p>
+</dd>
+<dt>Output:</dt><dd><p>error: error vector, rhs of the multiple shooting scheme</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.ms_package.multiple_shooting.MultipleShooting.get_initial_guess">
+<code class="sig-name descname">get_initial_guess</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/multiple_shooting.html#MultipleShooting.get_initial_guess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.multiple_shooting.MultipleShooting.get_initial_guess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starting from x0, it spreads the other M-1 points in the phase space
+just by time integration. The mismatch at the first iteration therefore
+will be just between the point 0 and the point M.</p>
+<dl class="simple">
+<dt>Input:</dt><dd><p>point_number: number of points for the multiple-shooting algorithm
+dimension: dimension of the ODE system
+x0: initial value at time t</p>
+</dd>
+<dt>Output:</dt><dd><p>guessed_pts: guessed points spread in the phase space</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.ms_package.multiple_shooting.MultipleShooting.get_jacobian_analytical">
+<code class="sig-name descname">get_jacobian_analytical</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">initial_time</span></em>, <em class="sig-param"><span class="n">integration_time</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/multiple_shooting.html#MultipleShooting.get_jacobian_analytical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.multiple_shooting.MultipleShooting.get_jacobian_analytical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Jacobian (or Monodromy Matrix) of the flow, starting from x0
+and integrated for a time “integration_time”.</p>
+<p>It solves numerically the (d + d^2) ODE system.</p>
+<p>Reference: Equation (7.18) Seydel’s book “Practical Bifurcation and
+Stability Analysis”.</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0 : Initial point of the phase space. len(x0) = dimension
+initial_time: initial time needed as the system is non-autonomous
+integration_time: integration time</p>
+</dd>
+<dt>Outputs:</dt><dd><p>J: Jacobian (Monodromy Matrix) of flow from t -&gt; t+integration_time</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.ms_package.multiple_shooting.MultipleShooting.get_jacobian_numerical">
+<code class="sig-name descname">get_jacobian_numerical</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">initial_time</span></em>, <em class="sig-param"><span class="n">integration_time</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/multiple_shooting.html#MultipleShooting.get_jacobian_numerical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.multiple_shooting.MultipleShooting.get_jacobian_numerical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finite difference evaluation of Jacobian
+Flow is perturbed in all directions of the phase space, and the generic
+component of the Jacobian is calculated by finite difference as follow:</p>
+<p>dF[i]/dx[j] = (F^t(x_perturbed)[i] - F^t(x)[i])/perturbation</p>
+<p>Jacobian = dF[i]/dx[j] (dim x dim) matrix</p>
+<p>epsilon = value of the perturbation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.ms_package.multiple_shooting.MultipleShooting.get_mappedpoint">
+<code class="sig-name descname">get_mappedpoint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t0</span></em>, <em class="sig-param"><span class="n">deltat</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/multiple_shooting.html#MultipleShooting.get_mappedpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.multiple_shooting.MultipleShooting.get_mappedpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the last element of the time integration. It outputs where a
+point x0(t) is mapped after a time deltat.</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial value
+t0: initial time (required as the system is non-autonomous)
+deltat: integration_time</p>
+</dd>
+<dt>Outputs:</dt><dd><p>mapped_point: last element of the time integration
+solution: complete trajectory traced out from x0(t0) for t = deltat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.ms_package.multiple_shooting.MultipleShooting.get_ms_scheme">
+<code class="sig-name descname">get_ms_scheme</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/multiple_shooting.html#MultipleShooting.get_ms_scheme"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.multiple_shooting.MultipleShooting.get_ms_scheme" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the multiple-shooting scheme to set up the equation:
+MS * DX = E</p>
+<dl>
+<dt>Inputs:</dt><dd><p>x0: array of m-points of the multiple-shooting scheme</p>
+</dd>
+<dt>Outputs (M = points number, N = dimension):</dt><dd><p>MS = Multiple-Shooting matrix dim(NxM, NxM)
+error = error vector dim(NxM),
+trajectory_tuple = trajectory related to the initial value and</p>
+<blockquote>
+<div><p>time</p>
+</div></blockquote>
+</dd>
+</dl>
+<p>Multiple-Shooting Matrix (MS):</p>
+<blockquote>
+<div><p>dim(MS) = ((NxM) x (NxM))</p>
+<blockquote>
+<div><p>[  J(x_0, tau)  -I                                  ]
+[              J(x_1, tau)   -I                     ]</p>
+</div></blockquote>
+<dl class="simple">
+<dt>MS   =   [                .                                  ]</dt><dd><p>[                 .                                 ]
+[                  .                                ]
+[                        J(x_{M-1}, tau)       I    ]
+[ -I ………………………………….  I    ]</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Unknown Vector:                 Error vector:</p>
+<p>dim(DX) = (NxM)                 dim(E) = (NxM)</p>
+<blockquote>
+<div><p>[DX_0]                          [ f(x_0, tau) - x_1 ]</p>
+</div></blockquote>
+<dl class="simple">
+<dt>DX   =  [DX_1]                  E  =  - [ f(x_1, tau) - x_2 ]</dt><dd><p>[… ]                          [       …         ]
+[DX_M]                          [       x_M - x_0   ]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.ms_package.multiple_shooting.MultipleShooting.jacobian_ode">
+<code class="sig-name descname">jacobian_ode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0_jacobian</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/multiple_shooting.html#MultipleShooting.jacobian_ode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.multiple_shooting.MultipleShooting.jacobian_ode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the additional ODE system (d + d^2) to evaluate analytically the
+Jacobian matrix.
+This function is used to unpack the Jacobian elements to solve</p>
+<p>dot{J} = AJ</p>
+<p>It reshapes Equation (7.18) of Seydel’s book “Practical Bifurcation and
+Stability Analysis”
+in order get the components of the Jacobian via numerical integration
+Inputs:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>x0_jacobian: (d+d^2) initial values</dt><dd><p>state space itself and the tangent space</p>
+</dd>
+</dl>
+<p>t: time.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Outputs:</dt><dd><p>jac_elements_ODE = (d+d^2) dimensional velocity vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-multiflap.ms_package.multiple_shooting_period">
+<span id="multiflap-ms-package-multiple-shooting-period-module"></span><h2>multiflap.ms_package.multiple_shooting_period module<a class="headerlink" href="#module-multiflap.ms_package.multiple_shooting_period" title="Permalink to this headline">¶</a></h2>
+<p>file multiple_shooting_period.py
+&#64;author Gianmarco Ducci
+&#64;copyright Copyright © UCLouvain 2020</p>
+<p>multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.</p>
+<p>Copyright &lt;2020&gt; &lt;Université catholique de Louvain (UCLouvain), Belgique&gt;</p>
+<p>List of the contributors to the development of multiflap, Description and complete License: see LICENSE and NOTICE files.</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<dl class="py class">
+<dt id="multiflap.ms_package.multiple_shooting_period.MultipleShootingPeriod">
+<em class="property">class </em><code class="sig-prename descclassname">multiflap.ms_package.multiple_shooting_period.</code><code class="sig-name descname">MultipleShootingPeriod</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">M</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">period_guess</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">t_steps</span><span class="o">=</span><span class="default_value">40</span></em>, <em class="sig-param"><span class="n">model</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">option_jacobian</span><span class="o">=</span><span class="default_value">'analytical'</span></em>, <em class="sig-param"><span class="n">integrator</span><span class="o">=</span><span class="default_value">'rk'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/multiple_shooting_period.html#MultipleShootingPeriod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.multiple_shooting_period.MultipleShootingPeriod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="multiflap.ms_package.multiple_shooting_period.MultipleShootingPeriod.get_error_vector">
+<code class="sig-name descname">get_error_vector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">tau</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/multiple_shooting_period.html#MultipleShootingPeriod.get_error_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.multiple_shooting_period.MultipleShootingPeriod.get_error_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the right-hand side of the multiple-shooting scheme
+Error vector -(f(x_i) - x_{i+1})
+dim: n x M</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: array of points of multiple-shooting scheme</p>
+</dd>
+<dt>Output:</dt><dd><p>error: error vector, rhs of the multiple shooting scheme</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.ms_package.multiple_shooting_period.MultipleShootingPeriod.get_initial_guess">
+<code class="sig-name descname">get_initial_guess</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/multiple_shooting_period.html#MultipleShootingPeriod.get_initial_guess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.multiple_shooting_period.MultipleShootingPeriod.get_initial_guess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starting from x0, it spreads the other M-1 points in the phase space
+just by time integration. The mismatch at the first iteration therefore
+will be just between the point 0 and the point M.</p>
+<dl class="simple">
+<dt>Input:</dt><dd><p>point_number: number of points for the multiple-shooting algorithm
+dimension: dimension of the ODE system
+x0: initial value at time t</p>
+</dd>
+<dt>Output:</dt><dd><p>guessed_pts: guessed points spread in the phase space</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.ms_package.multiple_shooting_period.MultipleShootingPeriod.get_jacobian_analytical">
+<code class="sig-name descname">get_jacobian_analytical</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">initial_time</span></em>, <em class="sig-param"><span class="n">integration_time</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/multiple_shooting_period.html#MultipleShootingPeriod.get_jacobian_analytical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.multiple_shooting_period.MultipleShootingPeriod.get_jacobian_analytical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Jacobian (or Monodromy Matrix) of the flow, starting from x0
+and integrated for a time “integration_time”.</p>
+<p>It solves numerically the (d + d^2) ODE system.</p>
+<p>Reference: Equation (7.18) Seydel’s book “Practical Bifurcation and
+Stability Analysis”.</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0 : Initial point of the phase space. len(x0) = dimension
+initial_time: initial time needed as the system is non-autonomous
+integration_time: integration time</p>
+</dd>
+<dt>Outputs:</dt><dd><p>J: Jacobian (Monodromy Matrix) of flow from t -&gt; t+integration_time</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.ms_package.multiple_shooting_period.MultipleShootingPeriod.get_jacobian_numerical">
+<code class="sig-name descname">get_jacobian_numerical</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">initial_time</span></em>, <em class="sig-param"><span class="n">integration_time</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/multiple_shooting_period.html#MultipleShootingPeriod.get_jacobian_numerical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.multiple_shooting_period.MultipleShootingPeriod.get_jacobian_numerical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finite difference evaluation of Jacobian
+Flow is perturbed in all directions of the phase space, and the generic
+component of the Jacobian is calculated by finite difference as follow:</p>
+<p>dF[i]/dx[j] = (F^t(x_perturbed)[i] - F^t(x)[i])/perturbation</p>
+<p>Jacobian = dF[i]/dx[j] (dim x dim) matrix</p>
+<p>epsilon = value of the perturbation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.ms_package.multiple_shooting_period.MultipleShootingPeriod.get_mappedpoint">
+<code class="sig-name descname">get_mappedpoint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">t0</span></em>, <em class="sig-param"><span class="n">deltat</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/multiple_shooting_period.html#MultipleShootingPeriod.get_mappedpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.multiple_shooting_period.MultipleShootingPeriod.get_mappedpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the last element of the time integration. It outputs where a
+point x0(t) is mapped after a time deltat.</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>x0: initial value
+t0: initial time (required as the system is non-autonomous)
+deltat: integration_time</p>
+</dd>
+<dt>Outputs:</dt><dd><p>mapped_point: last element of the time integration
+solution: complete trajectory traced out from x0(t0) for t = deltat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.ms_package.multiple_shooting_period.MultipleShootingPeriod.get_ms_scheme">
+<code class="sig-name descname">get_ms_scheme</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">tau</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/multiple_shooting_period.html#MultipleShootingPeriod.get_ms_scheme"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.multiple_shooting_period.MultipleShootingPeriod.get_ms_scheme" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the multiple-shooting scheme to set up the equation:
+MS * DX = E</p>
+<dl>
+<dt>Inputs:</dt><dd><p>x0: array of m-points of the multiple-shooting scheme</p>
+</dd>
+<dt>Outputs (M = points number, N = dimension):</dt><dd><p>MS = Multiple-Shooting matrix dim(NxM, NxM)
+error = error vector dim(NxM),
+trajectory_tuple = trajectory related to the initial value and</p>
+<blockquote>
+<div><p>time</p>
+</div></blockquote>
+</dd>
+</dl>
+<p>Multiple-Shooting Matrix (MS):</p>
+<blockquote>
+<div><p>dim(MS) = ((NxM) x (NxM))</p>
+<blockquote>
+<div><p>[  J(x_0, tau)  -I                                  ]
+[              J(x_1, tau)   -I                     ]</p>
+</div></blockquote>
+<dl class="simple">
+<dt>MS   =   [                .                                  ]</dt><dd><p>[                 .                                 ]
+[                  .                                ]
+[                        J(x_{M-1}, tau)       I    ]
+[ -I ………………………………….  I    ]</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Unknown Vector:                 Error vector:</p>
+<p>dim(DX) = (NxM)                 dim(E) = (NxM)</p>
+<blockquote>
+<div><p>[DX_0]                          [ f(x_0, tau) - x_1 ]</p>
+</div></blockquote>
+<dl class="simple">
+<dt>DX   =  [DX_1]                  E  =  - [ f(x_1, tau) - x_2 ]</dt><dd><p>[… ]                          [       …         ]
+[DX_M]                          [       x_M - x_0   ]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="multiflap.ms_package.multiple_shooting_period.MultipleShootingPeriod.jacobian_ode">
+<code class="sig-name descname">jacobian_ode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x0_jacobian</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/multiple_shooting_period.html#MultipleShootingPeriod.jacobian_ode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.multiple_shooting_period.MultipleShootingPeriod.jacobian_ode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the additional ODE system (d + d^2) to evaluate analytically the
+Jacobian matrix.
+This function is used to unpack the Jacobian elements to solve</p>
+<p>dot{J} = AJ</p>
+<p>It reshapes Equation (7.18) of Seydel’s book “Practical Bifurcation and
+Stability Analysis”
+in order get the components of the Jacobian via numerical integration
+Inputs:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>x0_jacobian: (d+d^2) initial values</dt><dd><p>state space itself and the tangent space</p>
+</dd>
+</dl>
+<p>t: time.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Outputs:</dt><dd><p>jac_elements_ODE = (d+d^2) dimensional velocity vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-multiflap.ms_package.rk_integrator">
+<span id="multiflap-ms-package-rk-integrator-module"></span><h2>multiflap.ms_package.rk_integrator module<a class="headerlink" href="#module-multiflap.ms_package.rk_integrator" title="Permalink to this headline">¶</a></h2>
+<p>file rk_integrator.py
+&#64;author Gianmarco Ducci
+&#64;copyright Copyright © UCLouvain 2020</p>
+<p>multiflap is a Python tool for finding periodic orbits and assess their stability via the Floquet multipliers.</p>
+<p>Copyright &lt;2020&gt; &lt;Université catholique de Louvain (UCLouvain), Belgique&gt;</p>
+<p>List of the contributors to the development of multiflap, Description and complete License: see LICENSE and NOTICE files.</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<dl class="py function">
+<dt id="multiflap.ms_package.rk_integrator.rk2">
+<code class="sig-prename descclassname">multiflap.ms_package.rk_integrator.</code><code class="sig-name descname">rk2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ode_system</span></em>, <em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">time_array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/rk_integrator.html#rk2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.rk_integrator.rk2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runge-Kutta 2 Integrator.
+Inputs:
+VelocityFunction: Function name to integrate</p>
+<blockquote>
+<div><p>this function must have two inputs namely state space
+vector and time. For example: velocity(ssp, t)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>InitialCondition: Initial condition, 1xd NumPy array, where d is the</dt><dd><p>dimension of the state space</p>
+</dd>
+<dt>TimeArray: 1 x Nt NumPy array which contains instances for the solution</dt><dd><p>to be returned.</p>
+</dd>
+</dl>
+<p>Outputs:
+solution: Nt x d NumPy array which contains numerical solution of the</p>
+<blockquote>
+<div><p>ODE.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt id="multiflap.ms_package.rk_integrator.rk3">
+<code class="sig-prename descclassname">multiflap.ms_package.rk_integrator.</code><code class="sig-name descname">rk3</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ode_system</span></em>, <em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">time_array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/rk_integrator.html#rk3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.rk_integrator.rk3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runge-Kutta 3 Integrator.
+Inputs:
+VelocityFunction: Function name to integrate</p>
+<blockquote>
+<div><p>this function must have two inputs namely state space
+vector and time. For example: velocity(ssp, t)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>InitialCondition: Initial condition, 1xd NumPy array, where d is the</dt><dd><p>dimension of the state space</p>
+</dd>
+<dt>TimeArray: 1 x Nt NumPy array which contains instances for the solution</dt><dd><p>to be returned.</p>
+</dd>
+</dl>
+<p>Outputs:
+solution: Nt x d NumPy array which contains numerical solution of the</p>
+<blockquote>
+<div><p>ODE.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt id="multiflap.ms_package.rk_integrator.rk4">
+<code class="sig-prename descclassname">multiflap.ms_package.rk_integrator.</code><code class="sig-name descname">rk4</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ode_system</span></em>, <em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="n">time_array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multiflap/ms_package/rk_integrator.html#rk4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#multiflap.ms_package.rk_integrator.rk4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runge-Kutta 4 Integrator.
+Inputs:
+VelocityFunction: Function name to integrate</p>
+<blockquote>
+<div><p>this function must have two inputs namely state space
+vector and time. For example: velocity(ssp, t)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>InitialCondition: Initial condition, 1xd NumPy array, where d is the</dt><dd><p>dimension of the state space</p>
+</dd>
+<dt>TimeArray: 1 x Nt NumPy array which contains instances for the solution</dt><dd><p>to be returned.</p>
+</dd>
+</dl>
+<p>Outputs:
+solution: Nt x d NumPy array which contains numerical solution of the</p>
+<blockquote>
+<div><p>ODE.</p>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-multiflap.ms_package">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-multiflap.ms_package" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="multiflap.odes.html" class="btn btn-neutral float-right" title="multiflap.odes package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="multiflap.html" class="btn btn-neutral float-left" title="multiflap package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Author
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
