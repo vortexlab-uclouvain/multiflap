@@ -3,4 +3,4 @@
 sphinx==4.2.0
 sphinx_rtd_theme==1.0.0
 readthedocs-sphinx-search==0.1.1
-i-e git://github.com/ulrobix/sphinxcontrib-contentui.git#egg=sphinxcontrib-contentui
+-e git://github.com/ulrobix/sphinxcontrib-contentui.git#egg=sphinxcontrib-contentui
