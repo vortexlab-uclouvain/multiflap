@@ -16,11 +16,16 @@ jac = mysol[4]
 
 eigenvalues, eigenvectors = np.linalg.eig(jac)
 
-
 sol_array = mysol[3].space
 sol_time = mysol[3].time
 period = sol_time[-1]
 
+# Save simulation data
+sim_name = 'study_case'
+mf.SaveData(sim_name).make_folder()
+mf.SaveData(sim_name).save_data('state_space_solution', sol_array)
+
+# Fast plot simulation results
 plot = mf.Plot()
 plot.limit_cycle_2D(sol_array[:,0], sol_array[:,1])
 plot.limit_cycle_3D(sol_array[:,0], sol_array[:,1], sol_array[:,3])

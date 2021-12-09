@@ -14,7 +14,7 @@ The documentation is organized as follows:
    limit_cycle_stability/index.rst
    multiple_shooting/index.rst
    lyapunov_exponent/index.rst
-   plotting
+   plotting/index.rst
+   save_files/index.rst
    tutorial/index.rst
-   multiflap.utils.rst
    license

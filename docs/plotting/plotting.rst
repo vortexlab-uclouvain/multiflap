@@ -1,10 +1,18 @@
 Plotting functions
 =============================
 
-.. automodule:: multiflap.utils.mf_plot
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 For a rapid visualisation of the simulation results, few plotting functionalities comes with the package.
 
+The plotting functions are not intender for accurate high-quality paper figures, rather for having a quick visualisation of the results.
+
+The following functions are available:
+
+* ``plot.limit_cycle_2D``
+
+* ``plot.limit_cycle_3D``
+
+* ``plot.plot_multipliers``
+
+* ``plot.plot_time_series``
+
+Example of quick plotting command in :ref:`Redox oscillation` (Show full main).

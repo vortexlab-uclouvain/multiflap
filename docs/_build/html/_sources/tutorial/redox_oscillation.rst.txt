@@ -142,12 +142,18 @@ Passe the object to the multiple-shooting class, and solve it
                 sol_time = mysol[3].time
                 period = sol_time[-1]
 
-                plt.plot( sol_time, sol_array[:,0], label = "D1")
-                plt.plot( sol_time, sol_array[:,1], label = "D2")
-                plt.plot( sol_time, sol_array[:,2], label = "R")
-                plt.plot( sol_time, sol_array[:,3], label = "A")
-                plt.legend()
-                plt.show()
+                # Save simulation data
+                sim_name = 'study_case'
+                mf.SaveData(sim_name).make_folder()
+                mf.SaveData(sim_name).save_data('state_space_solution', sol_array)
+
+                # Fast plot simulation results
+                plot = mf.Plot()
+                plot.limit_cycle_2D(sol_array[:,0], sol_array[:,1])
+                plot.limit_cycle_3D(sol_array[:,0], sol_array[:,1], sol_array[:,3])
+                plot.plot_multipliers(eigenvalues)
+                label = ['D1', 'D2', 'R', 'A']
+                plot.plot_time_series(sol_array, sol_time, label=label)
 
 The solution is shown below:
 

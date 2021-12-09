@@ -2,7 +2,7 @@ import numpy as np
 import os
 class SaveData:
 
-    def __init__(self, simulation_name, folder_results = '../results/trial_todelete'):
+    def __init__(self, simulation_name, folder_results = '../results'):
         self.simulation_name = simulation_name
         self.folder_results = folder_results
         self.folder_simulation =folder_results+'/'+simulation_name
