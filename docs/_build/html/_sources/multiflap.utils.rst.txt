@@ -1,22 +1,10 @@
-multiflap.utils package
-=======================
+Plotting functions
+=============================
 
-Submodules
-----------
-
-multiflap.utils.mf\_plots module
---------------------------------
-
-.. automodule:: multiflap.utils.mf_plots
+.. automodule:: multiflap.utils.mf_plot
    :members:
    :undoc-members:
    :show-inheritance:
 
+For a rapid visualisation of the simulation results, few plotting functionalities comes with the package.
 
-Module contents
----------------
-
-.. automodule:: multiflap.utils
-   :members:
-   :undoc-members:
-   :show-inheritance:

@@ -1,1 +1,7 @@
-/* This file intentionally left blank. */
+.MathJax_Display {
+    transform: translate(0%,-50%) translate(0%,8px);
+}
+
+div.math {
+    transform: translate(0%,50%);
+}

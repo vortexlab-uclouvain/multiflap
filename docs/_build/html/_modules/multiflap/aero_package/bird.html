@@ -1,34 +1,157 @@
 
+
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>multiflap.aero_package.bird &mdash; multiflap 1.1 documentation</title>
+  
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>multiflap.aero_package.bird &#8212; multiflap  documentation</title>
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/language_data.js"></script>
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/my_width.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
           
 
-          <div class="body" role="main">
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> multiflap
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../limit_cycle_stability/index.html">Limit cycle stability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../multiple_shooting/index.html">Multiple-shooting algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../lyapunov_exponent/index.html">Lyapunov exponent computation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../multiflap.utils.html">Plotting functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">LICENSE</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">multiflap</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>multiflap.aero_package.bird</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <h1>Source code for multiflap.aero_package.bird</h1><div class="highlight"><pre>
 <span></span><span class="sd">&#39;&#39;&#39;</span>
@@ -60,7 +183,7 @@
 <span class="n">frequency</span>  <span class="o">=</span> <span class="mi">4</span>
 <span class="n">omega</span> <span class="o">=</span> <span class="n">frequency</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
 
-<div class="viewcode-block" id="Joint"><a class="viewcode-back" href="../../../multiflap.aero_package.html#multiflap.aero_package.bird.Joint">[docs]</a><span class="k">class</span> <span class="nc">Joint</span><span class="p">:</span>
+<div class="viewcode-block" id="Joint"><a class="viewcode-back" href="../../../docs/multiflap.aero_package.html#multiflap.aero_package.bird.Joint">[docs]</a><span class="k">class</span> <span class="nc">Joint</span><span class="p">:</span>
     <span class="n">omega</span> <span class="o">=</span> <span class="n">frequency</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -68,12 +191,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span> <span class="o">=</span> <span class="n">amplitude</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phase</span> <span class="o">=</span> <span class="n">phase</span>
 
-<div class="viewcode-block" id="Joint.motion_joint"><a class="viewcode-back" href="../../../multiflap.aero_package.html#multiflap.aero_package.bird.Joint.motion_joint">[docs]</a>    <span class="k">def</span> <span class="nf">motion_joint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<div class="viewcode-block" id="Joint.motion_joint"><a class="viewcode-back" href="../../../docs/multiflap.aero_package.html#multiflap.aero_package.bird.Joint.motion_joint">[docs]</a>    <span class="k">def</span> <span class="nf">motion_joint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 
         <span class="n">motion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">motion</span></div></div>
 
-<div class="viewcode-block" id="Shoulder"><a class="viewcode-back" href="../../../multiflap.aero_package.html#multiflap.aero_package.bird.Shoulder">[docs]</a><span class="k">class</span> <span class="nc">Shoulder</span><span class="p">():</span>
+<div class="viewcode-block" id="Shoulder"><a class="viewcode-back" href="../../../docs/multiflap.aero_package.html#multiflap.aero_package.bird.Shoulder">[docs]</a><span class="k">class</span> <span class="nc">Shoulder</span><span class="p">():</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis_x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis_z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axis_x</span>  <span class="o">=</span> <span class="n">Joint</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axis_y</span>  <span class="o">=</span> <span class="n">Joint</span><span class="p">()</span>
@@ -85,7 +208,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis_z</span><span class="p">,</span> <span class="n">Joint</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">axis_z</span> <span class="o">=</span> <span class="n">axis_z</span></div>
 
-<div class="viewcode-block" id="Elbow"><a class="viewcode-back" href="../../../multiflap.aero_package.html#multiflap.aero_package.bird.Elbow">[docs]</a><span class="k">class</span> <span class="nc">Elbow</span><span class="p">():</span>
+<div class="viewcode-block" id="Elbow"><a class="viewcode-back" href="../../../docs/multiflap.aero_package.html#multiflap.aero_package.bird.Elbow">[docs]</a><span class="k">class</span> <span class="nc">Elbow</span><span class="p">():</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis_x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis_y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axis_x</span>  <span class="o">=</span> <span class="n">Joint</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axis_y</span>  <span class="o">=</span> <span class="n">Joint</span><span class="p">()</span>
@@ -94,7 +217,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis_y</span><span class="p">,</span> <span class="n">Joint</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">axis_y</span> <span class="o">=</span> <span class="n">axis_y</span></div>
 
-<div class="viewcode-block" id="Wrist"><a class="viewcode-back" href="../../../multiflap.aero_package.html#multiflap.aero_package.bird.Wrist">[docs]</a><span class="k">class</span> <span class="nc">Wrist</span><span class="p">():</span>
+<div class="viewcode-block" id="Wrist"><a class="viewcode-back" href="../../../docs/multiflap.aero_package.html#multiflap.aero_package.bird.Wrist">[docs]</a><span class="k">class</span> <span class="nc">Wrist</span><span class="p">():</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis_z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axis_y</span>  <span class="o">=</span> <span class="n">Joint</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axis_z</span>  <span class="o">=</span> <span class="n">Joint</span><span class="p">()</span>
@@ -104,69 +227,50 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">axis_z</span> <span class="o">=</span> <span class="n">axis_z</span></div>
 </pre></div>
 
+           </div>
+           
           </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../../index.html">multiflap</a></h1>
+          <footer>
+  
 
+  <hr/>
 
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Gianmarco Ducci
 
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../multiflap.html">multiflap package</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../../index.html">Documentation overview</a><ul>
-  <li><a href="../../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
+</footer>
 
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2021, Author.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-    </div>
 
-    
+    </section>
 
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
     
-  </body>
+   
+
+</body>
 </html>
