@@ -24,10 +24,11 @@ class SaveData:
         path = self.folder_results+'/'+self.simulation_name
         try:
                 os.mkdir(path)
+                print("Folder correctly created")
         except:
-                print("error")
+                print("Error in trying to create data folder")
 
-        return print("simulation folder created")
+        return
 
     def remove_contents(self):
         path = self.folder_results+'/'+self.simulation_name

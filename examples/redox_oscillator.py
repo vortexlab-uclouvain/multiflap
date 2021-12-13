@@ -22,7 +22,7 @@ period = sol_time[-1]
 
 # Save simulation data
 sim_name = 'study_case'
-mf.SaveData(sim_name).make_folder()
+mf.SaveData(sim_name, folder_results = './results').make_folder()
 mf.SaveData(sim_name).save_data('state_space_solution', sol_array)
 
 # Fast plot simulation results
