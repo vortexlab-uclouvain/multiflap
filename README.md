@@ -13,6 +13,20 @@ It handles also the computation of the leading Lyapunov exponent to characterize
 
 This toolbox is optimised to study the limit cycle of flapping wings dynamics, but the modular architecture allows the user to use the kernel with any set of ODEs.
 
+**Cite our work**
+
+In case you use 'multiflap' package for your work, please refer to the following paper:
+```latex
+@article{ducci2021,
+  title={Stability and Sensitivity Analysis of Bird Flapping Flight},
+  author={Ducci, G and Colognesi, V and Vitucci, G and Chatelain, P and Ronsse, R},
+  year={2021},
+  journal={Journal of Nonlinear Science}
+  volume={31},
+  number={2},
+  publisher={Springer}
+}
+```
 In order to run the code for a particular dynamical system, two files have to be created:
 * **Input file**: The input file contains the system of differential equations, and the related staility matrix.
 * **Main file**: The main file is the python module that will e executed. More detailes on the format of the main file will be provided later. **NOTE** despite of example cases, the main file has to be inside `multiflap` directory.
