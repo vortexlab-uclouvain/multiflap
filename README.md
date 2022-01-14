@@ -15,7 +15,7 @@ This toolbox is optimised to study the limit cycle of flapping wings dynamics, b
 
 **Cite our work**
 
-In case you use 'multiflap' package for your work, please refer to the following paper:
+In case you use `multiflap` package for your work, please refer to the following paper:
 ```latex
 @article{ducci2021,
   title={Stability and Sensitivity Analysis of Bird Flapping Flight},
